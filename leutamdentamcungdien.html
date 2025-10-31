@@ -176,19 +176,66 @@
         color: var(--accent-color);
         text-decoration: none;
     }
+	
+	.question-block.partial {
+    /* Màu xanh dương hoặc màu trung tính cho điểm một phần */
+    border: 2px solid var(--check-all-color); 
+    /* Nền xanh dương nhạt, cho thấy đúng nhưng chưa tuyệt đối */
+    background-color: #e6f7ff; 
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+/* CSS DÀNH RIÊNG CHO THÔNG BÁO PHẢN HỒI (FEEDBACK MESSAGE) */
+.feedback-message {
+    margin-top: 15px; /* Tách biệt với phần trả lời */
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 600; /* Đậm hơn */
+    font-size: 0.9em;
+    display: none; /* Ban đầu ẩn, chỉ hiện khi kiểm tra */
+    /* Dùng box-shadow nhẹ để làm nổi bật */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Màu sắc cho trạng thái HOÀN HẢO (Correct) */
+.question-block.correct .feedback-message {
+    background-color: #e6ffed; /* Nền xanh lá nhạt */
+    color: var(--success-color); /* Chữ xanh lá */
+    border: 1px solid #b3e3bb;
+}
+
+/* Màu sắc cho trạng thái ĐÚNG MỘT PHẦN (Partial) */
+.question-block.partial .feedback-message {
+    background-color: #fff3cd; /* Nền vàng nhạt */
+    color: #856404; /* Chữ vàng đậm (tương phản tốt) */
+    border: 1px solid #ffeeba;
+}
+
+/* Màu sắc cho trạng thái SAI (Incorrect) */
+.question-block.incorrect .feedback-message {
+    background-color: #f8d7da; /* Nền đỏ nhạt */
+    color: var(--error-color); /* Chữ đỏ */
+    border: 1px solid #f5c6cb;
+}
+
 </style>
 </head>
 <body>
 
-    <div id="control-bar">
-        <div class="control-content">
-            <button id="check-btn" class="btn">Kiểm tra đáp án</button>
-            <button id="reset-btn" class="btn">Làm lại bài tập</button>
-            <button id="toggle-done-count" class="btn">Hiện số câu đã làm</button>
-            <div id="done-count-message" class="done-count-message"></div>
-            <div id="result-message" class="result-message"></div>
-        </div>
+  <div id="control-bar">
+    <div class="control-container">
+        <button id="toggle-explanation-btn" class="control-button check-all-btn">Hiện/Ẩn Giải thích</button>
+        
+        <button id="toggle-score-btn" class="control-button">Hiện Điểm Đã Làm</button>
+        
+        <button id="check-all-btn" class="control-button check-all-btn">Kiểm tra TOÀN BỘ đáp án</button>
+
+        <button id="reset-btn" class="control-button">Làm lại bài tập</button>
     </div>
+    <div class="result-display-container">
+        <span id="score-message" style="display: none; font-weight: bold; color: var(--accent-color); margin-right: 15px;">Tổng điểm: 0</span>
+        <span id="done-count-message" style="display: none; font-weight: bold; color: var(--primary-color);">Đã làm: 0/34 câu</span>
+    </div>
+</div>
     <div class="container">
         <h1>📄 Bài Kiểm Tra | Lều Tạm - Đền Tạm và Cung Điện</h1>
         <p>Chọn đánh dấu vào các câu trả lời đúng cho từng câu hỏi. Tất cả là Chọn Nhiều (ngay cả khi chỉ có 1 đáp án đúng).</p>
@@ -196,7 +243,7 @@
         <form id="quiz-form">
             
             <div class="question-block" data-correct-index="1,3,4" data-type="checkbox" data-id="q1">
-                <div class="question-title">Câu 1: BA PHƯƠNG CÁCH KHÁC NHAU MÀ ĐỨC CHÚA TRỜI PHÁN VỚI CHÚNG TA: </div>
+                <div class="question-title"> Câu 1: BA PHƯƠNG CÁCH KHÁC NHAU MÀ ĐỨC CHÚA TRỜI PHÁN VỚI CHÚNG TA: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q1')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q1" value="1"> Qua giọng nói tự nhiên trong sự sáng tạo của Ngài.</label>
                 <label><input type="checkbox" name="q1" value="2"> Qua âm nhạc.</label>
@@ -320,7 +367,7 @@
                 <label><input type="checkbox" name="q12" value="3"> Đức Chúa Trời đưa ông vào đồng vắng Si-nai cho phần huấn luyện chính thức thứ hai của Ngài.</label>
                 <label><input type="checkbox" name="q12" value="4"> Khi Môi-se 80 tuổi, Đức Chúa Trời hiện ra với ông và bày tỏ kế hoạch của Ngài trong cuộc đời của ông.</label>
                 <label><input type="checkbox" name="q12" value="5"> Môi-se đã dẫn dân sự của Đức Chúa Trời ra khỏi Ai Cập và hướng về đất hứa trong suốt 40 năm cuối của cuộc đời ông,</label>
-                <div class="explanation">Môi-se là người Lê-vi (ý 1). Ông trải qua 3 giai đoạn 40 năm: 40 năm ở Ai Cập (không phải 38 năm - ý 2 sai), 40 năm tại đồng vắng (ý 3), và được kêu gọi năm 80 tuổi (ý 4) để dẫn dân sự 40 năm (ý 5).</div>
+                <div class="explanation">Môi-se là người Lê-vi (ý 1). Ông trải qua 3 giai đoạn 40 năm: 40 năm ở Ai Cập (không phải 38 năm - ý 2 sai), 40 năm tại đồng vắng ma-đi-an (nên câu 3 sai), và được kêu gọi năm 80 tuổi (ý 4) để dẫn dân sự 40 năm (ý 5).</div>
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q13">
@@ -570,204 +617,224 @@
     </div>
 
 <script>
-    // Hàm Kiểm tra đáp án cho từng câu hỏi (Giải thích Thông minh & Toggle)
-    function checkAnswer(questionId, forceShow = false, forceHide = false) {
-        const questionBlock = document.querySelector(`[data-id="${questionId}"]`);
-        if (!questionBlock) return;
-
-        const correctIndexAttr = questionBlock.getAttribute('data-correct-index');
-        if (!correctIndexAttr) return;
-
-        const explanationDiv = questionBlock.querySelector('.explanation');
-        const checkButton = questionBlock.querySelector('.check-button');
-        
-        let isExplanationVisible = explanationDiv.classList.contains('show');
-
-        // Logic ẩn/hiện bắt buộc từ nút TOÀN BỘ
-        if (forceHide) {
-            isExplanationVisible = true; // Đặt thành true để kích hoạt khối ẩn bên dưới
-        } else if (forceShow) {
-             isExplanationVisible = false; // Đặt thành false để kích hoạt khối kiểm tra/hiện
-        }
-
-        // 2. Nếu giải thích đang HIỆN (hoặc forceHide là true), ta sẽ ẨN nó đi (Toggle)
-        if (isExplanationVisible) {
-            explanationDiv.classList.remove('show');
-            explanationDiv.style.display = 'none';
-            if (checkButton) checkButton.textContent = 'Kiểm tra đáp án'; 
-            questionBlock.classList.remove('correct', 'incorrect'); 
-            return; 
-        }
-
-        // --- Nếu giải thích đang ẨN (hoặc forceShow là true), ta tiến hành kiểm tra và HIỆN ---
-
-        const correctIndex = correctIndexAttr.split(',').map(s => s.trim());
-        let userAnswers = [];
-        const inputs = questionBlock.querySelectorAll(`input[name="${questionId}"]:checked`);
-        inputs.forEach(input => {
-            userAnswers.push(input.value);
-        });
-
-        const isCorrect = userAnswers.length === correctIndex.length && 
-                          userAnswers.every(value => correctIndex.includes(value)) &&
-                          correctIndex.every(value => userAnswers.includes(value));
-
-        questionBlock.classList.remove('correct', 'incorrect');
-        
-        let originalExplanation = explanationDiv.getAttribute('data-original-explanation');
-        if (!originalExplanation) {
-            originalExplanation = explanationDiv.innerHTML;
-            explanationDiv.setAttribute('data-original-explanation', originalExplanation);
-        }
-
-        if (isCorrect) {
-            questionBlock.classList.add('correct');
-            explanationDiv.innerHTML = `✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;"> Giải thích: ${originalExplanation}`;
-        } else {
-            questionBlock.classList.add('incorrect');
-            const correctIndicesStr = correctIndex.join(', ');
-            
-            let feedbackText = `❌ Câu trả lời của bạn chưa chính xác. <br>Đáp án đúng là các lựa chọn số: ${correctIndicesStr}.`;
-            feedbackText += `<hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">`;
-            feedbackText += `Giải thích chi tiết: ${originalExplanation}`;
-            
-            explanationDiv.innerHTML = feedbackText;
-        }
-        
-        explanationDiv.classList.add('show'); 
-        explanationDiv.style.display = 'block'; 
-        if (checkButton) checkButton.textContent = 'Ẩn Giải thích'; 
-        
-        updateDoneCountDisplay();
-    }
-
-    // Các hàm phụ trợ (Giữ nguyên)
-    function countDoneQuestions() {
-        let doneCount = 0;
-        document.querySelectorAll('.question-block').forEach(block => {
-            const questionId = block.getAttribute('data-id');
-            const inputs = document.querySelectorAll(`input[name="${questionId}"]:checked`); 
-            if (inputs.length > 0) {
-                doneCount++;
-            }
-        });
-        return doneCount;
-    }
-
-    function updateDoneCountDisplay() {
-        const doneCountMessage = document.getElementById('done-count-message');
-        const totalQuestions = document.querySelectorAll('.question-block').length;
-
-        if (doneCountMessage && doneCountMessage.style.display !== 'none') {
-            const doneQuestions = countDoneQuestions();
-            doneCountMessage.textContent = `Đã làm: ${doneQuestions}/${totalQuestions} câu.`;
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-        // --- KHAI BÁO CÁC NÚT CẦN THIẾT (đã loại bỏ 'toggle-btn') ---
-        const resetBtn = document.getElementById('reset-btn'); 
-        const toggleDoneCountBtn = document.getElementById('toggle-done-count'); 
-        const doneCountMessage = document.getElementById('done-count-message');
+        // Hằng số Điểm & Tỷ lệ phạt
+        const POINTS_PER_QUESTION = 5;
+        const PENALTY_FACTOR = 1; // Chọn sai 1 đáp án bị trừ điểm tương ứng 1 lựa chọn đúng
+        
         const quizForm = document.getElementById('quiz-form');
-        const controlBar = document.getElementById('control-bar');
+        const questionBlocks = document.querySelectorAll('.question-block');
+        const totalQuestions = questionBlocks.length;
+        
+        // Lấy các phần tử điều khiển
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const toggleScoreBtn = document.getElementById('toggle-score-btn');
+        const checkAllBtn = document.getElementById('check-all-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        
+        // Lấy các phần tử hiển thị
+        const scoreMessage = document.getElementById('score-message');
+        const doneCountMessage = document.getElementById('done-count-message');
+        
+        // Hàm tính điểm (Logic MỚI: Tính điểm một phần)
+        function calculateCurrentScoreAndDone() {
+            let doneQuestions = 0;
+            let currentScore = 0;
 
-        // BỔ SUNG VÀ XỬ LÝ NÚT "Kiểm tra TOÀN BỘ đáp án" (Bây giờ là nút TOGGLE chính)
-        if (controlBar) {
-            // 1. Loại bỏ nút check-btn cũ (ID="check-btn")
-            const oldCheckBtn = document.getElementById('check-btn');
-            if (oldCheckBtn) {
-                oldCheckBtn.remove();
-            }
-
-            // 2. Tạo nút "Kiểm tra TOÀN BỘ đáp án" mới
-            const checkAllBtn = document.createElement('button');
-            checkAllBtn.textContent = 'Hiện Giải thích'; // Đổi tên ban đầu thành Hiện
-            checkAllBtn.setAttribute('id', 'check-all-btn'); 
-            checkAllBtn.classList.add('btn'); 
-            checkAllBtn.style.marginRight = '5px';
-            
-            const controlContent = controlBar.querySelector('.control-content');
-            if (controlContent) {
-                 controlContent.prepend(checkAllBtn); 
-            } else {
-                 controlBar.prepend(checkAllBtn); 
-            }
-           
-            // 3. Gắn sự kiện TOGGLE cho nút Kiểm tra TOÀN BỘ
-            checkAllBtn.addEventListener('click', function() {
-                let allVisible = checkAllBtn.textContent === 'Ẩn Giải thích';
+            questionBlocks.forEach(block => {
+                const qid = block.getAttribute('data-id');
+                const correctIndicesStr = block.getAttribute('data-correct-index');
+                const correctIndices = correctIndicesStr ? correctIndicesStr.split(',').map(s => s.trim()) : [];
                 
-                document.querySelectorAll('.question-block').forEach(block => {
-                    const questionId = block.getAttribute('data-id');
-                    if (questionId) {
-                        if (allVisible) {
-                            // Nếu đang hiển thị (nút có tên 'Ẩn Giải thích'), thì ẩn đi
-                            checkAnswer(questionId, false, true); // forceHide = true
-                        } else {
-                            // Nếu đang ẩn (nút có tên 'Hiện Giải thích'), thì kiểm tra và hiện
-                            checkAnswer(questionId, true, false); // forceShow = true
+                const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
+                const selectedIndices = Array.from(selectedInputs).map(input => input.value);
+                
+                const totalCorrectAnswers = correctIndices.length;
+                
+                if (selectedIndices.length > 0) {
+                    doneQuestions++;
+                    
+                    if (totalCorrectAnswers > 0) {
+                        let correctSelections = 0;
+                        let incorrectSelections = 0;
+
+                        selectedIndices.forEach(selectedIndex => {
+                            if (correctIndices.includes(selectedIndex)) {
+                                correctSelections++;
+                            } else {
+                                incorrectSelections++;
+                            }
+                        });
+
+                        const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
+
+                        if (grossScore > 0) {
+                            const scoreRatio = grossScore / totalCorrectAnswers;
+                            const questionScore = scoreRatio * POINTS_PER_QUESTION;
+                            currentScore += parseFloat(questionScore.toFixed(2));
                         }
                     }
-                });
+                }
+            });
+            return { done: doneQuestions, score: parseFloat(currentScore.toFixed(2)) };
+        }
 
-                // Đổi tên nút tổng thể
-                checkAllBtn.textContent = allVisible ? 'Hiện Giải thích' : 'Ẩn Giải thích';
+        // Hàm cập nhật hiển thị số câu đã làm và điểm
+        function updateDisplay() {
+            const { done, score } = calculateCurrentScoreAndDone();
+            doneCountMessage.textContent = `Đã làm: ${done}/${totalQuestions} câu.`;
+            scoreMessage.textContent = `Tổng điểm: ${score} điểm.`;
+        }
+
+        // --- Khởi tạo và Lắng nghe sự kiện ---
+        updateDisplay();
+        quizForm.addEventListener('change', updateDisplay);
+
+        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị thông báo phản hồi
+        function checkAnswer(qid, correctIndices, block) {
+            block.classList.remove('correct', 'incorrect', 'partial');
+            const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
+            const selectedIndices = Array.from(selectedInputs).map(input => input.value);
+            const feedbackDiv = block.querySelector('.feedback-message');
+            const explanation = block.querySelector('.explanation');
+
+            let feedbackMessage = '';
+            
+            if (selectedIndices.length > 0) {
+                const totalCorrectAnswers = correctIndices.length;
+                let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
+                let incorrectSelections = selectedIndices.filter(val => !correctIndices.includes(val)).length;
+                
+                const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
+
+                // Tình trạng 1: HOÀN HẢO (All or Nothing)
+                if (correctSelections === totalCorrectAnswers && incorrectSelections === 0) {
+                    block.classList.add('correct');
+                    feedbackMessage = '✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. (Đạt 5.00 điểm)';
+                
+                // Tình trạng 2: ĐÚNG MỘT PHẦN (Gross Score > 0)
+                } else if (grossScore > 0) {
+                    block.classList.add('partial');
+                    const scoreRatio = grossScore / totalCorrectAnswers;
+                    const questionScore = (scoreRatio * POINTS_PER_QUESTION).toFixed(2);
+
+                    feedbackMessage = `⚠️ Đáp án đúng một phần. (${correctSelections} đáp án đúng và ${incorrectSelections} đáp án sai). Đạt ${questionScore} điểm.`;
+
+                // Tình trạng 3: SAI hoặc KHÔNG ĐẠT ĐIỂM
+                } else {
+                    block.classList.add('incorrect');
+                    feedbackMessage = '❌ Câu trả lời chưa chính xác. Vui lòng xem lại phần giải thích.';
+                }
+            } else {
+                 feedbackMessage = '🚫 Bạn chưa chọn đáp án nào.';
+            }
+
+            if (feedbackDiv) {
+                feedbackDiv.innerHTML = feedbackMessage;
+                feedbackDiv.style.display = 'block';
+            }
+            if (explanation) explanation.style.display = 'block';
+        }
+
+        // Gán lại hàm checkAnswer cho các nút cá nhân
+        questionBlocks.forEach(block => {
+            // Thêm thẻ feedback-message nếu chưa có
+            if (!block.querySelector('.feedback-message')) {
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = 'feedback-message';
+                block.insertBefore(feedbackDiv, block.querySelector('.explanation') || block.lastChild);
+            }
+
+            const qid = block.getAttribute('data-id');
+            const correctIndicesStr = block.getAttribute('data-correct-index');
+            const correctIndices = correctIndicesStr ? correctIndicesStr.split(',').map(s => s.trim()) : [];
+            const checkButton = block.querySelector('.check-button');
+            
+            if (checkButton) {
+                checkButton.onclick = function() {
+                    checkAnswer(qid, correctIndices, block);
+                    updateDisplay();
+                };
+            }
+        });
+
+        // 1. Nút Kiểm tra TOÀN BỘ đáp án
+        checkAllBtn.addEventListener('click', function() {
+            questionBlocks.forEach(block => {
+                const qid = block.getAttribute('data-id');
+                const correctIndicesStr = block.getAttribute('data-correct-index');
+                const correctIndices = correctIndicesStr ? correctIndicesStr.split(',').map(s => s.trim()) : [];
+                
+                checkAnswer(qid, correctIndices, block);
+            });
+
+            const { score } = calculateCurrentScoreAndDone();
+            const maxPossibleScore = totalQuestions * POINTS_PER_QUESTION;
+
+            const checkAllBtnText = `Kết quả: Đạt ${score} / ${maxPossibleScore} điểm`;
+            checkAllBtn.textContent = checkAllBtnText;
+            
+            scoreMessage.style.display = 'inline';
+            doneCountMessage.style.display = 'inline';
+            toggleScoreBtn.textContent = 'Ẩn Điểm Đã Làm';
+        });
+
+        // 2. Nút Hiện Điểm Đã Làm (Logic giữ nguyên)
+        if (toggleScoreBtn) {
+            toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
+            scoreMessage.style.display = 'none';
+            doneCountMessage.style.display = 'none';
+            
+            toggleScoreBtn.addEventListener('click', function() {
+                const scoreVisible = scoreMessage.style.display !== 'none';
+                
+                if (!scoreVisible) {
+                    scoreMessage.style.display = 'inline';
+                    doneCountMessage.style.display = 'inline';
+                    toggleScoreBtn.textContent = 'Ẩn Điểm Đã Làm';
+                } else {
+                    scoreMessage.style.display = 'none';
+                    doneCountMessage.style.display = 'none';
+                    toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
+                }
+                updateDisplay();
             });
         }
         
-        // 1. Nút Làm lại bài tập (Giữ nguyên)
-        if (resetBtn && quizForm) {
+        // 3. Nút Làm lại bài tập (Thêm reset feedback)
+        if (resetBtn) {
             resetBtn.addEventListener('click', function() {
                 quizForm.reset();
-                document.querySelectorAll('.question-block').forEach(block => {
-                    block.classList.remove('correct', 'incorrect');
-                    
-                    const exp = block.querySelector('.explanation');
-                    exp.style.display = 'none';
-                    exp.classList.remove('show');
-                    
-                    let originalExplanation = exp.getAttribute('data-original-explanation');
-                     if (originalExplanation) {
-                        exp.innerHTML = originalExplanation;
-                    }
-                    
+                questionBlocks.forEach(block => {
+                    block.classList.remove('correct', 'incorrect', 'partial');
+                    const explanation = block.querySelector('.explanation');
+                    if (explanation) explanation.style.display = 'none';
+
+                    const feedbackDiv = block.querySelector('.feedback-message');
+                    if (feedbackDiv) feedbackDiv.style.display = 'none'; // Ẩn feedback
+
                     const checkButton = block.querySelector('.check-button');
                     if (checkButton) checkButton.textContent = 'Kiểm tra đáp án';
-
                 });
-                
-                const checkAllBtn = document.getElementById('check-all-btn');
-                if (checkAllBtn) checkAllBtn.textContent = 'Hiện Giải thích'; // Đặt lại nút tổng thể
-                
-                updateDoneCountDisplay();
+
+                scoreMessage.style.display = 'none';
+                doneCountMessage.style.display = 'none';
+                if(checkAllBtn) checkAllBtn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
+                if(toggleScoreBtn) toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
+                updateDisplay();
             });
         }
 
-        // 2. Nút Hiện số câu đã làm (Giữ nguyên)
-        if (toggleDoneCountBtn && doneCountMessage) {
-            // Đảm bảo ban đầu ẩn thông báo và đặt tên nút
-            doneCountMessage.style.display = 'none';
-            toggleDoneCountBtn.textContent = 'Hiện số câu đã làm';
+        // 4. Nút Ẩn/Hiện Giải thích (Giữ nguyên)
+        if (toggleExplanationBtn) {
+            toggleExplanationBtn.addEventListener('click', function() {
+                const explanationVisible = questionBlocks[0].querySelector('.explanation').style.display === 'block';
 
-            toggleDoneCountBtn.addEventListener('click', function() {
-                let doneCountVisible = doneCountMessage.style.display !== 'none' && doneCountMessage.style.display !== '';
-                
-                if (!doneCountVisible) {
-                    doneCountMessage.style.display = 'inline';
-                    toggleDoneCountBtn.textContent = 'Ẩn số câu đã làm';
-                } else {
-                    doneCountMessage.style.display = 'none';
-                    toggleDoneCountBtn.textContent = 'Hiện số câu đã làm';
-                }
-                updateDoneCountDisplay(); 
-            });
-        }
+                questionBlocks.forEach(block => {
+                    block.querySelector('.explanation').style.display = explanationVisible ? 'none' : 'block';
+                });
 
-        // Cập nhật số câu đã làm khi người dùng thay đổi lựa chọn (Hoạt động)
-        if (quizForm) {
-            quizForm.addEventListener('change', function() {
-                updateDoneCountDisplay();
+                toggleExplanationBtn.textContent = explanationVisible ? 'Hiện Giải thích' : 'Ẩn Giải thích';
             });
         }
     });
