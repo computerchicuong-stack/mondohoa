@@ -700,6 +700,30 @@
 
             let feedbackMessage = '';
             
+            // LOGIC LƯU VÀ HIỂN THỊ ĐÁP ÁN ĐÚNG TRONG GIẢI THÍCH
+            if (explanation) {
+                // 1. Đảm bảo đã lưu nội dung giải thích gốc
+                let originalContent = explanation.getAttribute('data-original-content');
+                if (!originalContent) {
+                    originalContent = explanation.innerHTML;
+                    explanation.setAttribute('data-original-content', originalContent);
+                }
+                
+                // 2. Tạo chuỗi đáp án đúng
+                const correctIndicesDisplay = correctIndices.join(', ');
+                
+                // Chuẩn bị nội dung giải thích (Luôn lấy lại nội dung gốc)
+                let newExplanationContent = originalContent;
+                
+                // Chèn dòng đáp án đúng vào trước nội dung gốc
+                const answerLine = `<p style="font-style: normal; font-weight: bold; color: var(--primary-color); margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">✅ Đáp án đúng là các lựa chọn số: ${correctIndicesDisplay}.</p>`;
+                newExplanationContent = answerLine + originalContent;
+                
+                // Cập nhật nội dung
+                explanation.innerHTML = newExplanationContent;
+            }
+            
+            // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI (GIỮ NGUYÊN)
             if (selectedIndices.length > 0) {
                 const totalCorrectAnswers = correctIndices.length;
                 let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
@@ -707,12 +731,12 @@
                 
                 const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
 
-                // Tình trạng 1: HOÀN HẢO (All or Nothing)
+                // Tình trạng 1: HOÀN HẢO
                 if (correctSelections === totalCorrectAnswers && incorrectSelections === 0) {
                     block.classList.add('correct');
                     feedbackMessage = '✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. (Đạt 5.00 điểm)';
                 
-                // Tình trạng 2: ĐÚNG MỘT PHẦN (Gross Score > 0)
+                // Tình trạng 2: ĐÚNG MỘT PHẦN
                 } else if (grossScore > 0) {
                     block.classList.add('partial');
                     const scoreRatio = grossScore / totalCorrectAnswers;
@@ -720,7 +744,7 @@
 
                     feedbackMessage = `⚠️ Đáp án đúng một phần. (${correctSelections} đáp án đúng và ${incorrectSelections} đáp án sai). Đạt ${questionScore} điểm.`;
 
-                // Tình trạng 3: SAI hoặc KHÔNG ĐẠT ĐIỂM
+                // Tình trạng 3: SAI
                 } else {
                     block.classList.add('incorrect');
                     feedbackMessage = '❌ Câu trả lời chưa chính xác. Vui lòng xem lại phần giải thích.';
@@ -801,14 +825,22 @@
             });
         }
         
-        // 3. Nút Làm lại bài tập (Thêm reset feedback)
+        // 3. Nút Làm lại bài tập (KHÔI PHỤC NỘI DUNG GỐC)
         if (resetBtn) {
             resetBtn.addEventListener('click', function() {
                 quizForm.reset();
                 questionBlocks.forEach(block => {
                     block.classList.remove('correct', 'incorrect', 'partial');
+                    
                     const explanation = block.querySelector('.explanation');
-                    if (explanation) explanation.style.display = 'none';
+                    if (explanation) {
+                        explanation.style.display = 'none';
+                        // KHÔI PHỤC NỘI DUNG GỐC TỪ DATA ATTRIBUTE
+                        let originalContent = explanation.getAttribute('data-original-content');
+                        if (originalContent) {
+                            explanation.innerHTML = originalContent;
+                        }
+                    }
 
                     const feedbackDiv = block.querySelector('.feedback-message');
                     if (feedbackDiv) feedbackDiv.style.display = 'none'; // Ẩn feedback
