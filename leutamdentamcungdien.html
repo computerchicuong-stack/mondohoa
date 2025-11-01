@@ -70,7 +70,7 @@
         transform: translateY(-1px);
     }
 
-    /* CSS dành riêng cho nút "Kiểm tra TOÀN BỘ đáp án" (trên header) */
+    /* CSS dành riêng cho nút "Kiểm tra đáp án" (trên header) */
     #check-all-btn {
         background-color: var(--check-all-color) !important; /* Vẫn giữ màu xanh dương sáng trên header */
         box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); 
@@ -344,19 +344,19 @@
 
 <div id="control-bar">
     <div class="control-container">
-        <button id="toggle-explanation-btn" class="control-button">Hiện Giải thích</button>
         <button id="reset-btn" class="control-button">Làm lại bài tập</button>
         <button id="check-all-btn" class="control-button check-all-btn">Kiểm tra đáp án</button>
     </div>
     <div class="result-display-container">
-    <span id="score-message" style="font-weight: bold; color: var(--accent-color); margin-right: 15px;">Tổng điểm: 0.00 điểm</span>
-    <span id="done-count-message" style="font-weight: bold; color: var(--primary-color);">Đã làm: 0/0 câu</span>
+        <span id="score-message" style="font-weight: bold; color: var(--accent-color); margin-right: 15px;">Tổng điểm: 0.00 điểm</span>
+        <span id="done-count-message" style="font-weight: bold; color: var(--primary-color);">Đã làm: 0/0 câu</span>
+    </div>
 </div>
 </div>
 </div>
     <div class="container">
         <h1>📄 Bài Kiểm Tra | Lều Tạm - Đền Tạm và Cung Điện</h1>
-        <p>Chọn đánh dấu vào các câu trả lời đúng cho từng câu hỏi. Mỗi câu hỏi đúng hết các câu Bạn sẽ được 5 điểm.</p>
+        <p>Chọn đánh dấu vào các câu trả lời đúng cho từng câu hỏi. Mỗi câu Bạn nhận được 5 điểm.</p>
         
         <form id="quiz-form">
             
@@ -371,7 +371,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q2">
-                <div class="question-title">Câu 2: BA SỰ PHÂN CHIA CHÍNH CỦA SÁCH CỰU ƯỚC LÀ: </div>
+                <div class="question-title">Câu 2: BA SỰ PHÂN CHIA CHÍNH CỦA SÁCH CỰU ƯỚC LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q2')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q2" value="1"> Lịch sử, Ngũ Kinh và Tân ước.</label>
                 <label><input type="checkbox" name="q2" value="2"> Luật pháp, tiên tri, thi ca.</label>
@@ -380,7 +380,7 @@
             </div>
             
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q3">
-                <div class="question-title">Câu 3: SỰ MẶC KHẢI CỦA ĐỨC CHÚA TRỜI VỚI CON NGƯỜI QUA: </div>
+                <div class="question-title">Câu 3: SỰ MẶC KHẢI CỦA ĐỨC CHÚA TRỜI VỚI CON NGƯỜI QUA: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q3')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q3" value="1"> Những hành động của Ngài</label>
                 <label><input type="checkbox" name="q3" value="2"> Những hành động và lời của Ngài.</label>
@@ -389,7 +389,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q4">
-                <div class="question-title">Câu 4: SÁNG THẾ KÝ TƯỜNG THUẬT VỀ SỰ SÁNG TẠO, QUA ĐÓ CHÚNG TA BIẾT CON NGƯỜI ĐƯỢC DỰNG NÊN THEO: </div>
+                <div class="question-title">Câu 4: SÁNG THẾ KÝ TƯỜNG THUẬT VỀ SỰ SÁNG TẠO, QUA ĐÓ CHÚNG TA BIẾT CON NGƯỜI ĐƯỢC DỰNG NÊN THEO: (5 Điểm)</div>
 				<button class="check-button" type="button" onclick="checkAnswer('q4')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q4" value="1"> Một ý tưởng bất chợt.</label>
                 <label><input type="checkbox" name="q4" value="2"> Hình ảnh của các thiên sứ.</label>
@@ -398,7 +398,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2, 4" data-type="checkbox" data-id="q5">
-                <div class="question-title">Câu 5: TRONG SÁNG THẾ KÝ, ĐỨC CHÚA TRỜI BÀY TỎ CHÍNH NGÀI LÀ: </div>
+                <div class="question-title">Câu 5: TRONG SÁNG THẾ KÝ, ĐỨC CHÚA TRỜI BÀY TỎ CHÍNH NGÀI LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q5')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q5" value="1"> Đấng Sáng Tạo</label>
                 <label><input type="checkbox" name="q5" value="2"> Đấng luôn hiện có từ đời này sang đời kia.</label>
@@ -408,7 +408,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3,4" data-type="checkbox" data-id="q6">
-                <div class="question-title">Câu 6: Ý MUỐN CỦA ĐỨC CHÚA TRỜI KHI TẠO DỰNG CON NGƯỜI: </div>
+                <div class="question-title">Câu 6: Ý MUỐN CỦA ĐỨC CHÚA TRỜI KHI TẠO DỰNG CON NGƯỜI: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q6')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q6" value="1"> Đức Chúa Trời muốn con người quản trị trên mọi tạo vật.</label>
                 <label><input type="checkbox" name="q6" value="2"> Ngài không có ý định gì, con người tự do làm điều mình muốn.</label>
@@ -426,7 +426,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3,4" data-type="checkbox" data-id="q7">
-                <div class="question-title">Câu 7: CẢ A-ĐAM VÀ Ê-VA ĐÃ THẤT BẠI TRONG SỰ THỬ NGHIỆM. SỰ THẤT BẠI NÀY VÀ SỰ KHÔNG VÂNG LỜI ĐÃ DẪN ĐẾN: </div>
+                <div class="question-title">Câu 7: CẢ A-ĐAM VÀ Ê-VA ĐÃ THẤT BẠI TRONG SỰ THỬ NGHIỆM. SỰ THẤT BẠI NÀY VÀ SỰ KHÔNG VÂNG LỜI ĐÃ DẪN ĐẾN:  (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q7')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q7" value="1"> Sự thay đổi trong mối quan hệ của con người với Đức Chúa Trời.</label>
                 <label><input type="checkbox" name="q7" value="2"> Giúp cho họ mạnh mẽ trong việc chống trả Sa-tan.</label>
@@ -445,7 +445,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2,3" data-type="checkbox" data-id="q8">
-                <div class="question-title">Câu 8: CA-IN VÀ A-BÊN ĐẠI DIỆN CHO QUAN ĐIỂM CỦA 2 NHÓM NGƯỜI: </div>
+                <div class="question-title">Câu 8: CA-IN VÀ A-BÊN ĐẠI DIỆN CHO QUAN ĐIỂM CỦA 2 NHÓM NGƯỜI: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q8')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q8" value="1"> Nhóm người thấy họ cần Chúa nhưng phần lớn vẫn nhờ cậy vào đức hạnh của mình. (Đại diện cho Ca-in)</label>
                 <label><input type="checkbox" name="q8" value="2"> Nhóm người biết rằng họ sẽ bị hư mất khi họ chấp nhận của lễ Đức Chúa Trời đã cung cấp cho tội lỗi họ và tin cậy Ngài cho sự cứu rỗi. (Đại diện cho A-bên)</label>
@@ -462,7 +462,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q9">
-                <div class="question-title">Câu 9: TẤT CẢ LOÀI NGƯỜI MÔ TẢ TRONG SÁNG THẾ KÝ 11 LÀ: </div>
+                <div class="question-title">Câu 9: TẤT CẢ LOÀI NGƯỜI MÔ TẢ TRONG SÁNG THẾ KÝ 11 LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q9')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q9" value="1"> Những hậu tự không trực hệ của Nô-ê, nhưng họ đã có kiến thức về Đức Chúa Trời.</label>
                 <label><input type="checkbox" name="q9" value="2"> Những hậu tự trực hệ của Nô-ê, họ đã có kiến thức về Đức Chúa Trời.</label>
@@ -478,7 +478,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2,4" data-type="checkbox" data-id="q10">
-                <div class="question-title">Câu 10: MÔ TẢ VỀ ÁP-RA-HAM: </div>
+                <div class="question-title">Câu 10: MÔ TẢ VỀ ÁP-RA-HAM: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q10')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q10" value="1"> Ông là hậu tự của Nô-ê từ dòng dõi của Gia-phết.</label>
                 <label><input type="checkbox" name="q10" value="2"> Ông đã đáp ứng với sự kêu gọi của Đức Chúa Trời dành cho ông.</label>
@@ -488,7 +488,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3,4,6" data-type="checkbox" data-id="q11">
-                <div class="question-title">Câu 11: BỐN BIẾN CỐ CHÍNH TRONG ĐỜI SỐNG ÁP-RA-HAM: </div>
+                <div class="question-title">Câu 11: BỐN BIẾN CỐ CHÍNH TRONG ĐỜI SỐNG ÁP-RA-HAM: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q11')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q11" value="1"> Đức Chúa Trời chọn ông Áp-ram.</label>
                 <label><input type="checkbox" name="q11" value="2"> Đức Chúa Trời cho ông sở hữu ngay lập tức vùng đất Ca-na-an</label>
@@ -509,7 +509,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,4,5" data-type="checkbox" data-id="q12">
-                <div class="question-title">Câu 12: MÔ TẢ ĐÚNG VỀ MÔI-SE: </div>
+                <div class="question-title">Câu 12: MÔ TẢ ĐÚNG VỀ MÔI-SE: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q12')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q12" value="1"> Ông sinh ra từ cha mẹ thuộc chi phái Lê-vi.</label>
                 <label><input type="checkbox" name="q12" value="2"> Ông đã học nhiều điều trong suốt 38 năm ở cung điện Pha-ra-ôn.</label>
@@ -520,7 +520,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q13">
-                <div class="question-title">Câu 13: ĐỨC CHÚA TRỜI CUNG ỨNG MỘT DÒNG NƯỚC PHUN RA KHI MÔI-SE ĐẬP VÀO HÒN ĐÁ BẰNG CÂY GẬY CỦA ÔNG TẠI: </div>
+                <div class="question-title">Câu 13: ĐỨC CHÚA TRỜI CUNG ỨNG MỘT DÒNG NƯỚC PHUN RA KHI MÔI-SE ĐẬP VÀO HÒN ĐÁ BẰNG CÂY GẬY CỦA ÔNG TẠI: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q13')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q13" value="1"> Ma-đi-an</label>
                 <label><input type="checkbox" name="q13" value="2"> A-na-đim</label>
@@ -529,7 +529,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1" data-type="checkbox" data-id="q14">
-                <div class="question-title">Câu 14: LUẬT ĐẠO ĐỨC LÀ: </div>
+                <div class="question-title">Câu 14: LUẬT ĐẠO ĐỨC LÀ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q14')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q14" value="1"> Luật được hợp thành từ mười điều răn.</label>
                 <label><input type="checkbox" name="q14" value="2"> Luật dân sự.</label>
@@ -538,7 +538,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1" data-type="checkbox" data-id="q15">
-                <div class="question-title">Câu 15: BẢY KINH NGHIỆM CHÚNG TA PHẢI CÓ TRONG SỰ BƯỚC THEO ĐỨC THÁNH LINH CÓ LIÊN QUAN ĐẾN CÁC LỄ HỘI LÀ: </div>
+                <div class="question-title">Câu 15: BẢY KINH NGHIỆM CHÚNG TA PHẢI CÓ TRONG SỰ BƯỚC THEO ĐỨC THÁNH LINH CÓ LIÊN QUAN ĐẾN CÁC LỄ HỘI LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q15')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q15" value="1"> Được cứu, được tẩy sạch, được Thánh hóa, được đổ đầy, được hà hơi để nói, được làm con, và biết Sự hiện diện và Đức Chúa Trời.</label>
                 <label><input type="checkbox" name="q15" value="2"> Được bình an, được sống, được Thánh hóa, được đổ đầy, được hà hơi để nói, được làm con, và biết Sự hiện diện của Đức Chúa Trời</label>
@@ -546,7 +546,7 @@
             </div>
             
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q16">
-                <div class="question-title">Câu 16: MÔI-SE ĐÃ BAN SỨ ĐIỆP CUỐI CÙNG CỦA ÔNG CHO DÂN SỰ KHOẢNG 1 THÁNG TRƯỚC KHI HỌ QUA SÔNG GIÔ-ĐANH. NHỮNG NGƯỜI NGHE SỨ ĐIỆP CỦA ÔNG LÀ: </div>
+                <div class="question-title">Câu 16: MÔI-SE ĐÃ BAN SỨ ĐIỆP CUỐI CÙNG CỦA ÔNG CHO DÂN SỰ KHOẢNG 1 THÁNG TRƯỚC KHI HỌ QUA SÔNG GIÔ-ĐANH. NHỮNG NGƯỜI NGHE SỨ ĐIỆP CỦA ÔNG LÀ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q16')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q16" value="1"> Một thế hệ dân Y-sơ-ra-ên mới, tất cả trên tuổi 60.</label>
                 <label><input type="checkbox" name="q16" value="2"> Một thế hệ dân Y-sơ-ra-ên mới, tất cả dưới tuổi 60.</label>
@@ -554,7 +554,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3,4" data-type="checkbox"data-id="q17">
-                <div class="question-title">Câu 17: SÁCH GIÔ-SUÊ CUNG CẤP CHỨNG CỚ VỀ SỰ TỒN TẠI CÙNG SỰ TƯỜNG THUẬT LỊCH SỬ XÁC THỰC NHƯ: </div>
+                <div class="question-title">Câu 17: SÁCH GIÔ-SUÊ CUNG CẤP CHỨNG CỚ VỀ SỰ TỒN TẠI CÙNG SỰ TƯỜNG THUẬT LỊCH SỬ XÁC THỰC NHƯ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q17')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q17" value="1"> Hơn 300 thành phố và tỉnh lẻ được đề cập trong đó.</label>
                 <label><input type="checkbox" name="q17" value="2"> Sự lãnh đạo của các quan xét.</label>
@@ -564,7 +564,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q18">
-                <div class="question-title">Câu 18: TỘI LỖI_ HỦY DIỆT_ ĂN NĂN_ GIẢI CỨU, LÀ CHU KỲ ĐƯỢC LẶP LẠI NHIỀU LẦN TRONG THỜI: </div>
+                <div class="question-title">Câu 18: TỘI LỖI_ HỦY DIỆT_ ĂN NĂN_ GIẢI CỨU, LÀ CHU KỲ ĐƯỢC LẶP LẠI NHIỀU LẦN TRONG THỜI: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q18')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q18" value="1"> Giô-suê làm lãnh đạo.</label>
                 <label><input type="checkbox" name="q18" value="2"> Môi-se làm lãnh đạo.</label>
@@ -574,7 +574,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2" data-type="checkbox" data-id="q19">
-                <div class="question-title">Câu 19: SÁCH RU-TƠ LÀ MỘT HÌNH ẢNH RÕ RÀNG NHẤT CỦA KINH THÁNH VỀ MỘT NGƯỜI MÀ LUẬT PHÁP Y-SƠ-RA-ÊN GỌI LÀ: </div>
+                <div class="question-title">Câu 19: SÁCH RU-TƠ LÀ MỘT HÌNH ẢNH RÕ RÀNG NHẤT CỦA KINH THÁNH VỀ MỘT NGƯỜI MÀ LUẬT PHÁP Y-SƠ-RA-ÊN GỌI LÀ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q19')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q19" value="1"> Người có quyền chuộc sản nghiệp.</label>
                 <label><input type="checkbox" name="q19" value="2"> Người bà con đem sự phục hồi.</label>
@@ -583,7 +583,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q20">
-                <div class="question-title">Câu 20: MỘT TRONG NHỮNG NGƯỜI ĐÁNG KÍNH PHỤC NHẤT TRONG LỊCH SỬ KINH THÁNH, NGƯỜI VĨ ĐẠI NGANG VỚI ÁP-RA-HAM, MÔI-SE VÀ ĐA-VÍT LÀ: </div>
+                <div class="question-title">Câu 20: MỘT TRONG NHỮNG NGƯỜI ĐÁNG KÍNH PHỤC NHẤT TRONG LỊCH SỬ KINH THÁNH, NGƯỜI VĨ ĐẠI NGANG VỚI ÁP-RA-HAM, MÔI-SE VÀ ĐA-VÍT LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q20')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q20" value="1"> Gia-cốp</label>
                 <label><input type="checkbox" name="q20" value="2"> Giô-suê</label>
@@ -592,7 +592,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3,4" data-type="checkbox" data-id="q21">
-                <div class="question-title">Câu 21: NHỮNG LỜI GIÁO HUẤN VỀ VIỆC MỘT VUA CAI TRỊ TRÊN Y-SƠ-RA-ÊN LÀ: </div>
+                <div class="question-title">Câu 21: NHỮNG LỜI GIÁO HUẤN VỀ VIỆC MỘT VUA CAI TRỊ TRÊN Y-SƠ-RA-ÊN LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q21')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q21" value="1"> Không cai trị bằng ý muốn riêng của họ.</label>
                 <label><input type="checkbox" name="q21" value="2"> Họ được cai trị vì danh tiếng hay vinh quang của chính họ.</label>
@@ -602,7 +602,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2,4" data-type="checkbox" data-id="q22">
-                <div class="question-title">Câu 22: MÔ TẢ VỀ VUA SAU LƠ: </div>
+                <div class="question-title">Câu 22: MÔ TẢ VỀ VUA SAU LƠ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q22')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q22" value="1"> Tư lệnh của quân đội Vương quốc phía Nam.</label>
                 <label><input type="checkbox" name="q22" value="2"> Là một người lãnh đạo sáng chói.</label>
@@ -612,7 +612,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2,3" data-type="checkbox" data-id="q23">
-                <div class="question-title">Câu 23: MẪU HÌNH VỀ VUA ĐA-VÍT: </div>
+                <div class="question-title">Câu 23: MẪU HÌNH VỀ VUA ĐA-VÍT: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q23')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q23" value="1"> Đa-vít đã bày tỏ sự can đảm của ông và tin cậy tài năng sử dụng trành ném đá để thắng Gô-li-át người Phi-li-tin</label>
                 <label><input type="checkbox" name="q23" value="2"> Đa-vít chọn sự phục vụ của mình với ý muốn của Đức Chúa Trời</label>
@@ -621,7 +621,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,3" data-type="checkbox" data-id="q24">
-                <div class="question-title">Câu 24: NHỮNG THÀNH TỰU CỦA SA-LÔ-MÔN LÀ: </div>
+                <div class="question-title">Câu 24: NHỮNG THÀNH TỰU CỦA SA-LÔ-MÔN LÀ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q24')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q24" value="1"> Viết 3.000 câu châm ngôn.</label>
                 <label><input type="checkbox" name="q24" value="2"> Có hơn 1.000 người vợ</label>
@@ -630,7 +630,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1, 3" data-type="checkbox" data-id="q25">
-                <div class="question-title">Câu 25: THỂ THƠ SONG SONG LÀ: </div>
+                <div class="question-title">Câu 25: THỂ THƠ SONG SONG LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q25')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q25" value="1"> Những tư tưởng, suy nghĩ được diễn đạt cách tương tự hay hài hoà trong nhiều cách.</label>
                 <label><input type="checkbox" name="q25" value="2"> Không phải là thể loại chính của thi ca Hê-bơ-rơ</label>
@@ -639,7 +639,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2,3" data-type="checkbox" data-id="q26">
-                <div class="question-title">Câu 26: NỘI DUNG DẠY DỖ CỦA CÁC SÁCH THƠ VĂN LÀ: </div>
+                <div class="question-title">Câu 26: NỘI DUNG DẠY DỖ CỦA CÁC SÁCH THƠ VĂN LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q26')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q26" value="1"> Sách Gióp: dạy cho chúng ta rằng những sự hoạn nạn và đau đớn luôn luôn để dùng trừng phạt.</label>
                 <label><input type="checkbox" name="q26" value="2"> Sách Châm-ngôn: dạy về bốn bổn phận của chúng ta với Đức Chúa Trời, người lân cận, cha mẹ, con cái và xứ sở.</label>
@@ -648,7 +648,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q27">
-                <div class="question-title">Câu 27: THI-THIÊN ĐÃ TRỞ THÀNH MỘT TRONG NHỮNG SÁCH PHỔ THÔNG NHẤT VÀ ĐƯỢC YÊU CHUỘNG NHẤT TRONG CỰU ƯỚC TỪ: </div>
+                <div class="question-title">Câu 27: THI-THIÊN ĐÃ TRỞ THÀNH MỘT TRONG NHỮNG SÁCH PHỔ THÔNG NHẤT VÀ ĐƯỢC YÊU CHUỘNG NHẤT TRONG CỰU ƯỚC TỪ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q27')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q27" value="1"> Hơn 2000 năm, bắt đầu từ thời Sa-lô-môn, dân Y-sơ-ra-ên đã dùng những bài hát này trong sự thờ phượng Đức Chúa Trời của họ.</label>
                 <label><input type="checkbox" name="q27" value="2"> Hơn 2000 năm, bắt đầu từ thời Đa-vít, dân Y-sơ-ra-ên đã dùng những bài hát này trong sự thờ phượng Đức Chúa Trời của họ.</label>
@@ -656,7 +656,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2" data-type="checkbox" data-id="q28">
-                <div class="question-title">Câu 28: NHÃ CA LÀ: </div>
+                <div class="question-title">Câu 28: NHÃ CA LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q28')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q28" value="1"> Một bức tranh vẽ mối quan hệ giữa Đức Chúa Trời và dân Y-sơ-ra-ên của Ngài.</label>
                 <label><input type="checkbox" name="q28" value="2"> Sách được đọc mỗi năm vào ngày lễ vượt qua.</label>
@@ -665,7 +665,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q29">
-                <div class="question-title">Câu 29: NGUYÊN NHÂN CỦA SỰ PHÂN CHIA VƯƠNG QUỐC LÀ: </div>
+                <div class="question-title">Câu 29: NGUYÊN NHÂN CỦA SỰ PHÂN CHIA VƯƠNG QUỐC LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q29')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q29" value="1"> Sự không vâng lời của vua Sau-lơ. Thái độ của Rô-bô-am và Lòng ganh tỵ của chi phái.</label>
                 <label><input type="checkbox" name="q29" value="2"> Sự thờ hình tượng của Sa-lô-môn. Thái độ của Rô-bô-am và Lòng ganh tỵ của chi phái.</label>
@@ -673,7 +673,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2" data-type="checkbox" data-id="q30">
-                <div class="question-title">Câu 30: VƯƠNG QUỐC PHÍA BẮC ĐƯỢC MÔ TẢ: </div>
+                <div class="question-title">Câu 30: VƯƠNG QUỐC PHÍA BẮC ĐƯỢC MÔ TẢ: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q30')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q30" value="1"> Có 10 chi phái mạnh.</label>
                 <label><input type="checkbox" name="q30" value="2"> Có thung lũng Giô Đanh màu mỡ.</label>
@@ -682,7 +682,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q31">
-                <div class="question-title">Câu 31: CÁC VUA CỦA Y-SƠ-RA-ÊN VÀ GIU-ĐA: </div>
+                <div class="question-title">Câu 31: CÁC VUA CỦA Y-SƠ-RA-ÊN VÀ GIU-ĐA: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q31')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q31" value="1"> Trong vương quốc phía Bắc, vua Rô-bô-am đã dựng lên sự thờ phượng con bò vàng. Ông làm hư đi quốc gia và sau cùng dẫn đến sự hủy hoại nó</label>
                 <label><input type="checkbox" name="q31" value="2"> Trong vương quốc phía Nam Rô-bô-am cho phép dân Y-sơ-ra-ên xây dựng những nơi đễ thờ phượng những thần giả dối. Họ theo sự tập tành đồi bại của dân mà Đức Chúa Trời đã truyền cho họ đuổi ra khỏi xứ Phi-li-tin</label>
@@ -690,7 +690,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q32">
-                <div class="question-title">Câu 32: CÁC TIÊN TRI THỜI HAI VƯƠNG QUỐC: </div>
+                <div class="question-title">Câu 32: CÁC TIÊN TRI THỜI HAI VƯƠNG QUỐC: (5 Điểm)  </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q32')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q32" value="1"> Là người thừa kế vị trí của mình như vua hay thầy tế lễ.</label>
                 <label><input type="checkbox" name="q32" value="2"> Một tiên tri có 2 trách nhiệm chính: tiếp nhận những điều từ Đức Chúa Trời và cầu thay.</label>
@@ -699,7 +699,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2,4" data-type="checkbox" data-id="q33">
-                <div class="question-title">Câu 33: MÔ TẢ VỀ SỰ SỤP ĐỔ CỦA VƯƠNG QUỐC PHÍA BẮC: </div>
+                <div class="question-title">Câu 33: MÔ TẢ VỀ SỰ SỤP ĐỔ CỦA VƯƠNG QUỐC PHÍA BẮC: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q33')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q33" value="1"> Họ từ bỏ sứ điệp của các tiên tri.</label>
                 <label><input type="checkbox" name="q33" value="2"> Tội lỗi lặp đi lặp lại của họ và sự bội nghịch mang đến sự đoán phạt.</label>
@@ -709,7 +709,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q34">
-                <div class="question-title">Câu 34: NHỮNG TIÊN TRI TRONG THỜI SỤP ĐỔ CỦA VƯƠNG QUỐC PHÍA NAM LÀ: </div>
+                <div class="question-title">Câu 34: NHỮNG TIÊN TRI TRONG THỜI SỤP ĐỔ CỦA VƯƠNG QUỐC PHÍA NAM LÀ: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q34')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q34" value="1"> Ê-sai, Giê-rê-mi, Na-hum, Ha-ba-cúc và A-ghê</label>
                 <label><input type="checkbox" name="q34" value="2"> Ê-sai, Xa-cha-ri Na-hum, Ha-ba-cúc và Sô-phô-ni</label>
@@ -718,7 +718,7 @@
             </div>
 
             <div class="question-block" data-correct-index="2" data-type="checkbox" data-id="q35">
-                <div class="question-title">Câu 35: CÓ 4 VĂN PHẨM CHÍNH TRONG CỰU ƯỚC GẮN BÓ GẦN GŨI VỚI NHỮNG NĂM PHU TÙ Ở BA-BY-LÔN: </div>
+                <div class="question-title">Câu 35: CÓ 4 VĂN PHẨM CHÍNH TRONG CỰU ƯỚC GẮN BÓ GẦN GŨI VỚI NHỮNG NĂM PHU TÙ Ở BA-BY-LÔN: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q35')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q35" value="1"> Ê-xơ-tê, Gióp, Ê-xê-chi-ên và Đa-ni-ên.</label>
                 <label><input type="checkbox" name="q35" value="2"> Ê-xơ-tê, Giê-rê-mi, Ê-xê-chi-ên và Đa-ni-ên.</label>
@@ -727,7 +727,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2,4" data-type="checkbox" data-id="q36">
-                <div class="question-title">Câu 36: KẾT QUẢ CỦA SỰ LƯU ĐÀY: </div>
+                <div class="question-title">Câu 36: KẾT QUẢ CỦA SỰ LƯU ĐÀY: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q36')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q36" value="1"> Sự tinh sạch khỏi thần tượng.</label>
                 <label><input type="checkbox" name="q36" value="2"> Một hình thức mới về sự thờ phượng.</label>
@@ -739,7 +739,7 @@
             </div>
 
             <div class="question-block" data-correct-index="1,2" data-type="checkbox" data-id="q37">
-                <div class="question-title">Câu 37: MỤC TIÊU CỦA SỰ KHÔI PHỤC: </div>
+                <div class="question-title">Câu 37: MỤC TIÊU CỦA SỰ KHÔI PHỤC: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q37')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q37" value="1"> Đức Chúa Trời giữ giao ước với Áp-ra-ham và Đa-vít</label>
                 <label><input type="checkbox" name="q37" value="2"> Những thế lực phương Đông sẽ suy sụp.</label>
@@ -748,7 +748,7 @@
             </div>
 
             <div class="question-block" data-correct-index="3" data-type="checkbox" data-id="q38">
-                <div class="question-title">Câu 38: HÀNH TRÌNH KHÔI PHỤC CHIA RA LÀM: </div>
+                <div class="question-title">Câu 38: HÀNH TRÌNH KHÔI PHỤC CHIA RA LÀM: (5 Điểm) </div>
 				<button class="check-button" type="button" onclick="checkAnswer('q38')">Kiểm tra đáp án</button>
                 <label><input type="checkbox" name="q38" value="1"> Bốn thời kỳ do Xô-rô-ba bên, Ê-xơ-ra, A-ghê và Nê-hê-mi làm lãnh đạo.</label>
                 <label><input type="checkbox" name="q38" value="2"> Hai thời kỳ do Xô-rô-ba bên, và Nê-hê-mi làm lãnh đạo.</label>
@@ -775,8 +775,7 @@
         const questionBlocks = document.querySelectorAll('.question-block');
         const totalQuestions = questionBlocks.length;
         
-        // Lấy các phần tử điều khiển
-        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        // Lấy các phần tử điều khiển (toggleExplanationBtn đã bị xóa khỏi khai báo)
         const checkAllBtn = document.getElementById('check-all-btn');
         const resetBtn = document.getElementById('reset-btn');
         
@@ -784,7 +783,7 @@
         const scoreMessage = document.getElementById('score-message');
         const doneCountMessage = document.getElementById('done-count-message');
         
-        // Hàm tính điểm (Logic Tính điểm một phần giữ nguyên)
+        // Hàm tính điểm (Giữ nguyên)
         function calculateCurrentScoreAndDone() {
             let doneQuestions = 0;
             let currentScore = 0;
@@ -827,32 +826,41 @@
             return { done: doneQuestions, score: parseFloat(currentScore.toFixed(2)) };
         }
 
-        // Hàm cập nhật hiển thị số câu đã làm và điểm (Đã FIX để luôn hiển thị text)
+        // Hàm cập nhật hiển thị số câu đã làm và điểm (Giữ nguyên)
         function updateDisplay() {
             const { done, score } = calculateCurrentScoreAndDone();
             doneCountMessage.textContent = `Đã làm: ${done}/${totalQuestions} câu`;
             scoreMessage.textContent = `Tổng điểm: ${score.toFixed(2)} điểm`;
             
-            // Đảm bảo hiển thị (loại bỏ logic ẩn)
             scoreMessage.style.display = 'inline'; 
             doneCountMessage.style.display = 'inline';
         }
 
-        // --- Khởi tạo và Lắng nghe sự kiện ---
-        updateDisplay(); // Chạy lần đầu để hiển thị 0/X
-        quizForm.addEventListener('change', updateDisplay);
+        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị/Ẩn Giải thích (Giữ nguyên logic Toggle)
+        function checkAnswerAndToggle(qid, correctIndices, block) {
+            const explanation = block.querySelector('.explanation');
+            const checkButton = block.querySelector('.check-button');
+            const feedbackDiv = block.querySelector('.feedback-message');
 
-        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị thông báo phản hồi (Giữ nguyên)
-        function checkAnswer(qid, correctIndices, block) {
+            // 1. Nếu đã kiểm tra (giải thích đang hiện hoặc đang ẩn sau khi kiểm tra)
+            if (block.hasAttribute('data-checked')) {
+                // Đảo trạng thái hiển thị
+                const isVisible = explanation.style.display === 'block';
+                explanation.style.display = isVisible ? 'none' : 'block';
+                checkButton.textContent = isVisible ? 'Hiện Giải thích' : 'Ẩn Giải thích';
+                return; // Kết thúc hàm
+            }
+
+            // 2. Lần kiểm tra đầu tiên (Thực hiện kiểm tra đầy đủ)
+            block.setAttribute('data-checked', 'true'); // Đánh dấu câu đã được kiểm tra
+            
             block.classList.remove('correct', 'incorrect', 'partial');
             const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
             const selectedIndices = Array.from(selectedInputs).map(input => input.value);
-            const feedbackDiv = block.querySelector('.feedback-message');
-            const explanation = block.querySelector('.explanation');
-
+            
             let feedbackMessage = '';
             
-            // LOGIC LƯU VÀ HIỂN THỊ ĐÁP ÁN ĐÚNG TRONG GIẢI THÍCH (Giữ nguyên)
+            // LOGIC LƯU VÀ HIỂN THỊ ĐÁP ÁN ĐÚNG TRONG GIẢI THÍCH 
             if (explanation) {
                 let originalContent = explanation.getAttribute('data-original-content');
                 if (!originalContent) {
@@ -861,15 +869,14 @@
                 }
                 
                 const correctIndicesDisplay = correctIndices.join(', ');
-                let newExplanationContent = originalContent;
                 
-                const answerLine = `<p style="font-style: normal; font-weight: bold; color: var(--primary-color); margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">✅ Đáp án đúng là các lựa chọn số: ${correctIndicesDisplay}.</p>`;
-                newExplanationContent = answerLine + originalContent;
-                
-                explanation.innerHTML = newExplanationContent;
+                if (!originalContent.includes('✅ Đáp án đúng')) {
+                    const answerLine = `<p style="font-style: normal; font-weight: bold; color: var(--primary-color); margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">✅ Đáp án đúng là các lựa chọn số: ${correctIndicesDisplay}.</p>`;
+                    explanation.innerHTML = answerLine + originalContent;
+                }
             }
             
-            // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI (Giữ nguyên)
+            // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI 
             if (selectedIndices.length > 0) {
                 const totalCorrectAnswers = correctIndices.length;
                 let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
@@ -900,10 +907,17 @@
                 feedbackDiv.innerHTML = feedbackMessage;
                 feedbackDiv.style.display = 'block';
             }
+            
+            // Hiển thị giải thích sau lần kiểm tra đầu tiên
             if (explanation) explanation.style.display = 'block';
+            checkButton.textContent = 'Ẩn Giải thích';
         }
 
-        // Gán lại hàm checkAnswer cho các nút cá nhân (Giữ nguyên)
+        // --- Khởi tạo và Lắng nghe sự kiện ---
+        updateDisplay(); 
+        quizForm.addEventListener('change', updateDisplay);
+
+        // Gán hàm checkAnswerAndToggle cho các nút cá nhân
         questionBlocks.forEach(block => {
             if (!block.querySelector('.feedback-message')) {
                 const feedbackDiv = document.createElement('div');
@@ -918,20 +932,31 @@
             
             if (checkButton) {
                 checkButton.onclick = function() {
-                    checkAnswer(qid, correctIndices, block);
+                    checkAnswerAndToggle(qid, correctIndices, block);
                     updateDisplay();
                 };
             }
         });
 
-        // 1. Nút Kiểm tra TOÀN BỘ đáp án
+        // 1. Nút Kiểm tra TOÀN BỘ đáp án (Giữ nguyên)
         checkAllBtn.addEventListener('click', function() {
             questionBlocks.forEach(block => {
                 const qid = block.getAttribute('data-id');
                 const correctIndicesStr = block.getAttribute('data-correct-index');
                 const correctIndices = correctIndicesStr ? correctIndicesStr.split(',').map(s => s.trim()) : [];
                 
-                checkAnswer(qid, correctIndices, block);
+                // Buộc thực hiện kiểm tra đầy đủ (lần đầu) để đảm bảo có kết quả và giải thích hiện
+                if (!block.hasAttribute('data-checked')) {
+                    checkAnswerAndToggle(qid, correctIndices, block);
+                } else {
+                    // Nếu đã kiểm tra, chỉ đảm bảo giải thích hiện
+                    const explanation = block.querySelector('.explanation');
+                    if (explanation) explanation.style.display = 'block';
+                }
+                
+                // Đặt tên nút cá nhân lại thành "Ẩn Giải thích"
+                const checkButton = block.querySelector('.check-button');
+                if (checkButton) checkButton.textContent = 'Ẩn Giải thích';
             });
 
             const { score } = calculateCurrentScoreAndDone();
@@ -940,7 +965,6 @@
             const checkAllBtnText = `Kết quả: Đạt ${score.toFixed(2)} / ${maxPossibleScore.toFixed(2)} điểm`;
             checkAllBtn.textContent = checkAllBtnText;
             
-            // Đảm bảo hiển thị kết quả cuối cùng
             updateDisplay();
         });
 
@@ -950,13 +974,14 @@
                 quizForm.reset();
                 questionBlocks.forEach(block => {
                     block.classList.remove('correct', 'incorrect', 'partial');
+                    block.removeAttribute('data-checked'); // Xóa trạng thái đã kiểm tra
                     
                     const explanation = block.querySelector('.explanation');
                     if (explanation) {
-                        explanation.style.display = 'none';
+                        explanation.style.display = 'none'; 
                         let originalContent = explanation.getAttribute('data-original-content');
                         if (originalContent) {
-                            explanation.innerHTML = originalContent;
+                            explanation.innerHTML = originalContent; 
                         }
                     }
 
@@ -964,34 +989,20 @@
                     if (feedbackDiv) feedbackDiv.style.display = 'none';
 
                     const checkButton = block.querySelector('.check-button');
-                    if (checkButton) checkButton.textContent = 'Kiểm tra đáp án';
+                    if (checkButton) checkButton.textContent = 'Kiểm tra đáp án'; // Đặt lại tên nút
                 });
 
-                // Đặt lại nút và hiển thị 0/X
                 if(checkAllBtn) checkAllBtn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
-                
-                updateDisplay(); // Đặt lại về Tổng điểm: 0.00 điểm và Đã làm: 0/X câu
+
+                updateDisplay(); 
             });
         }
-
-        // 3. Nút Ẩn/Hiện Giải thích (Giữ nguyên)
-        if (toggleExplanationBtn) {
-            toggleExplanationBtn.addEventListener('click', function() {
-                const explanationVisible = questionBlocks[0].querySelector('.explanation').style.display === 'block';
-
-                questionBlocks.forEach(block => {
-                    block.querySelector('.explanation').style.display = explanationVisible ? 'none' : 'block';
-                });
-
-                toggleExplanationBtn.textContent = explanationVisible ? 'Hiện Giải thích' : 'Ẩn Giải thích';
-            });
-        }
+        
+        // Logic cho Nút Ẩn/Hiện Giải thích toàn cục đã được xóa bỏ
     });
 </script>
 </body>
 </html>
-
-
 
 
 
