@@ -13,7 +13,7 @@
         --text-dark: #333;
         --success-color: #28a745;
         --error-color: #dc3545;
-        --check-all-color: #007bff; /* Xanh dương sáng hơn cho nút Check All (trên Header) */
+        --check-all-color: #ff9900; /* Xanh dương sáng hơn cho nút Check All (trên Header) */
         --header-bg-color: #f8f9fa; /* Nền header trắng sáng */
         --header-text-color: var(--primary-color); /* Chữ header màu xanh chủ đạo */
     }
@@ -77,7 +77,7 @@
         font-weight: 600;
     }
     #check-all-btn:hover {
-        background-color: #0056b3 !important; 
+        background-color: #FF3333 !important; 
         box-shadow: 0 0 12px rgba(0, 123, 255, 0.7);
     }
 
@@ -216,25 +216,143 @@
     color: var(--error-color); /* Chữ đỏ */
     border: 1px solid #f5c6cb;
 }
+/* Tối ưu hiển thị thanh điều khiển */
+#control-bar {
+    flex-direction: column; /* Chuyển sang cột trên Mobile */
+    align-items: flex-start; /* Căn lề trái khi ở dạng cột */
+    padding: 10px 20px;
+}
 
+.control-container {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các nút xuống dòng */
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+#control-bar button {
+    margin: 5px; /* Tăng khoảng cách giữa các nút */
+    flex-grow: 1; /* Cho phép nút mở rộng trên hàng ngang */
+}
+
+.result-display-container {
+    padding: 5px 0;
+    width: 100%;
+    text-align: left; /* Căn lề trái cho điểm số */
+}
+
+/* -------------------------------------------------------------------------- */
+/* MEDIA QUERY: ÁP DỤNG KHI MÀN HÌNH NHỎ HƠN 768px (Mobile) */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Giảm padding tổng thể */
+        padding-top: 130px; /* Tăng padding trên để chứa thanh điều khiển lớn hơn */
+    }
+    
+    #control-bar {
+        /* Đảm bảo thanh điều khiển cố định ở trên cùng */
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        min-height: auto;
+    }
+    
+    .control-container {
+        flex-direction: column; /* Buộc các nút xuống thành 1 cột */
+        width: 100%;
+    }
+
+    #control-bar button {
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+        margin: 4px 0; /* Khoảng cách giữa các nút */
+    }
+
+    .result-display-container {
+        text-align: center; /* Căn giữa điểm số trên mobile */
+        font-size: 1.1em;
+        padding-top: 10px;
+        border-top: 1px dashed #ccc; /* Thêm đường kẻ phân cách */
+    }
+}
+/* Khôi phục và tinh chỉnh cơ bản cho #control-bar */
+#control-bar {
+    /* Đảm bảo flex-direction MẶC ĐỊNH là ngang (row) */
+    flex-direction: row; 
+    justify-content: center; /* Giữ nội dung chính giữa (như ban đầu) */
+    align-items: center; 
+    padding: 10px 20px;
+    min-height: 60px; 
+}
+
+.control-container {
+    display: flex;
+    flex-wrap: nowrap; /* Buộc các nút nằm trên 1 hàng (trên Desktop) */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0; /* Xóa margin dưới */
+}
+
+#control-bar button {
+    margin: 0 5px; /* Giữ margin ngang truyền thống trên desktop */
+    flex-grow: 0; /* Không cho nút mở rộng trên Desktop */
+}
+
+.result-display-container {
+    padding: 0 15px; /* Khoảng cách vừa phải trên desktop */
+    text-align: right;
+    width: auto;
+}
+
+/* -------------------------------------------------------------------------- */
+/* MEDIA QUERY: ÁP DỤNG KHI MÀN HÌNH NHỎ HƠN 768px (Mobile) */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; 
+        padding-top: 130px; /* Vùng an toàn cho thanh điều khiển cố định */
+    }
+    
+    #control-bar {
+        flex-direction: column; /* Chuyển sang cột trên Mobile */
+        align-items: flex-start; 
+        min-height: auto;
+    }
+    
+    .control-container {
+        flex-direction: column; /* Buộc các nút xuống thành 1 cột */
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #control-bar button {
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+        margin: 4px 0; /* Khoảng cách giữa các nút */
+    }
+
+    .result-display-container {
+        text-align: center; /* Căn giữa điểm số trên mobile */
+        font-size: 1.1em;
+        padding: 10px 0;
+        border-top: 1px dashed #ccc; /* Thêm đường kẻ phân cách */
+    }
+}
 </style>
 </head>
 <body>
 
-  <div id="control-bar">
+<div id="control-bar">
     <div class="control-container">
-        <button id="toggle-explanation-btn" class="control-button check-all-btn">Hiện/Ẩn Giải thích</button>
-        
-        <button id="toggle-score-btn" class="control-button">Hiện Điểm Đã Làm</button>
-        
-        <button id="check-all-btn" class="control-button check-all-btn">Kiểm tra TOÀN BỘ đáp án</button>
-
+        <button id="toggle-explanation-btn" class="control-button">Hiện Giải thích</button>
         <button id="reset-btn" class="control-button">Làm lại bài tập</button>
+        <button id="check-all-btn" class="control-button check-all-btn">Kiểm tra TOÀN BỘ đáp án</button>
     </div>
     <div class="result-display-container">
-        <span id="score-message" style="display: none; font-weight: bold; color: var(--accent-color); margin-right: 15px;">Tổng điểm: 0</span>
-        <span id="done-count-message" style="display: none; font-weight: bold; color: var(--primary-color);">Đã làm: 0/34 câu</span>
-    </div>
+    <span id="score-message" style="font-weight: bold; color: var(--accent-color); margin-right: 15px;">Tổng điểm: 0.00 điểm</span>
+    <span id="done-count-message" style="font-weight: bold; color: var(--primary-color);">Đã làm: 0/0 câu</span>
+</div>
+</div>
 </div>
     <div class="container">
         <h1>📄 Bài Kiểm Tra | Lều Tạm - Đền Tạm và Cung Điện</h1>
@@ -651,7 +769,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Hằng số Điểm & Tỷ lệ phạt
         const POINTS_PER_QUESTION = 5;
-        const PENALTY_FACTOR = 1; // Chọn sai 1 đáp án bị trừ điểm tương ứng 1 lựa chọn đúng
+        const PENALTY_FACTOR = 1; 
         
         const quizForm = document.getElementById('quiz-form');
         const questionBlocks = document.querySelectorAll('.question-block');
@@ -659,7 +777,6 @@
         
         // Lấy các phần tử điều khiển
         const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
-        const toggleScoreBtn = document.getElementById('toggle-score-btn');
         const checkAllBtn = document.getElementById('check-all-btn');
         const resetBtn = document.getElementById('reset-btn');
         
@@ -667,7 +784,7 @@
         const scoreMessage = document.getElementById('score-message');
         const doneCountMessage = document.getElementById('done-count-message');
         
-        // Hàm tính điểm (Logic MỚI: Tính điểm một phần)
+        // Hàm tính điểm (Logic Tính điểm một phần giữ nguyên)
         function calculateCurrentScoreAndDone() {
             let doneQuestions = 0;
             let currentScore = 0;
@@ -710,18 +827,22 @@
             return { done: doneQuestions, score: parseFloat(currentScore.toFixed(2)) };
         }
 
-        // Hàm cập nhật hiển thị số câu đã làm và điểm
+        // Hàm cập nhật hiển thị số câu đã làm và điểm (Đã FIX để luôn hiển thị text)
         function updateDisplay() {
             const { done, score } = calculateCurrentScoreAndDone();
-            doneCountMessage.textContent = `Đã làm: ${done}/${totalQuestions} câu.`;
-            scoreMessage.textContent = `Tổng điểm: ${score} điểm.`;
+            doneCountMessage.textContent = `Đã làm: ${done}/${totalQuestions} câu`;
+            scoreMessage.textContent = `Tổng điểm: ${score.toFixed(2)} điểm`;
+            
+            // Đảm bảo hiển thị (loại bỏ logic ẩn)
+            scoreMessage.style.display = 'inline'; 
+            doneCountMessage.style.display = 'inline';
         }
 
         // --- Khởi tạo và Lắng nghe sự kiện ---
-        updateDisplay();
+        updateDisplay(); // Chạy lần đầu để hiển thị 0/X
         quizForm.addEventListener('change', updateDisplay);
 
-        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị thông báo phản hồi
+        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị thông báo phản hồi (Giữ nguyên)
         function checkAnswer(qid, correctIndices, block) {
             block.classList.remove('correct', 'incorrect', 'partial');
             const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
@@ -731,30 +852,24 @@
 
             let feedbackMessage = '';
             
-            // LOGIC LƯU VÀ HIỂN THỊ ĐÁP ÁN ĐÚNG TRONG GIẢI THÍCH
+            // LOGIC LƯU VÀ HIỂN THỊ ĐÁP ÁN ĐÚNG TRONG GIẢI THÍCH (Giữ nguyên)
             if (explanation) {
-                // 1. Đảm bảo đã lưu nội dung giải thích gốc
                 let originalContent = explanation.getAttribute('data-original-content');
                 if (!originalContent) {
                     originalContent = explanation.innerHTML;
                     explanation.setAttribute('data-original-content', originalContent);
                 }
                 
-                // 2. Tạo chuỗi đáp án đúng
                 const correctIndicesDisplay = correctIndices.join(', ');
-                
-                // Chuẩn bị nội dung giải thích (Luôn lấy lại nội dung gốc)
                 let newExplanationContent = originalContent;
                 
-                // Chèn dòng đáp án đúng vào trước nội dung gốc
                 const answerLine = `<p style="font-style: normal; font-weight: bold; color: var(--primary-color); margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">✅ Đáp án đúng là các lựa chọn số: ${correctIndicesDisplay}.</p>`;
                 newExplanationContent = answerLine + originalContent;
                 
-                // Cập nhật nội dung
                 explanation.innerHTML = newExplanationContent;
             }
             
-            // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI (GIỮ NGUYÊN)
+            // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI (Giữ nguyên)
             if (selectedIndices.length > 0) {
                 const totalCorrectAnswers = correctIndices.length;
                 let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
@@ -762,12 +877,10 @@
                 
                 const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
 
-                // Tình trạng 1: HOÀN HẢO
                 if (correctSelections === totalCorrectAnswers && incorrectSelections === 0) {
                     block.classList.add('correct');
                     feedbackMessage = '✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. (Đạt 5.00 điểm)';
                 
-                // Tình trạng 2: ĐÚNG MỘT PHẦN
                 } else if (grossScore > 0) {
                     block.classList.add('partial');
                     const scoreRatio = grossScore / totalCorrectAnswers;
@@ -775,7 +888,6 @@
 
                     feedbackMessage = `⚠️ Đáp án đúng một phần. (${correctSelections} đáp án đúng và ${incorrectSelections} đáp án sai). Đạt ${questionScore} điểm.`;
 
-                // Tình trạng 3: SAI
                 } else {
                     block.classList.add('incorrect');
                     feedbackMessage = '❌ Câu trả lời chưa chính xác. Vui lòng xem lại phần giải thích.';
@@ -791,9 +903,8 @@
             if (explanation) explanation.style.display = 'block';
         }
 
-        // Gán lại hàm checkAnswer cho các nút cá nhân
+        // Gán lại hàm checkAnswer cho các nút cá nhân (Giữ nguyên)
         questionBlocks.forEach(block => {
-            // Thêm thẻ feedback-message nếu chưa có
             if (!block.querySelector('.feedback-message')) {
                 const feedbackDiv = document.createElement('div');
                 feedbackDiv.className = 'feedback-message';
@@ -826,37 +937,14 @@
             const { score } = calculateCurrentScoreAndDone();
             const maxPossibleScore = totalQuestions * POINTS_PER_QUESTION;
 
-            const checkAllBtnText = `Kết quả: Đạt ${score} / ${maxPossibleScore} điểm`;
+            const checkAllBtnText = `Kết quả: Đạt ${score.toFixed(2)} / ${maxPossibleScore.toFixed(2)} điểm`;
             checkAllBtn.textContent = checkAllBtnText;
             
-            scoreMessage.style.display = 'inline';
-            doneCountMessage.style.display = 'inline';
-            toggleScoreBtn.textContent = 'Ẩn Điểm Đã Làm';
+            // Đảm bảo hiển thị kết quả cuối cùng
+            updateDisplay();
         });
 
-        // 2. Nút Hiện Điểm Đã Làm (Logic giữ nguyên)
-        if (toggleScoreBtn) {
-            toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
-            scoreMessage.style.display = 'none';
-            doneCountMessage.style.display = 'none';
-            
-            toggleScoreBtn.addEventListener('click', function() {
-                const scoreVisible = scoreMessage.style.display !== 'none';
-                
-                if (!scoreVisible) {
-                    scoreMessage.style.display = 'inline';
-                    doneCountMessage.style.display = 'inline';
-                    toggleScoreBtn.textContent = 'Ẩn Điểm Đã Làm';
-                } else {
-                    scoreMessage.style.display = 'none';
-                    doneCountMessage.style.display = 'none';
-                    toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
-                }
-                updateDisplay();
-            });
-        }
-        
-        // 3. Nút Làm lại bài tập (KHÔI PHỤC NỘI DUNG GỐC)
+        // 2. Nút Làm lại bài tập (KHÔI PHỤC NỘI DUNG GỐC)
         if (resetBtn) {
             resetBtn.addEventListener('click', function() {
                 quizForm.reset();
@@ -866,7 +954,6 @@
                     const explanation = block.querySelector('.explanation');
                     if (explanation) {
                         explanation.style.display = 'none';
-                        // KHÔI PHỤC NỘI DUNG GỐC TỪ DATA ATTRIBUTE
                         let originalContent = explanation.getAttribute('data-original-content');
                         if (originalContent) {
                             explanation.innerHTML = originalContent;
@@ -874,21 +961,20 @@
                     }
 
                     const feedbackDiv = block.querySelector('.feedback-message');
-                    if (feedbackDiv) feedbackDiv.style.display = 'none'; // Ẩn feedback
+                    if (feedbackDiv) feedbackDiv.style.display = 'none';
 
                     const checkButton = block.querySelector('.check-button');
                     if (checkButton) checkButton.textContent = 'Kiểm tra đáp án';
                 });
 
-                scoreMessage.style.display = 'none';
-                doneCountMessage.style.display = 'none';
+                // Đặt lại nút và hiển thị 0/X
                 if(checkAllBtn) checkAllBtn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
-                if(toggleScoreBtn) toggleScoreBtn.textContent = 'Hiện Điểm Đã Làm';
-                updateDisplay();
+                
+                updateDisplay(); // Đặt lại về Tổng điểm: 0.00 điểm và Đã làm: 0/X câu
             });
         }
 
-        // 4. Nút Ẩn/Hiện Giải thích (Giữ nguyên)
+        // 3. Nút Ẩn/Hiện Giải thích (Giữ nguyên)
         if (toggleExplanationBtn) {
             toggleExplanationBtn.addEventListener('click', function() {
                 const explanationVisible = questionBlocks[0].querySelector('.explanation').style.display === 'block';
