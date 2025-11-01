@@ -775,7 +775,7 @@
         const questionBlocks = document.querySelectorAll('.question-block');
         const totalQuestions = questionBlocks.length;
         
-        // Lấy các phần tử điều khiển (toggleExplanationBtn đã bị xóa khỏi khai báo)
+        // Lấy các phần tử điều khiển
         const checkAllBtn = document.getElementById('check-all-btn');
         const resetBtn = document.getElementById('reset-btn');
         
@@ -836,27 +836,46 @@
             doneCountMessage.style.display = 'inline';
         }
 
-        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị/Ẩn Giải thích (Giữ nguyên logic Toggle)
+        // Hàm kiểm tra đáp án cá nhân VÀ Hiển thị/Ẩn Giải thích (LOGIC ĐÃ SỬA)
         function checkAnswerAndToggle(qid, correctIndices, block) {
             const explanation = block.querySelector('.explanation');
             const checkButton = block.querySelector('.check-button');
             const feedbackDiv = block.querySelector('.feedback-message');
+            const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
+            const selectedIndices = Array.from(selectedInputs).map(input => input.value);
 
-            // 1. Nếu đã kiểm tra (giải thích đang hiện hoặc đang ẩn sau khi kiểm tra)
+            // 1. Xử lý trường hợp CHƯA CHỌN ĐÁP ÁN nào khi bấm Kiểm tra lần đầu
+            if (selectedIndices.length === 0) {
+                // Nếu đã từng kiểm tra trước đó (và đã có feedback/giải thích) thì xóa bỏ trạng thái.
+                if (block.hasAttribute('data-checked')) {
+                    // Cần reset nhẹ để đảm bảo màu sắc và giải thích ẩn
+                    block.classList.remove('correct', 'incorrect', 'partial');
+                    block.removeAttribute('data-checked');
+                    if (explanation) explanation.style.display = 'none';
+                }
+                
+                // Hiện thông báo yêu cầu chọn đáp án
+                feedbackDiv.innerHTML = '🚫 Bạn chưa chọn đáp án nào.';
+                feedbackDiv.style.display = 'block';
+                checkButton.textContent = 'Kiểm tra đáp án'; // Đảm bảo tên nút đúng
+                return; // Ngừng thực hiện các bước khác
+            }
+            
+            // 2. Nếu đã kiểm tra và đã có đáp án được chọn (toggle mode)
             if (block.hasAttribute('data-checked')) {
                 // Đảo trạng thái hiển thị
                 const isVisible = explanation.style.display === 'block';
                 explanation.style.display = isVisible ? 'none' : 'block';
                 checkButton.textContent = isVisible ? 'Hiện Giải thích' : 'Ẩn Giải thích';
-                return; // Kết thúc hàm
+                // Đảm bảo ẩn thông báo "Bạn chưa chọn đáp án nào." nếu nó đang hiện
+                if (feedbackDiv) feedbackDiv.style.display = 'none'; 
+                return; 
             }
 
-            // 2. Lần kiểm tra đầu tiên (Thực hiện kiểm tra đầy đủ)
+            // 3. Lần kiểm tra đầu tiên có đáp án được chọn (Thực hiện kiểm tra đầy đủ)
             block.setAttribute('data-checked', 'true'); // Đánh dấu câu đã được kiểm tra
             
             block.classList.remove('correct', 'incorrect', 'partial');
-            const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
-            const selectedIndices = Array.from(selectedInputs).map(input => input.value);
             
             let feedbackMessage = '';
             
@@ -877,30 +896,26 @@
             }
             
             // LOGIC TÍNH ĐIỂM VÀ PHẢN HỒI 
-            if (selectedIndices.length > 0) {
-                const totalCorrectAnswers = correctIndices.length;
-                let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
-                let incorrectSelections = selectedIndices.filter(val => !correctIndices.includes(val)).length;
-                
-                const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
+            const totalCorrectAnswers = correctIndices.length;
+            let correctSelections = selectedIndices.filter(val => correctIndices.includes(val)).length;
+            let incorrectSelections = selectedIndices.filter(val => !correctIndices.includes(val)).length;
+            
+            const grossScore = correctSelections - (incorrectSelections * PENALTY_FACTOR);
 
-                if (correctSelections === totalCorrectAnswers && incorrectSelections === 0) {
-                    block.classList.add('correct');
-                    feedbackMessage = '✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. (Đạt 5.00 điểm)';
-                
-                } else if (grossScore > 0) {
-                    block.classList.add('partial');
-                    const scoreRatio = grossScore / totalCorrectAnswers;
-                    const questionScore = (scoreRatio * POINTS_PER_QUESTION).toFixed(2);
+            if (correctSelections === totalCorrectAnswers && incorrectSelections === 0) {
+                block.classList.add('correct');
+                feedbackMessage = '✅ Chúc mừng! Câu trả lời của bạn hoàn toàn chính xác. (Đạt 5.00 điểm)';
+            
+            } else if (grossScore > 0) {
+                block.classList.add('partial');
+                const scoreRatio = grossScore / totalCorrectAnswers;
+                const questionScore = (scoreRatio * POINTS_PER_QUESTION).toFixed(2);
 
-                    feedbackMessage = `⚠️ Đáp án đúng một phần. (${correctSelections} đáp án đúng và ${incorrectSelections} đáp án sai). Đạt ${questionScore} điểm.`;
+                feedbackMessage = `⚠️ Đáp án đúng một phần. (${correctSelections} đáp án đúng và ${incorrectSelections} đáp án sai). Đạt ${questionScore} điểm.`;
 
-                } else {
-                    block.classList.add('incorrect');
-                    feedbackMessage = '❌ Câu trả lời chưa chính xác. Vui lòng xem lại phần giải thích.';
-                }
             } else {
-                 feedbackMessage = '🚫 Bạn chưa chọn đáp án nào.';
+                block.classList.add('incorrect');
+                feedbackMessage = '❌ Câu trả lời chưa chính xác. Vui lòng xem lại phần giải thích.';
             }
 
             if (feedbackDiv) {
@@ -908,7 +923,7 @@
                 feedbackDiv.style.display = 'block';
             }
             
-            // Hiển thị giải thích sau lần kiểm tra đầu tiên
+            // Hiển thị giải thích sau lần kiểm tra đầu tiên thành công
             if (explanation) explanation.style.display = 'block';
             checkButton.textContent = 'Ẩn Giải thích';
         }
@@ -938,25 +953,24 @@
             }
         });
 
-        // 1. Nút Kiểm tra TOÀN BỘ đáp án (Giữ nguyên)
+        // 1. Nút Kiểm tra TOÀN BỘ đáp án
         checkAllBtn.addEventListener('click', function() {
             questionBlocks.forEach(block => {
                 const qid = block.getAttribute('data-id');
                 const correctIndicesStr = block.getAttribute('data-correct-index');
                 const correctIndices = correctIndicesStr ? correctIndicesStr.split(',').map(s => s.trim()) : [];
                 
-                // Buộc thực hiện kiểm tra đầy đủ (lần đầu) để đảm bảo có kết quả và giải thích hiện
-                if (!block.hasAttribute('data-checked')) {
+                const selectedInputs = block.querySelectorAll(`input[name="${qid}"]:checked`);
+                
+                // Nếu đã chọn đáp án (hoặc đã check lần đầu)
+                if (selectedInputs.length > 0 || block.hasAttribute('data-checked')) {
+                    // Dùng hàm checkAnswerAndToggle để buộc kiểm tra/hiện giải thích
                     checkAnswerAndToggle(qid, correctIndices, block);
                 } else {
-                    // Nếu đã kiểm tra, chỉ đảm bảo giải thích hiện
-                    const explanation = block.querySelector('.explanation');
-                    if (explanation) explanation.style.display = 'block';
+                    // Nếu chưa chọn đáp án, thì ẩn feedback (theo yêu cầu tối ưu ở lần trước)
+                    const feedbackDiv = block.querySelector('.feedback-message');
+                    if (feedbackDiv) feedbackDiv.style.display = 'none'; 
                 }
-                
-                // Đặt tên nút cá nhân lại thành "Ẩn Giải thích"
-                const checkButton = block.querySelector('.check-button');
-                if (checkButton) checkButton.textContent = 'Ẩn Giải thích';
             });
 
             const { score } = calculateCurrentScoreAndDone();
@@ -968,7 +982,7 @@
             updateDisplay();
         });
 
-        // 2. Nút Làm lại bài tập (KHÔI PHỤC NỘI DUNG GỐC)
+        // 2. Nút Làm lại bài tập (Giữ nguyên)
         if (resetBtn) {
             resetBtn.addEventListener('click', function() {
                 quizForm.reset();
@@ -989,7 +1003,7 @@
                     if (feedbackDiv) feedbackDiv.style.display = 'none';
 
                     const checkButton = block.querySelector('.check-button');
-                    if (checkButton) checkButton.textContent = 'Kiểm tra đáp án'; // Đặt lại tên nút
+                    if (checkButton) checkButton.textContent = 'Kiểm tra đáp án'; 
                 });
 
                 if(checkAllBtn) checkAllBtn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
@@ -998,7 +1012,24 @@
             });
         }
         
-        // Logic cho Nút Ẩn/Hiện Giải thích toàn cục đã được xóa bỏ
+        /* LOGIC: Ẩn thông báo "🚫 Bạn chưa chọn đáp án nào." khi người dùng tương tác. */
+        quizForm.addEventListener('change', function(event) {
+            const changedElement = event.target;
+            
+            if (changedElement.tagName === 'INPUT' && (changedElement.type === 'checkbox' || changedElement.type === 'radio')) {
+                const questionBlock = changedElement.closest('.question-block');
+                const feedbackDiv = questionBlock.querySelector('.feedback-message');
+
+                const selectedInputs = questionBlock.querySelectorAll(`input[name="${changedElement.name}"]:checked`);
+                
+                if (selectedInputs.length > 0) {
+                    // Nếu đã có chọn, ẩn thông báo "Bạn chưa chọn đáp án nào."
+                    if (feedbackDiv && feedbackDiv.textContent.includes('🚫 Bạn chưa chọn đáp án nào.')) {
+                        feedbackDiv.style.display = 'none'; 
+                    }
+                }
+            }
+        });
     });
 </script>
 </body>
