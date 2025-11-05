@@ -1,59 +1,173 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Môn Đồ Hóa – Trang Chính</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Môn Đồ Hóa – Danh sách bài học</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: #fafafa;
-      color: #333;
-      padding: 40px;
-      max-width: 900px;
+      background-color: #fafafa;
+      color: #222;
+      margin: 0;
+      padding: 40px 20px;
+      max-width: 1200px;
       margin: auto;
+      line-height: 1.6;
     }
+
     h1 {
-      color: #cc0000;
+      color: #b00000;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
-    ul {
-      list-style: none;
-      padding: 0;
+
+    .lesson-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
     }
-    li {
+
+    .lesson-card {
       background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
-      transition: 0.3s;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
     }
-    li:hover {
-      background: #ffecec;
-      border-color: #cc0000;
+
+    .lesson-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(176, 0, 0, 0.15);
     }
-    a {
-      text-decoration: none;
-      color: #cc0000;
-      font-weight: 600;
+
+    .lesson-img {
+      width: 100%;
+      height: 150px;
+      background-color: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid #eee;
+    }
+
+    .lesson-img img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .lesson-content {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .lesson-title {
+      color: #111;
+      font-weight: 700;
       font-size: 17px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .lesson-desc {
+      color: #444;
+      font-size: 15px;
+      flex-grow: 1;
+      margin-bottom: 20px;
+    }
+
+    .lesson-link {
+      align-self: flex-start;
+      background: #b00000;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .lesson-link:hover {
+      background: #870000;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      font-style: italic;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <h1>📖 Môn Đồ Hóa – Danh sách các bài kiểm tra </h1>
-  <ul>
-    <li><a href="CS1311-co-doc-nhan-co-trach-nhiem.html">CS1311 – Cơ Đốc Nhân Có Trách Nhiệm</a></li>
-    <li><a href="CS1312-yeu-thuong-nhu-chua.html">CS1312 – Yêu Thương Như Chúa</a></li>
-    <li><a href="CS1313-song-binh-an.html">CS1313 – Sống Bình An</a></li>
-    <li><a href="CS1314-hoc-cach-cau-nguyen.html">CS1314 – Học Cách Cầu Nguyện</a></li>
-  </ul>
+  <h1>📘 Môn Đồ Hóa – Danh sách các bài học / Bài Kiểm Tra</h1>
 
-  <p style="text-align:center; margin-top:50px;">
-    <em>© 2025 – Môn Đồ Hóa</em>
-  </p>
+  <div class="lesson-list">
+    <div class="lesson-card">
+      <div class="lesson-img">
+        <img src="http://www.truongkinhthanhtructuyen.org/upload/album-gioi-thieu/album-gioi-thieu-14052019-1642824479.png" alt="CS1311" />
+      </div>
+      <div class="lesson-content">
+        <div class="lesson-title">CS1311 – Cơ Đốc Nhân Có Trách Nhiệm</div>
+        <div class="lesson-desc">
+          Bài học về trách nhiệm của người theo Chúa trong cuộc sống hằng ngày, qua hành động và đức tin.
+        </div>
+        <a href="CS1311-co-doc-nhan-co-trach-nhiem.html" class="lesson-link">Xem bài</a>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-img">
+        <img src="https://via.placeholder.com/400x150?text=CS1312" alt="CS1312" />
+      </div>
+      <div class="lesson-content">
+        <div class="lesson-title">CS1312 – Yêu Thương Như Chúa</div>
+        <div class="lesson-desc">
+          Học cách thể hiện tình yêu thương thật lòng và sống phản chiếu tấm lòng của Đấng Christ.
+        </div>
+        <a href="CS1312-yeu-thuong-nhu-chua.html" class="lesson-link">Xem bài</a>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-img">
+        <img src="https://via.placeholder.com/400x150?text=CS1313" alt="CS1313" />
+      </div>
+      <div class="lesson-content">
+        <div class="lesson-title">CS1313 – Sống Bình An</div>
+        <div class="lesson-desc">
+          Hiểu và áp dụng sự bình an đến từ Chúa, vượt lên mọi hoàn cảnh và thử thách trong đức tin.
+        </div>
+        <a href="CS1313-song-binh-an.html" class="lesson-link">Xem bài</a>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-img">
+        <img src="https://via.placeholder.com/400x150?text=CS1314" alt="CS1314" />
+      </div>
+      <div class="lesson-content">
+        <div class="lesson-title">CS1314 – Học Cách Cầu Nguyện</div>
+        <div class="lesson-desc">
+          Tìm hiểu ý nghĩa của sự cầu nguyện và cách duy trì mối tương giao cá nhân với Đức Chúa Trời.
+        </div>
+        <a href="CS1314-hoc-cach-cau-nguyen.html" class="lesson-link">Xem bài</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 – Môn Đồ Hóa</footer>
 </body>
 </html>
-
