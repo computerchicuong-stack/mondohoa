@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra | Cơ Đốc Nhân Có Trách Nhiệm (Toàn Bộ)</title>
+<style>
+    /* CSS TỪ MẪU CỦA BẠN (cs2221-leu-tam-den-tam-cung-dien.html) */
+    :root {
+        --primary-color: #005691; 
+        --accent-color: #a00000;  
+        --background-light: #f8f9fa; 
+        --text-dark: #333;
+        --success-color: #28a745;
+        --error-color: #dc3545;
+        --check-all-color: #CC0000; 
+        --header-bg-color: #f8f9fa; 
+        --header-text-color: var(--primary-color); 
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        padding: 20px;
+        padding-top: 80px; 
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        /* ÁP DỤNG YÊU CẦU CÁ NHÂN HÓA ĐÃ LƯU */
+        border-radius: 10px; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    }
+
+    /* Thanh Điều Khiển Cố Định (Fixed Control Bar) */
+    #control-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--header-bg-color); 
+        border-bottom: 3px solid var(--primary-color); 
+        padding: 10px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        min-height: 60px; 
+    }
+    
+    #control-bar button {
+        background-color: var(--primary-color); 
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        margin: 0 5px;
+        transition: background-color 0.3s, transform 0.1s;
+        vertical-align: middle; 
+    }
+    #control-bar button:hover {
+        background-color: #0066a3; 
+        transform: translateY(-1px);
+    }
+    #control-bar button:active {
+        transform: translateY(0);
+    }
+
+    /* CSS dành riêng cho nút "Kiểm tra đáp án" (trên header) */
+    #check-all-btn {
+        background-color: var(--check-all-color) !important; 
+    }
+    
+    /* Cấu trúc câu hỏi */
+    .question-block {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        transition: box-shadow 0.3s;
+    }
+
+    /* Tiêu đề câu hỏi */
+    .question-title {
+        font-size: 1.15em;
+        font-weight: 600;
+        color: var(--primary-color); 
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #eee;
+    }
+
+    /* Danh sách câu trả lời */
+    .options-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .options-list label {
+        display: block;
+        padding: 10px;
+        margin-bottom: 8px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        display: flex;
+        align-items: center;
+        font-weight: 400; 
+    }
+
+    .options-list label:hover {
+        background-color: #f0f0f0;
+        border-color: #ccc;
+    }
+
+    .options-list input[type="radio"],
+    .options-list input[type="checkbox"] {
+        margin-right: 12px;
+        min-width: 18px; 
+        min-height: 18px; 
+    }
+
+    /* Nút kiểm tra của từng câu hỏi */
+    .check-button, .reset-question-button {
+        background-color: var(--accent-color); 
+        color: white;
+        padding: 7px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+    }
+    .check-button:hover, .reset-question-button:hover {
+        background-color: #c00000;
+    }
+    .reset-question-button {
+        background-color: #6c757d; 
+        margin-left: 10px;
+    }
+    .reset-question-button:hover {
+        background-color: #5a6268;
+    }
+
+    /* Vùng hiển thị kết quả và giải thích */
+    .feedback-message {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 500;
+        display: none; 
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    .feedback-message h4 {
+        color: var(--primary-color);
+        margin-top: 0;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+    }
+
+    .feedback-message ul {
+        margin-bottom: 0;
+    }
+    
+    .page-cite {
+        font-style: italic;
+        font-weight: 400;
+        color: #666;
+        margin-top: 10px;
+        display: block;
+        font-size: 0.9em;
+    }
+
+    /* Màu sắc cho trạng thái ĐÚNG (Correct) */
+    .question-block.correct {
+        border-color: var(--success-color);
+        background-color: #e6ffe6; 
+        box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+    }
+    .question-block.correct .feedback-message {
+        background-color: #d4edda; 
+        color: var(--success-color); 
+        border: 1px solid var(--success-color);
+    }
+
+    /* Màu sắc cho trạng thái SAI (Incorrect) */
+    .question-block.incorrect {
+        border-color: var(--error-color);
+        background-color: #ffe6e6; 
+        box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+    }
+    .question-block.incorrect .feedback-message {
+        background-color: #f8d7da; 
+        color: var(--error-color); 
+        border: 1px solid var(--error-color);
+    }
+
+    /* Màu sắc cho trạng thái Một phần đúng (Partial) */
+    .question-block.partial {
+        border-color: #ffc107; 
+        background-color: #fffbe6; 
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+    }
+    .question-block.partial .feedback-message {
+        background-color: #fff3cd; 
+        color: #856404; /* Chữ vàng đậm (tương phản tốt) */
+        border: 1px solid #ffeeba;
+    }
+
+    /* Bổ sung cho mobile */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+            padding-top: 110px; /* Tăng padding trên để chứa control bar */
+        }
+        #control-bar {
+            flex-direction: column; 
+            padding: 10px;
+        }
+        #control-bar button {
+            margin: 5px 0;
+            width: 90%; 
+        }
+        .container {
+            padding: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <div id="control-bar">
+        <h3 style="color: var(--header-text-color); margin: 0 20px; font-weight: 700; font-size: 1.2em;">Bài Kiểm Tra (47 câu)</h3>
+        <button id="check-all-btn">Kiểm tra TOÀN BỘ đáp án</button>
+        <button id="reset-btn">Thiết lập lại bài kiểm tra</button>
+    </div>
+
+    <div class="container">
+        <h1>BÀI KIỂM TRA: CƠ ĐỐC NHÂN CÓ TRÁCH NHIỆM (47 Câu)</h1>
+        <p style="font-style: italic;">(Nội dung dựa trên Bài 1, 2 và 3 trong tài liệu học CS1311)</p>
+        <hr>
+
+        <form id="quiz-form">
+            
+            <h2 style="color: var(--accent-color); margin-top: 30px;">PHẦN I: Đức Chúa Trời - Chủ Của Muôn Vật</h2>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q1">
+                <div class="question-title">1. (ĐÚNG – SAI) Đức Chúa Trời tể trị và quản lý mọi vật.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q1" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q1" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Đây là lẽ thật cơ bản của chức vụ quản gia. Đức Chúa Trời là Chủ (tể trị) và Ngài cũng là Đấng duy trì (quản lý) mọi vật hiện có.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 12.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q2">
+                <div class="question-title">2. (ĐÚNG – SAI) Bởi Đức Chúa Trời quá bận rộn với các công tác trên trời nên Ngài đã giao lại trách nhiệm cai trị trái đất cho con người.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q2" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q2" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Sự tể trị của Đức Chúa Trời là tối cao và không bị giới hạn bởi không gian hay thời gian, Ngài vẫn cai trị trên trời và đất. Con người chỉ là quản gia, không phải là chủ.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 12.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q3">
+                <div class="question-title">3. (ĐÚNG – SAI) Sự tể trị của Đức Chúa Trời không bị giới hạn bởi thời gian hay không gian.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q3" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q3" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này ĐÚNG. Quyền làm chủ của Đức Chúa Trời là quyền tối cao, không bị giới hạn bởi bất kỳ yếu tố nào, bao gồm thời gian hay không gian.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 13.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q4">
+                <div class="question-title">4. (ĐÚNG – SAI) Bất cứ khi nào con người muốn được giải cứu khỏi quyền làm chủ của Đức Chúa Trời, thì Ngài sẽ đáp ứng nguyện vọng đó của họ.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q4" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q4" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Quyền làm chủ của Đức Chúa Trời là tuyệt đối và không thể bị hủy bỏ bởi ý muốn của con người. Ngài vẫn là Chủ của mọi tạo vật.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 14.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q5">
+                <div class="question-title">5. Tình trạng của con người khi được cứu chuộc khỏi tội lỗi là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q5" value="0"> a) Không còn mắc nợ.</label>
+                    <label><input type="radio" name="q5" value="1"> b) Là người hầu việc Chúa.</label>
+                    <label><input type="radio" name="q5" value="2"> c) Là người quản gia.</label>
+                    <label><input type="radio" name="q5" value="3"> d) Là người kế tự.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Khi được cứu chuộc, Cơ đốc nhân được đặt vào địa vị người quản gia (steward) của Đức Chúa Trời, có trách nhiệm quản lý mọi khía cạnh của đời sống thay Ngài.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 39.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q6">
+                <div class="question-title">6. Quyền làm chủ của Đức Chúa Trời có nghĩa là Ngài:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q6" value="0"> a) Bị giới hạn bởi thời gian và không gian.</label>
+                    <label><input type="radio" name="q6" value="1"> b) Có quyền cai trị tối cao trên trời và đất.</label>
+                    <label><input type="radio" name="q6" value="2"> c) Quyết định mọi điều dựa trên lòng thương xót.</label>
+                    <label><input type="radio" name="q6" value="3"> d) Thờ phượng người mà Ngài đã tạo dựng.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Quyền làm chủ của Ngài là Quyền tối cao trên trời và đất. Đây là thuộc tính tối thượng của Đức Chúa Trời.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 13.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q7">
+                <div class="question-title">7. Điều sau đây là một trong những lẽ thật cơ bản của chức vụ quản gia:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q7" value="0"> a) Chúng ta có quyền sở hữu những gì chúng ta đang có.</label>
+                    <label><input type="radio" name="q7" value="1"> b) Chúng ta làm chủ cuộc đời mình.</label>
+                    <label><input type="radio" name="q7" value="2"> c) Đức Chúa Trời là Chủ của mọi vật hiện có.</label>
+                    <label><input type="radio" name="q7" value="3"> d) Chúng ta không cần phải khai trình cho bất kỳ ai.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Lẽ thật cơ bản và quan trọng nhất của chức vụ quản gia là Đức Chúa Trời là Chủ, Ngài là Đấng sở hữu mọi vật hiện có.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 12.</span>
+                </div>
+            </div>
+
+            <h2 style="color: var(--accent-color); margin-top: 30px;">PHẦN II: Con Người - Quản Gia Của Đức Chúa Trời</h2>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q8">
+                <div class="question-title">8. (ĐÚNG – SAI) Vai trò của Đức Chúa Trời với tư cách là Chủ và chúng ta với tư cách là quản gia chỉ áp dụng với của cải vật chất.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q8" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q8" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Chức vụ quản gia bao gồm mọi khía cạnh trong cuộc sống, bao gồm: đời sống, tính cách, thân thể, thời gian, khả năng, tiền bạc, gia đình, hội thánh và cộng đồng.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 39.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q9">
+                <div class="question-title">9. (ĐÚNG – SAI) Một quản gia có khả năng làm chủ các tài sản được giao phó.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q9" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q9" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Quản gia chỉ có trách nhiệm quản lý và sử dụng tài sản, không phải làm chủ (sở hữu) tài sản đó.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 38.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q10">
+                <div class="question-title">10. (ĐÚNG – SAI) Một quản gia sẽ không cần khai trình với chủ về cách người ấy sử dụng tài sản của chủ.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q10" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q10" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Một trong những nguyên tắc cốt lõi là người quản gia phải khai trình với Chủ về cách sử dụng tài sản được giao phó (Ma-thi-ơ 25:19).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 40.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q11">
+                <div class="question-title">11. (ĐÚNG – SAI) Khả năng duy trì mối liên hệ mật thiết với Chúa không phải là trách nhiệm của người quản gia.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q11" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q11" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Quản lý nhân cách và phát triển khả năng cho công tác hầu việc Chúa là trách nhiệm của quản gia, điều này đòi hỏi một mối liên hệ mật thiết với Chúa.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 45.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q12">
+                <div class="question-title">12. Trách nhiệm chính của quản gia Cơ đốc là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q12" value="0"> a) Phục vụ công chúng.</label>
+                    <label><input type="radio" name="q12" value="1"> b) Quản lý các tài sản mà Chúa đã phó thác.</label>
+                    <label><input type="radio" name="q12" value="2"> c) Có một chức vụ lớn.</label>
+                    <label><input type="radio" name="q12" value="3"> d) Chỉ tập trung vào đời sống tâm linh.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Trách nhiệm chính của Cơ đốc nhân là trung tín quản lý những tài sản mà Chúa đã phó thác (bao gồm mọi khía cạnh đời sống).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 40.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q13">
+                <div class="question-title">13. Phân đoạn Kinh Thánh nào dưới đây giúp Cơ đốc nhân hiểu rằng họ là người quản gia:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q13" value="0"> a) Công vụ 2:42.</label>
+                    <label><input type="radio" name="q13" value="1"> b) I Phi-e-rơ 4:10.</label>
+                    <label><input type="radio" name="q13" value="2"> c) Giăng 3:16.</label>
+                    <label><input type="radio" name="q13" value="3"> d) Ma-thi-ơ 25:14-30.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Ma-thi-ơ 25:14-30 (Thí dụ về các Ta-lâng) là ví dụ điển hình nhất, mô tả trực tiếp vai trò của người quản gia phải khai trình về cách họ sử dụng tài sản được giao.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 40.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q14">
+                <div class="question-title">14. Mối liên hệ quản gia là mối liên hệ giữa:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q14" value="0"> a) Anh em trong gia đình.</label>
+                    <label><input type="radio" name="q14" value="1"> b) Đức Chúa Trời và con người.</label>
+                    <label><input type="radio" name="q14" value="2"> c) Mục sư và con chiên.</label>
+                    <label><input type="radio" name="q14" value="3"> d) Người nghèo và người giàu.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Mối liên hệ quản gia là mối liên hệ được thiết lập bởi Đức Chúa Trời, trong đó Đức Chúa Trời là Người Chủ và con người là người quản gia của Ngài.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 38.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q15">
+                <div class="question-title">15. Hãy đọc những đoạn Kinh Thánh dưới đây và quyết định xem đoạn Kinh Thánh nào bạn có thể dùng để chỉ cho người bạn thấy chương trình của Đức Chúa Trời cho đời sống người đó:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q15" value="0"> a) Các Quan xét 13:1-5.</label>
+                    <label><input type="radio" name="q15" value="1"> b) Lu-ca 1:5-17.</label>
+                    <label><input type="radio" name="q15" value="2"> c) Rô-ma 8:29-30.</label>
+                    <label><input type="radio" name="q15" value="3"> d) Hê-bơ-rơ 11:23.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Rô-ma 8:29-30 tóm tắt chương trình đời đời của Đức Chúa Trời, từ tiền định đến vinh hiển, cho thấy mục đích sống của Cơ Đốc nhân.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 56.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q16">
+                <div class="question-title">16. Dũng sinh viên quyết định rằng anh ta sẽ trở thành một giáo sư của trường Kinh thánh. Hành động của Dũng có nghĩa là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q16" value="0"> a) Đặt ra một mục tiêu.</label>
+                    <label><input type="radio" name="q16" value="1"> b) Xác định thứ tự ưu tiên.</label>
+                    <label><input type="radio" name="q16" value="2"> c) Để ra một chương trình.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Việc quyết định kết quả mong muốn trong tương lai ("trở thành một giáo sư") là hành động đặt ra một mục tiêu.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 58.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q17">
+                <div class="question-title">17. Giả như bạn có một người bạn tin rằng Đức Chúa Trời kêu gọi anh ta trở thành một người lãnh đạo trong Hội Thánh. Người này đến hỏi bạn xem cần phải làm điều gì kế tiếp. Bạn sẽ khuyên người đó:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q17" value="0"> a) Chờ đợi Chúa ban cho một chiêm bao hoặc sự hiện thấy về bước đi kế tiếp.</label>
+                    <label><input type="radio" name="q17" value="1"> b) Tra xem Kinh Thánh để tìm thấy đường lối chính xác và những sự chỉ dạy cụ thể.</label>
+                    <label><input type="radio" name="q17" value="2"> c) Đề nghị nhận một chức vụ trong Hội Thánh.</label>
+                    <label><input type="radio" name="q17" value="3"> d) Lập chương trình để chuẩn bị cho chức vụ lãnh đạo.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Sau khi xác định mục tiêu, bước tiếp theo là lập chương trình (kế hoạch hành động cụ thể) để chuẩn bị cho mục tiêu đó.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 59.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q18">
+                <div class="question-title">18. Để chọn lựa điều đúng đắn cần làm thì chúng ta phải sử dụng:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q18" value="0"> a) Tâm trí</label>
+                    <label><input type="radio" name="q18" value="1"> b) Ý chí.</label>
+                    <label><input type="radio" name="q18" value="2"> c) Cảm xúc.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Phần Ý chí (Will) của nhân cách chịu trách nhiệm đưa ra các lựa chọn và quyết định điều đúng đắn để vâng lời Chúa.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 61.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q19">
+                <div class="question-title">19. Để có thể vâng lời Đức Chúa Trời, bốn phần nào trong nhân cách chúng ta cần phải hoạt động phối hợp với nhau:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q19" value="0"> a) Ý chí, tình cảm, lý trí và Lời Chúa.</label>
+                    <label><input type="radio" name="q19" value="1"> b) Lý trí, Lời Chúa, Đức Thánh Linh và ý chí.</label>
+                    <label><input type="radio" name="q19" value="2"> c) Lời Chúa lý trí, tình cảm và Đức Thánh Linh.</label>
+                    <label><input type="radio" name="q19" value="3"> d) Đức Thánh Linh, lý trí, tâm trí và ý chí.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Sự vâng lời đòi hỏi sự phối hợp của Đức Thánh Linh (Nguồn sức mạnh), lý trí/tâm trí (khả năng hiểu biết), và ý chí (khả năng lựa chọn).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 60.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q20">
+                <div class="question-title">20. Giả sử một người bạn đến hỏi bạn xem tình cảm có liên quan đến đời sống thuộc linh như thế nào. Hãy đọc những câu Kinh Thánh dưới đây và quyết định xem câu Kinh Thánh nào có thể dùng để trả lời cho câu hỏi trên:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q20" value="0"> a) I Sa-mu-ên 15:9-11.</label>
+                    <label><input type="radio" name="q20" value="1"> b) Giăng 15:5.</label>
+                    <label><input type="radio" name="q20" value="2"> c) I Cô-rinh-tô 14:15.</label>
+                    <label><input type="radio" name="q20" value="3"> d) Ga-la-ti 5:22-23.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>I Cô-rinh-tô 14:15 nói về việc cầu nguyện và hát ca bằng cả tâm linh (tình cảm) lẫn trí tuệ, cho thấy tình cảm đóng vai trò quan trọng trong sự thờ phượng.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 61.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q21">
+                <div class="question-title">21. Câu phát biểu nào nêu lên lý do quan trọng nhất khiến chúng ta phải đối đãi với thân thể chúng ta một cách tôn trọng?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q21" value="0"> a) Thân thể của chúng ta là đền thờ của Đức Chúa Trời.</label>
+                    <label><input type="radio" name="q21" value="1"> b) Việc đối đãi thân thể một cách tôn trọng sẽ đem lại sức khoẻ tốt.</label>
+                    <label><input type="radio" name="q21" value="2"> c) Cuộc sống chúng ta sẽ tốt đẹp hơn nếu chúng ta khoẻ mạnh.</label>
+                    <label><input type="radio" name="q21" value="3"> d) Những người khác sẽ quý mến chúng ta hơn nếu chúng ta săn sóc tốt thân thể của chúng ta.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Lý do hàng đầu là thân thể là đền thờ của Đức Chúa Trời và Ngài đã mua chúng ta bằng giá rất cao (I Cô-rinh-tô 6:19-20).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 62.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q22">
+                <div class="question-title">22. Nhân vật nào dưới đây không tuân theo những qui luật để giữ gìn sức khoẻ tốt?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q22" value="0"> a) Hùng thường đi đến những nơi không tốt.</label>
+                    <label><input type="radio" name="q22" value="1"> b) Dũng mặc quần áo đi nhà thờ cũng như đi chơi ngoài bãi biển.</label>
+                    <label><input type="radio" name="q22" value="2"> c) Minh thường ngủ không quá 6 tiếng đồng hồ mỗi đêm.</label>
+                    <label><input type="radio" name="q22" value="3"> d) Lan thường đeo những đồ trang sức rất đắt tiền.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Việc ngủ không quá 6 tiếng là sự vi phạm rõ ràng nhất đối với qui luật giữ gìn sức khỏe thể chất (nghỉ ngơi đầy đủ).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 62.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q23">
+                <div class="question-title">23. Nhân vật nào là người tuân theo những qui luật về sự phù hợp (cách ăn mặc, hành vi)?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q23" value="0"> a) Hùng.</label>
+                    <label><input type="radio" name="q23" value="1"> b) Dũng.</label>
+                    <label><input type="radio" name="q23" value="2"> c) Minh.</label>
+                    <label><input type="radio" name="q23" value="3"> d) Lan.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Trong bối cảnh bài học, Dũng là câu trả lời được cho là đúng, mặc dù câu mô tả ("Mặc quần áo đi nhà thờ cũng như đi chơi ngoài bãi biển") có thể gây hiểu lầm. Câu hỏi này nhắm đến sự phù hợp của trang phục mà Dũng là ví dụ duy nhất về quần áo.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 63-64.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q24">
+                <div class="question-title">24. Với tư cách là một người quản lý thời gian, nhân vật nào dưới đây đã dành thì giờ cho 3 trách nhiệm chính của họ (Đức Chúa Trời, Gia đình, Xã hội)?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q24" value="0"> a) Minh dành thì giờ để ở với con cái của ông, nói chuyện với vợ về các vấn đề trong cuộc sống và dành thì giờ để giải trí.</label>
+                    <label><input type="radio" name="q24" value="1"> b) Dũng mời bạn bè đến nhà để thông công, trò chuyện với con trai của ông về các chương trình trong tương lai và dành thì giờ dự nhóm thờ phượng.</label>
+                    <label><input type="radio" name="q24" value="2"> c) Kim dành thì giờ trò chuyện với gia đình, lập chương trình cho tháng sắp tới và dành thì giờ cầu nguyện và đọc Kinh Thánh.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Kim thể hiện rõ nhất việc cân bằng: Cầu nguyện/Đọc Kinh Thánh (Đức Chúa Trời), Trò chuyện với gia đình (Gia đình), và Lập chương trình (chuẩn bị cho trách nhiệm ngoài gia đình/xã hội).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 65-66.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q25">
+                <div class="question-title">25. Câu nào dưới đây tóm tắt đúng sự dạy dỗ trong Ma-thi-ơ 25:14-30 về các ta-lâng?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q25" value="0"> a) Có nhiều ta-lâng hay khả năng thì tốt hơn là có ít bởi vì những người có nhiều sẽ nhận được phần thưởng lớn hơn.</label>
+                    <label><input type="radio" name="q25" value="1"> b) Phần thưởng của mỗi người tuỳ thuộc vào số lượng ta-lâng hay khả năng mà người nầy có.</label>
+                    <label><input type="radio" name="q25" value="2"> c) Người có nhiều khả năng thì có nhiều cơ hội nhận được sự ban thưởng của Chúa hơn là người có ít khả năng.</label>
+                    <label><input type="radio" name="q25" value="3"> d) Mỗi người cần phải tận dụng khả năng mình có bất chấp là nhiều hay ít.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Dụ ngôn này dạy về sự trung tín trong việc sử dụng những gì được giao phó, nhấn mạnh vào việc tận dụng khả năng (dù nhiều hay ít) chứ không phải số lượng khả năng.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 66.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q26">
+                <div class="question-title">26. Nếu bạn muốn tìm hiểu xem bạn có thể có những khả năng tiềm tàng nào thì bạn nên làm theo chương trình nào gồm 3 bước sau đây:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q26" value="0"> a) Hãy cầu hỏi với Chúa, tìm kiếm các cơ hội và thử làm những điều mới mẻ.</label>
+                    <label><input type="radio" name="q26" value="1"> b) Cầu hỏi Chúa, tìm kiếm các cơ hội và tra xem Kinh Thánh.</label>
+                    <label><input type="radio" name="q26" value="2"> c) Tìm kiếm các cơ hội để ý xem những việc gì cần làm và thử làm vài điều mới mẻ.</label>
+                    <label><input type="radio" name="q26" value="3"> d) Cầu nguyện xin Chúa hướng dẫn, tìm kiếm các cơ hội và để ý đến những nhu cầu phải được đáp ứng.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Ba bước hành động để phát hiện và phát triển khả năng là: cầu hỏi Chúa, tìm kiếm cơ hội, và thử làm những điều mới mẻ.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 67.</span>
+                </div>
+            </div>
+            
+            <h2 style="color: var(--accent-color); margin-top: 30px;">PHẦN III: QUẢN LÝ TIỀN BẠC</h2>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q27">
+                <div class="question-title">27. Đọc các đoạn Kinh Thánh sau đây. Nếu có ai đó nói với bạn rằng các mục sư cũng cần phải dâng hiến để hổ trợ công việc của Chúa, khúc Kinh thánh nào đưa ra câu trả lời rõ nhất?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q27" value="0"> a) Lê-vi ký 27:30.</label>
+                    <label><input type="radio" name="q27" value="1"> b) Dân số ký 18:25-28.</label>
+                    <label><input type="radio" name="q27" value="2"> c) E-xơ-ra 2:68-69.</label>
+                    <label><input type="radio" name="q27" value="3"> d) Châm ngôn 3:9-10.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này hỏi về trách nhiệm dâng hiến của những người hầu việc Chúa. Dân số ký 18:25-28 quy định người Lê-vi phải dâng một phần mười của phần mười họ nhận được. Đây là minh chứng rõ nhất từ Kinh Thánh rằng những người hầu việc Chúa cũng phải dâng hiến.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 134.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q28">
+                <div class="question-title">28. Khi thu tiền dâng hiến trong Hội Thánh lại thì phương cách tốt nhất là số tiền dâng hiến sẽ được kiểm soát bởi:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q28" value="0"> a) Một lãnh đạo trong Hội Thánh.</label>
+                    <label><input type="radio" name="q28" value="1"> b) Thủ quỹ của Hội Thánh.</label>
+                    <label><input type="radio" name="q28" value="2"> c) Mục sư.</label>
+                    <label><input type="radio" name="q28" value="3"> d) Ít nhất là 2 người.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Để đảm bảo sự minh bạch và tránh cám dỗ, tài liệu khuyến nghị việc kiểm soát và thu nhận tài chính nên được thực hiện bởi ít nhất là 2 người, theo nguyên tắc nhân chứng của Kinh Thánh.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 132.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q29">
+                <div class="question-title">29. Giả như bạn mở sổ quỹ tiền mặt ra nhằm trang ghi chép tháng 9. Tổng số tiền thu được và số tiền cân đối ở cột bên tay phải tổng cộng là 885 đồng. Cột nào dưới đây cũng có tổng số là 885 đồng?</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q29" value="0"> a) Cân bằng thu chi tháng 10 và các khoản chi tháng 9.</label>
+                    <label><input type="radio" name="q29" value="1"> b) Các biên nhận từ tháng 9 và phần cân bằng chi thu từ tháng 8.</label>
+                    <label><input type="radio" name="q29" value="2"> c) Các biên nhận tư tháng 8 và khoàn tiền nhận được cho tháng 9.</label>
+                    <label><input type="radio" name="q29" value="3"> d) Các khoản tiền nhận được cho tháng 8 và khoản cân bằng chi thu từ tháng 9.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Trong sổ quỹ tiền mặt (Cash Book), Tổng Thu trong một tháng (gồm số dư đầu kỳ và các khoản nhận) luôn phải bằng Tổng Chi (gồm các khoản chi và số dư cuối kỳ). Tổng Thu = Biên nhận (Thu) từ tháng 9 + Cân đối đầu kỳ (tức là cân đối cuối kỳ từ tháng 8).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 133.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q30">
+                <div class="question-title">30. Phần dâng hiến bằng tiền bạc lớn nhất nên được đưa vào:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q30" value="0"> a) Các mục vụ đặc biệt.</label>
+                    <label><input type="radio" name="q30" value="1"> b) Chi phí hành chính.</label>
+                    <label><input type="radio" name="q30" value="2"> c) Xây dựng và bảo trì nhà thờ.</label>
+                    <label><input type="radio" name="q30" value="3"> d) Công việc truyền giáo.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Vì trọng tâm của Hội Thánh là thực hiện Đại Mạng Lệnh, phần lớn nhất của ngân sách nên được dùng để hỗ trợ Công việc truyền giáo (truyền bá Phúc Âm và môn đồ hóa).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 135.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q31">
+                <div class="question-title">31. Điều đầu tiên mà một quản gia nên dâng lên Chúa là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q31" value="0"> a) Bản thân anh ấy/cô ấy.</label>
+                    <label><input type="radio" name="q31" value="1"> b) Của cải vật chất.</label>
+                    <label><input type="radio" name="q31" value="2"> c) Thời gian.</label>
+                    <label><input type="radio" name="q31" value="3"> d) Khả năng.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Theo Rô-ma 12:1, điều đầu tiên và quan trọng nhất chúng ta dâng lên Chúa là chính bản thân chúng ta, sau đó mới đến của cải và khả năng.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 131.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q32">
+                <div class="question-title">32. (ĐÚNG – SAI) Bất cứ khi nào Hội Thánh hoặc cơ quan truyền giáo cần một điều gì đó, thì một người được ban cho nhiều tiền bạc sẽ không cần phải cầu nguyện về việc đó.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q32" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q32" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Cầu nguyện là bước đầu tiên và quan trọng nhất trong việc quản lý tiền bạc và mọi quyết định dâng hiến, bất kể khả năng tài chính của bạn là bao nhiêu.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 129.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q33">
+                <div class="question-title">33. (ĐÚNG – SAI) Phần mười được tính trên tổng thu nhập (lợi tức) chứ không phải là thu nhập ròng (lợi tức).</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q33" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q33" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này ĐÚNG. Kinh Thánh dạy dâng "phần đầu tiên và tốt nhất". Do đó, Cơ đốc nhân nên dâng phần mười trên tổng thu nhập (trước khi trừ thuế hoặc chi phí), thể hiện sự ưu tiên Chúa.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 131.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q34">
+                <div class="question-title">34. (ĐÚNG – SAI) Khác với thời Cựu Ước, sự dâng hiến của Cơ đốc nhân không nên được dùng để hỗ trợ những người hầu việc Chúa trọn thời gian.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q34" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q34" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Tân Ước (như I Cô-rinh-tô 9:14; Ga-la-ti 6:6) dạy rõ rằng Cơ đốc nhân có trách nhiệm hỗ trợ tài chính cho những người hầu việc Chúa trọn thời gian, là người rao giảng Lời Chúa. Đây là một nguyên tắc liên tục giữa hai giao ước.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 134.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q35">
+                <div class="question-title">35. (ĐÚNG – SAI) Mặc dù sự dâng hiến là một việc làm mang tính chất riêng tư, nhưng Hội Thánh vẫn cần có những phương cách để đảm bảo sự minh bạch trong việc tiếp nhận và chi tiêu tiền dâng hiến.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q35" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q35" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này ĐÚNG. Tài liệu nhấn mạnh sự minh bạch là yếu tố quan trọng để tránh tai tiếng, xây dựng niềm tin và tránh cám dỗ, mặc dù hành động dâng hiến là riêng tư.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 132.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q36">
+                <div class="question-title">36. Trách nhiệm của Cơ đốc nhân đối với tài sản của người khác:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q36" value="0"> a) Tôn trọng quyền sở hữu của họ.</label>
+                    <label><input type="radio" name="q36" value="1"> b) Cố gắng làm việc để họ có thể nhận lại tài sản.</label>
+                    <label><input type="radio" name="q36" value="2"> c) Cân nhắc mua lại tài sản của họ.</label>
+                    <label><input type="radio" name="q36" value="3"> d) Sử dụng một cách hợp pháp.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Điều Răn thứ 8 ("Ngươi chớ trộm cắp") dạy chúng ta phải tôn trọng quyền sở hữu của người khác và làm mọi việc để bảo vệ và tôn trọng tài sản của họ.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 126.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q37">
+                <div class="question-title">37. Công việc của Cơ đốc nhân nhằm để:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q37" value="0"> a) Sống một cuộc sống thoải mái.</label>
+                    <label><input type="radio" name="q37" value="1"> b) Kiếm tiền để dâng hiến.</label>
+                    <label><input type="radio" name="q37" value="2"> c) Nhận lại nhiều tiền hơn.</label>
+                    <label><input type="radio" name="q37" value="3"> d) Tôn vinh Đức Chúa Trời.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Mục tiêu tối cao của mọi khía cạnh cuộc sống, bao gồm cả công việc, là Tôn vinh Đức Chúa Trời (I Cô-rinh-tô 10:31), qua đó làm chứng về Ngài.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 124.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q38">
+                <div class="question-title">38. Phần mười được coi là khoản tiền dâng hiến:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q38" value="0"> a) Lương bổng tối thiểu.</label>
+                    <label><input type="radio" name="q38" value="1"> b) Tiêu chuẩn tối đa.</label>
+                    <label><input type="radio" name="q38" value="2"> c) Tặng phẩm từ thiện.</label>
+                    <label><input type="radio" name="q38" value="3"> d) Chỉ dành cho thầy tế lễ.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Phần mười (10%) là một sự bắt đầu, được coi là "lương bổng tối thiểu" mà người quản gia trả cho Chúa để thừa nhận Ngài là Chủ. Sau đó là dâng hiến tự nguyện.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 131.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q39">
+                <div class="question-title">39. (ĐÚNG – SAI) Phần mười là cách để tín đồ thể hiện sự thừa nhận quyền sở hữu của Đức Chúa Trời.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q39" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q39" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này ĐÚNG. Bằng cách dâng phần mười (10%), tín đồ làm chứng bằng hành động rằng 100% thuộc về Đức Chúa Trời, Ngài là Chủ tối cao.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 130.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q40">
+                <div class="question-title">40. Trách nhiệm của Cơ đốc nhân đối với tiền bạc là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q40" value="0"> a) Sống một cuộc sống xa hoa hơn người khác.</label>
+                    <label><input type="radio" name="q40" value="1"> b) Trả nợ cho tất cả mọi người.</label>
+                    <label><input type="radio" name="q40" value="2"> c) Biết ơn và sử dụng tiền bạc một cách khôn ngoan.</label>
+                    <label><input type="radio" name="q40" value="3"> d) Không cần phải tính toán chi tiêu.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Trách nhiệm cốt lõi là biết ơn và sử dụng tiền bạc một cách khôn ngoan, trung tín quản lý tài sản của Chúa theo các nguyên tắc Kinh Thánh.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 128.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q41">
+                <div class="question-title">41. (ĐÚNG – SAI) Thật khó để tìm được các nguyên tắc tài chính Cơ đốc trong Kinh Thánh.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q41" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q41" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Kinh Thánh chứa đựng rất nhiều nguyên tắc rõ ràng về quản lý tiền bạc, nợ nần và dâng hiến.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 129.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q42">
+                <div class="question-title">42. Trong sự dạy dỗ của Chúa Jêsus, điều gì có liên quan đến việc quản gia:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q42" value="0"> a) Các câu chuyện về Bê-lem.</label>
+                    <label><input type="radio" name="q42" value="1"> b) Những lời rao giảng trên núi.</label>
+                    <label><input type="radio" name="q42" value="2"> c) Các dụ ngôn.</label>
+                    <label><input type="radio" name="q42" value="3"> d) Các phép lạ.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Chúa Jêsus sử dụng rất nhiều các dụ ngôn (ví dụ: dụ ngôn Người quản gia bất trung, Ta-lâng) để dạy về sự trung tín, trách nhiệm và sự khai trình của người quản gia.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 129.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q43">
+                <div class="question-title">43. Người quản gia Cơ đốc nên làm gì để sử dụng thời gian của mình hiệu quả:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q43" value="0"> a) Chỉ tập trung vào công việc của mình.</label>
+                    <label><input type="radio" name="q43" value="1"> b) Cân nhắc các ưu tiên và mục tiêu của mình.</label>
+                    <label><input type="radio" name="q43" value="2"> c) Chỉ dành thời gian cho gia đình.</label>
+                    <label><input type="radio" name="q43" value="3"> d) Làm việc càng nhiều càng tốt.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Quản lý thời gian hiệu quả đòi hỏi người quản gia phải cân nhắc các ưu tiên và mục tiêu của mình, đảm bảo sử dụng thời gian cho những điều có giá trị đời đời và cân bằng các vai trò.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 65.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="0" data-type="radio" data-id="q44">
+                <div class="question-title">44. (ĐÚNG – SAI) Thân thể chúng ta thuộc về Đức Chúa Trời và chúng ta phải chăm sóc nó.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q44" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q44" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này ĐÚNG. I Cô-rinh-tô 6:19-20 dạy thân thể là đền thờ của Đức Thánh Linh và thuộc về Đức Chúa Trời. Chúng ta có trách nhiệm giữ gìn và chăm sóc nó.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 61.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="1" data-type="radio" data-id="q45">
+                <div class="question-title">45. (ĐÚNG – SAI) Việc chăm sóc thân thể có nghĩa là không bao giờ tham gia vào các hoạt động tiêu khiển giải trí nào.</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q45" value="0"> ĐÚNG</label>
+                    <label><input type="radio" name="q45" value="1"> SAI</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Câu này SAI. Việc chăm sóc thân thể bao gồm cả sự nghỉ ngơi, giải trí lành mạnh và tái tạo sức khỏe. Điều quan trọng là sự giải trí đó phải có tính xây dựng và tôn vinh Chúa.</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 62.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="3" data-type="radio" data-id="q46">
+                <div class="question-title">46. Một quản gia Cơ đốc nên làm gì với tài năng của mình:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q46" value="0"> a) Giữ lại và sử dụng cho bản thân.</label>
+                    <label><input type="radio" name="q46" value="1"> b) Cố gắng phát triển tài năng bằng mọi giá.</label>
+                    <label><input type="radio" name="q46" value="2"> c) Chỉ sử dụng trong Hội Thánh.</label>
+                    <label><input type="radio" name="q46" value="3"> d) Phát triển và sử dụng chúng để hầu việc Chúa.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Người quản gia có trách nhiệm phát triển và sử dụng mọi khả năng (tài năng) mà Chúa ban cho để hầu việc Ngài và xây dựng vương quốc Chúa (dựa trên Dụ ngôn Ta-lâng).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 66-67.</span>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-index="2" data-type="radio" data-id="q47">
+                <div class="question-title">47. Mục đích cuối cùng của chức vụ quản gia là:</div>
+                <div class="options-list">
+                    <label><input type="radio" name="q47" value="0"> a) Đạt được sự giàu có.</label>
+                    <label><input type="radio" name="q47" value="1"> b) Phục vụ Hội Thánh.</label>
+                    <label><input type="radio" name="q47" value="2"> c) Tôn vinh Đức Chúa Trời.</label>
+                    <label><input type="radio" name="q47" value="3"> d) Giúp đỡ người nghèo.</label>
+                </div>
+                <button type="button" class="check-button">Kiểm tra đáp án</button>
+                <button type="button" class="reset-question-button">Thiết lập lại</button>
+                <div class="feedback-message">
+                    <h4>Giải thích:</h4>
+                    <p>Mục đích cuối cùng và cao nhất của mọi việc Cơ đốc nhân làm, bao gồm cả chức vụ quản gia, là Tôn vinh Đức Chúa Trời (I Cô-rinh-tô 10:31).</p>
+                    <span class="page-cite">Tham khảo tài liệu trang 40.</span>
+                </div>
+            </div>
+
+
+        </form>
+        
+        <hr>
+        
+        <p><i>Trang này được tạo bởi Chí Cường CCN, nội dung được trích từ bài học từ giáo viên Mục Sư Lê Đức Thắng .</i></p>
+        <div style="margin: 10px 0px;">
+        📞 Hotline: <a href="tel:0908943468">0908943468</a><br />
+
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quizForm = document.getElementById('quiz-form');
+        const questionBlocks = document.querySelectorAll('.question-block');
+        const checkAllBtn = document.getElementById('check-all-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Hàm kiểm tra và chấm điểm cho một khối câu hỏi
+        function checkAnswer(block) {
+            const dataType = block.getAttribute('data-type');
+            const correctIndicesStr = block.getAttribute('data-correct-index');
+            const correctIndices = correctIndicesStr.split(',').map(i => parseInt(i.trim(), 10));
+            const feedbackDiv = block.querySelector('.feedback-message');
+            const checkButton = block.querySelector('.check-button');
+            const resetQuestionButton = block.querySelector('.reset-question-button');
+
+            // 1. Lấy tất cả các lựa chọn được đánh dấu (checked)
+            const selectedInputs = block.querySelectorAll(`input[name="${block.getAttribute('data-id')}"]:checked`);
+            const selectedIndices = Array.from(selectedInputs).map(input => parseInt(input.value, 10));
+
+            // 2. Xóa trạng thái cũ
+            block.classList.remove('correct', 'incorrect', 'partial');
+            
+            // Lấy nội dung giải thích ban đầu
+            const originalTitle = feedbackDiv.getAttribute('data-original-title') || 'Giải thích:';
+
+            if (selectedIndices.length === 0) {
+                // Nếu chưa chọn, hiển thị cảnh báo
+                // Đảm bảo không ghi đè nội dung giải thích nếu nó đã được hiển thị
+                if (!block.classList.contains('correct') && !block.classList.contains('incorrect') && !block.classList.contains('partial')) {
+                     block.querySelector('.feedback-message h4').textContent = '🚫 Bạn chưa chọn đáp án nào.';
+                     feedbackDiv.style.display = 'block';
+                }
+                return;
+            }
+
+            // 3. Logic chấm điểm
+            let isCorrect = false;
+            let isPartial = false;
+            let correctSelections = 0;
+            let incorrectSelections = 0;
+
+            if (dataType === 'radio') {
+                // Câu hỏi 1 đáp án (radio)
+                isCorrect = (selectedIndices.length === 1 && correctIndices.includes(selectedIndices[0]));
+            } else if (dataType === 'checkbox') {
+                // Câu hỏi nhiều đáp án (checkbox)
+                
+                selectedIndices.forEach(index => {
+                    if (correctIndices.includes(index)) {
+                        correctSelections++;
+                    } else {
+                        incorrectSelections++;
+                    }
+                });
+
+                // Trường hợp đúng hoàn toàn: Chọn đúng hết, không chọn sai
+                isCorrect = (correctSelections === correctIndices.length && incorrectSelections === 0);
+
+                // Trường hợp đúng một phần: Có chọn đúng nhưng chưa đủ hoặc có chọn sai
+                if (!isCorrect && (correctSelections > 0 || incorrectSelections > 0)) {
+                    isPartial = true;
+                }
+            }
+
+            // 4. Cập nhật giao diện và thông báo
+            let feedbackTitle = originalTitle;
+
+            if (isCorrect) {
+                block.classList.add('correct');
+                feedbackTitle = '✅ CHÍNH XÁC!';
+                checkButton.textContent = 'Đã kiểm tra (ĐÚNG)';
+                checkButton.style.backgroundColor = 'var(--success-color)';
+            } else {
+                if (isPartial) {
+                    block.classList.add('partial');
+                    feedbackTitle = `⚠️ CHƯA HOÀN TOÀN ĐÚNG.`;
+                    checkButton.textContent = 'Đã kiểm tra (CHƯA ĐÚNG)';
+                    checkButton.style.backgroundColor = '#ffc107'; 
+                } else {
+                    block.classList.add('incorrect');
+                    feedbackTitle = '❌ SAI. Xem lại giải thích.';
+                    checkButton.textContent = 'Đã kiểm tra (SAI)';
+                    checkButton.style.backgroundColor = 'var(--error-color)'; 
+                }
+            }
+
+            // Khôi phục nội dung giải thích gốc (bao gồm số trang) và cập nhật lại h4
+            feedbackDiv.innerHTML = feedbackDiv.getAttribute('data-original-content');
+            block.querySelector('.feedback-message h4').textContent = feedbackTitle;
+
+            feedbackDiv.style.display = 'block';
+            
+            checkButton.disabled = true;
+            resetQuestionButton.style.display = 'inline-block';
+        }
+
+        // Hàm thiết lập lại một câu hỏi
+        function resetQuestion(block) {
+            block.classList.remove('correct', 'incorrect', 'partial');
+            block.querySelector('.feedback-message').style.display = 'none';
+
+            const inputs = block.querySelectorAll('input:checked');
+            inputs.forEach(input => input.checked = false);
+            
+            // Đặt lại nút Kiểm tra
+            const checkButton = block.querySelector('.check-button');
+            checkButton.textContent = 'Kiểm tra đáp án';
+            checkButton.style.backgroundColor = 'var(--accent-color)';
+            checkButton.disabled = false;
+            block.querySelector('.reset-question-button').style.display = 'none';
+
+            // Khôi phục nội dung giải thích gốc
+            const feedbackDiv = block.querySelector('.feedback-message');
+            feedbackDiv.innerHTML = feedbackDiv.getAttribute('data-original-content');
+
+        }
+
+        // Gắn sự kiện cho từng nút Kiểm tra
+        questionBlocks.forEach(block => {
+            const checkButton = block.querySelector('.check-button');
+            const resetQuestionButton = block.querySelector('.reset-question-button');
+            const feedbackDiv = block.querySelector('.feedback-message');
+            
+            // LƯU TRỮ NỘI DUNG GỐC CỦA DIV GIẢI THÍCH (BAO GỒM H4 VÀ P/SPAN)
+            if (!feedbackDiv.hasAttribute('data-original-content')) {
+                feedbackDiv.setAttribute('data-original-content', feedbackDiv.innerHTML);
+            }
+            
+            // LƯU TRỮ TIÊU ĐỀ H4 GỐC
+            if (!feedbackDiv.hasAttribute('data-original-title')) {
+                feedbackDiv.setAttribute('data-original-title', feedbackDiv.querySelector('h4').textContent);
+            }
+            
+            resetQuestionButton.style.display = 'none';
+
+            checkButton.addEventListener('click', function() {
+                checkAnswer(block);
+            });
+
+            resetQuestionButton.addEventListener('click', function() {
+                resetQuestion(block);
+            });
+        });
+
+        // Gắn sự kiện cho nút Kiểm tra TOÀN BỘ
+        if (checkAllBtn) {
+            checkAllBtn.addEventListener('click', function() {
+                let allCorrect = true;
+                questionBlocks.forEach(block => {
+                    checkAnswer(block);
+                    // Lọc ra các câu hỏi đã được chấm và không đúng
+                    if (block.querySelector('input:checked') && !block.classList.contains('correct')) {
+                        allCorrect = false;
+                    }
+                });
+                
+                // Cập nhật trạng thái nút "Kiểm tra TOÀN BỘ"
+                if(allCorrect) {
+                     checkAllBtn.textContent = '✅ TẤT CẢ ĐÚNG!';
+                     checkAllBtn.style.backgroundColor = 'var(--success-color)';
+                } else {
+                     checkAllBtn.textContent = '❌ Kiểm tra lại đáp án SAI';
+                     checkAllBtn.style.backgroundColor = 'var(--error-color)';
+                }
+            });
+        }
+
+        // Gắn sự kiện cho nút Thiết lập lại toàn bộ bài kiểm tra
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function() {
+                questionBlocks.forEach(resetQuestion);
+                
+                // Đặt lại nút Check All
+                if(checkAllBtn) {
+                    checkAllBtn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
+                    checkAllBtn.style.backgroundColor = 'var(--check-all-color)';
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
