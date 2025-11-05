@@ -4,11 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Môn Đồ Hóa – Danh sách bài học</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* ------------------------------------------- */
+    /* 1. KHU VỰC CSS CHUNG & RESET */
+    /* ------------------------------------------- */
+    :root {
+      --primary-color: #b00000; /* Màu đỏ chủ đạo */
+      --secondary-color: #8b0000; /* Màu đỏ đậm hơn cho hover/focus */
+      --background-light: #fafafa;
+      --text-dark: #222;
+      --text-light-gray: #555;
+    }
+
     body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #fafafa;
-      color: #222;
+      font-family: 'Poppins', sans-serif; /* Áp dụng font mới */
+      background-color: var(--background-light);
+      color: var(--text-dark);
       margin: 0;
       padding: 40px 20px;
       max-width: 1200px;
@@ -17,125 +31,204 @@
     }
 
     h1 {
-      color: #b02209;
+      color: var(--primary-color);
       text-align: center;
       margin-bottom: 40px;
       font-weight: 700;
+      font-size: 2.5em;
     }
 
+    /* ------------------------------------------- */
+    /* 2. THANH TÌM KIẾM */
+    /* ------------------------------------------- */
+    .search-container {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    #lesson-search {
+        width: 100%;
+        max-width: 600px;
+        padding: 12px 20px;
+        border: 1px solid #ccc;
+        border-radius: 25px; /* Bo tròn hoàn toàn */
+        font-size: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.3s;
+    }
+
+    #lesson-search:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(176, 0, 0, 0.1);
+    }
+
+    /* ------------------------------------------- */
+    /* 3. DANH SÁCH & THẺ BÀI HỌC */
+    /* ------------------------------------------- */
     .lesson-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Tăng min-width 260 -> 280 */
+      gap: 30px; /* Tăng khoảng cách */
     }
 
     .lesson-card {
       background: #fff;
       border: 1px solid #e0e0e0;
-      border-radius: 12px;
+      border-radius: 16px; /* Tăng độ bo tròn */
       overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      display: flex;
+      /* Box-shadow ban đầu mỏng, tinh tế */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+      /* Thêm hiệu ứng chuyển động mượt mà */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+      display: flex; 
       flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.3s ease;
     }
 
     .lesson-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(176, 0, 0, 0.15);
-    }
-
-    .lesson-img {
-      width: 100%;
-      height: 150px;
-      background-color: #f2f2f2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #aaa;
-      font-size: 18px;
-      font-weight: 500;
-      border-bottom: 1px solid #eee;
+      /* Nâng thẻ bài lên và tăng bóng đổ khi di chuột */
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
     }
 
     .lesson-img img {
       width: 100%;
-      height: 150px;
+      height: 180px; /* Tăng chiều cao ảnh */
       object-fit: cover;
+      display: block;
     }
 
     .lesson-content {
-      padding: 16px;
+      padding: 20px; /* Tăng padding để nội dung "dễ thở" hơn */
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: space-between; /* Đảm bảo nút xuống cuối */
     }
 
     .lesson-title {
-      color: #111;
+      font-size: 1.3em;
       font-weight: 700;
-      font-size: 17px;
+      color: var(--primary-color);
       margin-bottom: 10px;
-      line-height: 1.4;
+      line-height: 1.3;
     }
 
     .lesson-desc {
-      color: #444;
-      font-size: 15px;
-      flex-grow: 1;
-      margin-bottom: 20px;
+      color: var(--text-light-gray);
+      font-size: 0.95em;
+      margin-bottom: 15px;
     }
 
+    /* ------------------------------------------- */
+    /* 4. TAG TRẠNG THÁI (STATUS BADGE) */
+    /* ------------------------------------------- */
+    .status-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 4px;
+        margin-left: 10px;
+        text-transform: uppercase;
+        vertical-align: middle;
+        transform: translateY(-2px);
+    }
+
+    .status-badge.new {
+        background-color: #f1c40f; /* Vàng nổi bật */
+        color: #2c3e50;
+    }
+
+    .status-badge.completed {
+        background-color: #2ecc71; /* Xanh lá */
+        color: #fff;
+    }
+
+    /* ------------------------------------------- */
+    /* 5. NÚT XEM BÀI (LINK) */
+    /* ------------------------------------------- */
     .lesson-link {
-      align-self: flex-start;
-      background: #b00000;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 6px;
+      display: block; /* Đảm bảo nút chiếm hết chiều ngang */
+      padding: 10px 15px; /* Tăng padding nút */
+      background-color: var(--primary-color); 
+      color: #fff; 
       text-decoration: none;
+      border-radius: 8px; 
       font-weight: 600;
-      transition: background 0.3s ease;
+      text-align: center;
+      margin-top: 15px; /* Khoảng cách trên nút */
+      transition: background-color 0.3s ease;
     }
 
     .lesson-link:hover {
-      background: #870000;
+      background-color: var(--secondary-color);
     }
 
-    footer {
-      text-align: center;
-      margin-top: 60px;
-      font-style: italic;
-      color: #666;
+    /* ------------------------------------------- */
+    /* 6. FOOTER LIÊN HỆ */
+    /* ------------------------------------------- */
+    .main-footer {
+        margin-top: 60px;
+        padding: 20px 0 40px 0;
+        text-align: center;
+    }
+
+    .contact-info {
+        font-size: 0.9em;
+        line-height: 2;
+        color: var(--text-light-gray);
+    }
+
+    .contact-info a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .contact-info a:hover {
+        color: var(--secondary-color);
     }
   </style>
 </head>
 <body>
-  <h1>📘 Môn Đồ Hóa – Danh sách các bài học / Bài Kiểm Tra</h1>
+
+  <h1>DANH SÁCH CÁC BÀI HỌC MÔN ĐỒ HÓA</h1>
+
+  <div class="search-container">
+      <input type="text" id="lesson-search" placeholder="🔎 Tìm kiếm bài học theo tiêu đề..." onkeyup="filterLessons()">
+  </div>
 
   <div class="lesson-list">
-  <div class="lesson-card">
+
+    <div class="lesson-card">
       <div class="lesson-img">
         <img src="https://computerchicuong.vn/content_congnghe2nd/upload/Image/TIn%20tuc/cs2221-leu-tam-den-tam-cung-dien-01.png" alt="CS2221" />
       </div>
       <div class="lesson-content">
-        <div class="lesson-title">CS2221 – Lều Tạm-Đền Thờ-Cung Điện</div>
+        <div class="lesson-title">
+          CS2221 – Lều Tạm - Đền Tạm và Cung Điện
+          <span class="status-badge completed">ĐÃ HOÀN THÀNH</span> 
+        </div>
         <div class="lesson-desc">
-          Lều tạm, Đền thờ và Cung điện cho học viên một sự giới thiệu về Cựu ước. Nhấn mạnh về lịch sử của dân Ðức Chúa Trời
+          Nghiên cứu về lịch sử và ý nghĩa của các nơi thờ phượng: từ Lều Tạm đến Đền Thờ và ý nghĩa thuộc linh.
         </div>
         <a href="leutamdentamcungdien.html" class="lesson-link">Xem bài</a>
       </div>
     </div>
 	
-    <div class="lesson-card">
+	<div class="lesson-card">
       <div class="lesson-img">
         <img src="https://computerchicuong.vn/content_congnghe2nd/upload/Image/TIn%20tuc/400x150%20anh%20bia%20trang%20chu-01.png" alt="CS1311" />
       </div>
       <div class="lesson-content">
-        <div class="lesson-title">CS1311 – Cơ Đốc Nhân Có Trách Nhiệm</div>
+        <div class="lesson-title">
+          CS1311 – Cơ Đốc Nhân Có Trách Nhiệm 
+          <span class="status-badge new">MỚI</span>
+        </div>
         <div class="lesson-desc">
-          Bài học về trách nhiệm của người theo Chúa trong cuộc sống hằng ngày, qua hành động và đức tin.
+          Học về chức vụ quản gia, cách quản lý thời gian, tài năng, và tiền bạc theo lời Chúa.
         </div>
         <a href="CS1311-co-doc-nhan-co-trach-nhiem.html" class="lesson-link">Xem bài</a>
       </div>
@@ -143,7 +236,7 @@
 
     <div class="lesson-card">
       <div class="lesson-img">
-        <img src="https://via.placeholder.com/400x150?text=CS1312" alt="CS1312" />
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/63/7f/6e637f15-6f80-1a56-da14-953e3cf69e96/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/1200x600wa.png" alt="CS1312" />
       </div>
       <div class="lesson-content">
         <div class="lesson-title">CS2321 – Hiểu biết Kinh Thánh</div>
@@ -156,12 +249,12 @@
 
     <div class="lesson-card">
       <div class="lesson-img">
-        <img src="https://via.placeholder.com/400x150?text=CS1313" alt="CS1313" />
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/63/7f/6e637f15-6f80-1a56-da14-953e3cf69e96/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/1200x600wa.png" alt="CS1313" />
       </div>
       <div class="lesson-content">
         <div class="lesson-title">CS3131 – Nền tảng của Lẽ Thật</div>
         <div class="lesson-desc">
-         Nghiên Cứu Về Giáo Lý Kinh Thánh là một phần giới thiệu hệ thống học tập về những giáo lý cơ bản thuộc Kinh Thánh. 
+          Nghiên Cứu Về Giáo Lý Kinh Thánh là một phần giới thiệu hệ thống học tập về những giáo lý cơ bản thuộc Kinh Thánh.
         </div>
         <a href="CS1313-song-binh-an.html" class="lesson-link">Xem bài</a>
       </div>
@@ -169,29 +262,50 @@
 
     <div class="lesson-card">
       <div class="lesson-img">
-        <img src="https://via.placeholder.com/400x150?text=CS1314" alt="CS1314" />
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/63/7f/6e637f15-6f80-1a56-da14-953e3cf69e96/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/1200x600wa.png" alt="CS1314" />
       </div>
       <div class="lesson-content">
         <div class="lesson-title">CS3231 – Sống trong Đấng Christ</div>
         <div class="lesson-desc">
-          Bài học về Sự cứu rỗi đề cập đến giáo lý của sự cứu rỗi. Bài học trình bày sự cứu rỗi như ý muốn và công việc của Đức Chúa Trời
+          Bài học về Sự cứu rỗi đề cập đến giáo lý của sự cứu rỗi. Bài học trình bày sự cứu rỗi như ý muốn và công việc của Đức Chúa Trờ
         </div>
-        <a href="CS1314-hoc-cach-cau-nguyen.html" class="lesson-link">Xem bài</a>
+        <a href="CS1314-dan-dat-nguoi-khac-den-voi-chua.html" class="lesson-link">Xem bài</a>
       </div>
     </div>
-  </div>
 
-  <footer>© 2025 – Môn Đồ Hóa</footer>
+  </div> <footer class="main-footer">
+      <p style="color: var(--text-dark); font-size: 1.1em; font-weight: 600; margin-bottom: 10px;">Liên hệ hỗ trợ học online, ôn tập kiểm tra:</p>
+      <div class="contact-info">
+         
+      </div>
+	   <footer>© 2025 – Môn Đồ Hóa</footer>
+  </footer>
+
+<script>
+function filterLessons() {
+    const input = document.getElementById('lesson-search');
+    const filter = input.value.toUpperCase();
+    const list = document.querySelector('.lesson-list');
+    const cards = list.getElementsByClassName('lesson-card');
+
+    for (let i = 0; i < cards.length; i++) {
+        // Lấy tiêu đề bài học để so sánh
+        const titleElement = cards[i].querySelector('.lesson-title');
+        
+        if (titleElement) {
+            // Lấy nội dung chữ (text content) của tiêu đề
+            const txtValue = titleElement.textContent || titleElement.innerText;
+            
+            // Nếu tìm thấy chuỗi tìm kiếm trong tiêu đề
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = ""; // Hiển thị card
+            } else {
+                cards[i].style.display = "none"; // Ẩn card
+            }
+        }       
+    }
+}
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
