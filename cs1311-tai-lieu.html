@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra | Cơ Đốc Nhân Có Trách Nhiệm (Hoàn Chỉnh 10 Bài)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Light:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    /* CSS NÂNG CẤP GIAO DIỆN HỌC THUẬT, SÁNG SỦA, HIỆN ĐẠI */
+    :root {
+        --primary-color: #005691; /* Xanh Đại học/Học thuật */
+        --accent-color: #a00000;  /* Đỏ Bordeau/Nhấn mạnh */
+        --background-light: #f8f9fa; /* Nền sáng */
+        --text-dark: #333;
+        --success-color: #28a745;
+        --error-color: #dc3545;
+        --check-all-color: #CC0000;
+        --header-bg-color: #005691; /* Màu xanh đậm cho Header */
+        --header-text-color: #ffffff; /* Chữ trắng trên Header */
+        --lesson-title-bg: #e0f7fa; /* Nền cho tiêu đề bài học */
+        --lesson-title-color: #007bb5;
+        --border-color: #ddd; /* Màu viền chung */
+    }
+
+    /* Thiết lập chung */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    /* Tiêu đề & Cấu trúc chính */
+    h1 {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 2em;
+    }
+    .quiz-form {
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Tiêu đề Bài Học (UNIT) */
+    .lesson-unit-title {
+        background-color: var(--lesson-title-bg);
+        color: var(--lesson-title-color);
+        padding: 15px;
+        margin: 20px -20px 20px -20px; /* Kéo dài ra sát lề container */
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.2em;
+        text-align: center;
+        border-left: 5px solid var(--primary-color);
+    }
+
+    /* Khối câu hỏi */
+    .question-block {
+        border-bottom: 1px dashed #e0e0e0;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+        padding-top: 10px;
+    }
+    .question-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+        color: var(--text-dark);
+    }
+    .options label {
+        display: block;
+        margin-bottom: 8px;
+        cursor: pointer;
+        padding: 5px 0;
+        transition: background-color 0.2s;
+        border-radius: 4px;
+    }
+    .options label:hover {
+        background-color: #f0f0f0;
+    }
+    .options input[type="radio"], .options input[type="checkbox"] {
+        margin-right: 10px;
+        accent-color: var(--primary-color);
+    }
+
+    /* Nút */
+    .check-button, .reset-button, .check-all-btn, .reset-all-btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-right: 10px;
+        transition: opacity 0.3s;
+    }
+    .check-button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    .check-button:hover {
+        opacity: 0.9;
+    }
+    .reset-button {
+        background-color: #aaa;
+        color: white;
+    }
+    .reset-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .check-all-btn, .reset-all-btn {
+        width: 100%;
+        margin-top: 20px;
+        margin-right: 0;
+    }
+    .check-all-btn {
+        background-color: var(--check-all-color);
+        color: white;
+    }
+    .reset-all-btn {
+        background-color: var(--primary-color);
+        color: white;
+        margin-bottom: 30px;
+    }
+
+    /* Phản hồi */
+    .feedback-message {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+    }
+    .correct .feedback-message {
+        background-color: #d4edda;
+        color: var(--success-color);
+        border: 1px solid var(--success-color);
+    }
+    .incorrect .feedback-message {
+        background-color: #f8d7da;
+        color: var(--error-color);
+        border: 1px solid var(--error-color);
+    }
+    
+    /* Chi tiết đáp án và Giải thích */
+    .answer-details {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f0f8ff; /* Nền xanh nhạt cho giải thích */
+        border-left: 4px solid var(--primary-color);
+        border-radius: 5px;
+        display: none;
+    }
+    .explanation {
+        font-style: normal;
+        margin-bottom: 10px;
+    }
+    
+    /* Trích dẫn Kinh Thánh */
+    .scripture-box {
+        background-color: #fff;
+        border: 1px dashed var(--lesson-title-color);
+        padding: 10px;
+        margin: 15px 0;
+        font-style: italic;
+        color: var(--text-dark);
+        border-radius: 5px;
+    }
+    
+    /* Tham chiếu PDF (Số trang) */
+    .page-cite {
+        display: block;
+        text-align: right;
+        font-size: 0.9em;
+        color: var(--accent-color);
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    /* Thanh điểm số */
+    .score-bar {
+        text-align: center;
+        padding: 15px;
+        background-color: var(--header-bg-color);
+        color: var(--header-text-color);
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-weight: 700;
+        font-size: 1.2em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive cho mobile */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        .check-button, .reset-button {
+            width: 100%;
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+        .lesson-unit-title {
+            font-size: 1.1em;
+            margin: 10px -10px 15px -10px;
+        }
+    }
+    
+    /* Footer */
+    .main-footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+        font-size: 0.9em;
+        color: var(--text-dark);
+    }
+    .main-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+    <div class="score-bar" id="score-display">Điểm số: 0/0</div>
+
+    <div class="container">
+        <h1>BÀI HỌC MÔN ĐỒ HÓA</h1>
+        <h2>Cơ Đốc Nhân Có Trách Nhiệm (CS1311)</h2>
+
+        <button class="check-all-btn" id="check-all-btn-top">Kiểm tra TOÀN BỘ đáp án</button>
+        <button class="reset-all-btn" id="reset-all-btn-top">Thiết lập lại TOÀN BỘ bài kiểm tra</button>
+
+        <form id="quiz-form" class="quiz-form">
+
+            <div class="lesson-unit-title">Bài 1: Đức Chúa Trời - Chủ của muôn vật (Trang 11)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">1. Nguyên tắc cơ bản của chức vụ quản gia là Đức Chúa Trời làm chủ, và chúng ta là người quản gia.</div>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> ĐÚNG</label>
+                    <label><input type="radio" name="q1" value="B"> SAI</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Nguyên tắc này là nền tảng của mọi bài học. Theo tài liệu, khi hiểu được Đức Chúa Trời là Chủ và chúng ta là người quản gia (steward), mọi quyết định quản lý của chúng ta sẽ được đặt đúng chỗ.
+                        <p class="scripture-box">Thi Thiên 24:1: "Đất và mọi vật chứa trên đất, Thế gian và những kẻ ở trong đó, đều thuộc về Đức Giê-hô-va."</p>
+                        <span class="page-cite">Tham khảo: Bài 1, Trang 11</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">2. Quyền sở hữu của Đức Chúa Trời không bao gồm:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> a) Thân thể chúng ta</label>
+                    <label><input type="radio" name="q2" value="B"> b) Những người không tin Chúa</label>
+                    <label><input type="radio" name="q2" value="C"> c) Thế gian và những người ở trong đó</label>
+                    <label><input type="radio" name="q2" value="D"> d) Muôn vật</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        LƯU Ý: Câu hỏi gây nhầm lẫn. Quyền sở hữu của Đức Chúa Trời bao gồm muôn vật, cả người tin và người không tin (Thi Thiên 24:1). Tuy nhiên, nếu xét theo ý bài học muốn nhấn mạnh quyền quản lý cá nhân thì có thể câu B được chọn. Đáp án chính xác theo thần học là quyền sở hữu của Chúa là tuyệt đối trên mọi sự.
+                        <p class="scripture-box">Thi Thiên 24:1: "Đất và mọi vật chứa trên đất, Thế gian và những kẻ ở trong đó, đều thuộc về Đức Giê-hô-va."</p>
+                        <span class="page-cite">Tham khảo: Bài 1, Trang 11 (Mục I.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">3. Cơ Đốc nhân có trách nhiệm phải làm người quản gia trung tín trên những tài sản mà Chúa đã ủy thác.</div>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A"> ĐÚNG</label>
+                    <label><input type="radio" name="q3" value="B"> SAI</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Đây là trách nhiệm chính của Cơ Đốc nhân. Tài liệu nhấn mạnh rằng chúng ta phải làm người quản gia trung tín (faithful steward) với mọi điều được giao phó (thân thể, thời gian, tài năng...).
+                        <p class="scripture-box">I Cô-rinh-tô 4:2: "Vả lại, điều người ta trông mong nơi những người quản lý là ai nấy phải tỏ ra trung tín."</p>
+                        <span class="page-cite">Tham khảo: Bài 1, Trang 12 (Mục I.B)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">4. Theo Kinh Thánh, những điều nào dưới đây thuộc quyền sở hữu của Đức Chúa Trời?</div>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A"> a) Bạc và vàng</label>
+                    <label><input type="radio" name="q4" value="B"> b) Muông thú trên ngàn đồi</label>
+                    <label><input type="radio" name="q4" value="C"> c) Cả A và B đều đúng</label>
+                    <label><input type="radio" name="q4" value="D"> d) Chỉ A đúng</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Cả bạc, vàng và muông thú đều được Kinh Thánh xác nhận là thuộc quyền sở hữu của Đức Chúa Trời, chứng minh quyền làm chủ tuyệt đối của Ngài đối với mọi tài sản vật chất.
+                        <p class="scripture-box">A-ghê 2:8: "Bạc là của ta, vàng là của ta, Đức Giê-hô-va vạn quân phán vậy."</p>
+                        <p class="scripture-box">Thi Thiên 50:10: "Vì mọi thú rừng đều thuộc về ta, Muông súc trên ngàn đồi cũng vậy."</p>
+                        <span class="page-cite">Tham khảo: Bài 1, Trang 11 (Mục I.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">5. Mục đích tối hậu của chức vụ quản gia trung tín là:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A"> a) Xây dựng sự nghiệp cá nhân</label>
+                    <label><input type="radio" name="q5" value="B"> b) Hoàn thành các mục tiêu của Hội Thánh</label>
+                    <label><input type="radio" name="q5" value="C"> c) Thăng tiến trong công việc Chúa</label>
+                    <label><input type="radio" name="q5" value="D"> d) Làm vinh hiển danh Đức Chúa Trời</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mục đích tối hậu của Cơ Đốc nhân trong mọi hành động (bao gồm cả chức vụ quản gia) luôn là Làm vinh hiển danh Đức Chúa Trời (To glorify God).
+                        <p class="scripture-box">I Cô-rinh-tô 10:31: "Vậy, dù anh em ăn, hay uống, hay làm sự chi khác, hãy vì sự vinh hiển Đức Chúa Trời mà làm."</p>
+                        <span class="page-cite">Tham khảo: Bài 1, Trang 13</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 2: Con người - Quản gia của Đức Chúa Trời (Trang 37)</div>
+            
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">6. Yêu cầu của Đức Chúa Trời đối với người quản gia là phải trung tín trong mọi điều Ngài ủy thác.</div>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A"> ĐÚNG</label>
+                    <label><input type="radio" name="q6" value="B"> SAI</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trung tín (Faithfulness) là yêu cầu cơ bản và quan trọng nhất đối với một người quản gia, vì họ đang quản lý tài sản thuộc về Chủ. Điều này đòi hỏi tính trung thực và tính trách nhiệm trong mọi hành động.
+                        <p class="scripture-box">I Cô-rinh-tô 4:2: "Vả lại, điều người ta trông mong nơi những người quản lý là ai nấy phải tỏ ra trung tín."</p>
+                        <span class="page-cite">Tham khảo: Bài 2, Trang 37</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">7. Điều nào sau đây là KHÔNG ĐÚNG khi nói về người quản gia?</div>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="A"> a) Họ là người được ủy thác quyền hành</label>
+                    <label><input type="radio" name="q7" value="B"> b) Người quản gia là người chủ thực sự của tài sản</label>
+                    <label><input type="radio" name="q7" value="C"> c) Họ có trách nhiệm báo cáo với chủ</label>
+                    <label><input type="radio" name="q7" value="D"> d) Họ phải hành động theo ý muốn của chủ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Đáp án B là KHÔNG ĐÚNG. Bài học khẳng định rõ ràng Đức Chúa Trời là Chủ và con người chỉ là người quản gia. Người quản gia có quyền sử dụng tài sản nhưng không có quyền sở hữu.
+                        <span class="page-cite">Tham khảo: Bài 2, Trang 37 (Mục I.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">8. Cơ Đốc nhân được giao phó quản lý những điều nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="A"> a) Thân thể và đời sống</label>
+                    <label><input type="radio" name="q8" value="B"> b) Thời gian và tài năng</label>
+                    <label><input type="radio" name="q8" value="C"> c) Tiền bạc và cơ nghiệp</label>
+                    <label><input type="radio" name="q8" value="D"> d) Cả A, B và C đều đúng</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Tài liệu Bài 2 liệt kê chi tiết những điều Đức Chúa Trời đã ủy thác cho con người quản lý, bao gồm thân thể, thời gian, tài năng, tiền bạc và đời sống của chúng ta.
+                        <p class="scripture-box">II Cô-rinh-tô 5:10: "Vì chúng ta thảy đều phải trình diện trước tòa án Đấng Christ, hầu cho mỗi người nhận lấy tùy theo điều mình đã làm lúc còn ở trong xác thịt, hoặc lành hoặc dữ."</p>
+                        <span class="page-cite">Tham khảo: Bài 2, Trang 38</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">9. Việc đầu tiên Đức Chúa Trời ủy thác cho con người là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="A"> a) Trông nom vườn Ê-đen</label>
+                    <label><input type="radio" name="q9" value="B"> b) Dâng 1/10 tài sản</label>
+                    <label><input type="radio" name="q9" value="C"> c) Quản trị trái đất và muôn loài</label>
+                    <label><input type="radio" name="q9" value="D"> d) Xây dựng đền thờ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trước khi sa ngã, Đức Chúa Trời đã ủy thác cho A-đam và Ê-va trách nhiệm quản trị (dominion) trái đất và muôn loài. Đây là chức vụ quản gia đầu tiên được thiết lập.
+                        <p class="scripture-box">Sáng Thế Ký 1:28: "Đức Chúa Trời ban phước cho loài người, phán rằng: Hãy sanh sản, thêm nhiều, làm cho đầy dẫy đất; hãy làm cho đất phục tùng, hãy quản trị loài cá biển, loài chim trời cùng các loài vật sống trên đất."</p>
+                        <span class="page-cite">Tham khảo: Bài 2, Trang 38 (Mục II.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">10. Tài năng và khả năng của chúng ta do ai ban cho?</div>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="A"> a) Đức Chúa Trời</label>
+                    <label><input type="radio" name="q10" value="B"> b) Cha mẹ</label>
+                    <label><input type="radio" name="q10" value="C"> c) Giáo dục</label>
+                    <label><input type="radio" name="q10" value="D"> d) Bản thân nỗ lực</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Tất cả tài năng, khả năng và ân tứ đều đến từ Đức Chúa Trời. Trách nhiệm của chúng ta là phát triển và sử dụng chúng để phục vụ Ngài và người khác.
+                        <p class="scripture-box">I Phi-e-rơ 4:10: "Mỗi người trong anh em hãy lấy ơn mình đã được mà giúp lẫn nhau, như người quản lý trung tín giữ các thứ ơn khác nhau của Đức Chúa Trời."</p>
+                        <span class="page-cite">Tham khảo: Bài 2, Trang 40 (Mục II.C)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 3: Quản lý đời sống của chúng ta (Trang 59)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">11. Trong việc quản lý thời gian, điều ưu tiên hàng đầu của Cơ Đốc nhân là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="A"> a) Dành thời gian ưu tiên cho Đức Chúa Trời</label>
+                    <label><input type="radio" name="q11" value="B"> b) Lập kế hoạch sự nghiệp</label>
+                    <label><input type="radio" name="q11" value="C"> c) Hoàn thành công việc gia đình</label>
+                    <label><input type="radio" name="q11" value="D"> d) Nghỉ ngơi đủ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Nguyên tắc ưu tiên (Priority principle) trong quản lý đời sống là phải đặt Đức Chúa Trời lên hàng đầu, tìm kiếm Nước Ngài trước mọi sự khác.
+                        <p class="scripture-box">Ma-thi-ơ 6:33: "Nhưng trước hết, hãy tìm kiếm nước Đức Chúa Trời và sự công bình của Ngài, thì Ngài sẽ cho thêm các ngươi mọi điều ấy nữa."</p>
+                        <span class="page-cite">Tham khảo: Bài 3, Trang 60 (Mục I.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">12. Khi thất bại, Cơ Đốc nhân có xu hướng đổ lỗi cho người khác hoặc hoàn cảnh. Lời Chúa dạy chúng ta phải làm gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q12" value="A"> a) Cầu xin Chúa giải quyết vấn đề</label>
+                    <label><input type="radio" name="q12" value="B"> b) Chịu trách nhiệm cá nhân về hành động của mình</label>
+                    <label><input type="radio" name="q12" value="C"> c) Tìm kiếm lời khuyên từ mục sư</label>
+                    <label><input type="radio" name="q12" value="D"> d) Bỏ qua và làm lại</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Sách Ga-la-ti dạy rõ về trách nhiệm cá nhân (personal responsibility). Chúng ta phải mang lấy gánh nặng của chính mình, không được đổ lỗi (blame) cho người khác hay hoàn cảnh.
+                        <p class="scripture-box">Ga-la-ti 6:5: "Vì ai nấy đều phải gánh lấy gánh riêng của mình."</p>
+                        <span class="page-cite">Tham khảo: Bài 3, Trang 61 (Mục I.B)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">13. Chức vụ quản gia đời sống bao gồm trách nhiệm nào sau đây?</div>
+                <div class="options">
+                    <label><input type="radio" name="q13" value="A"> a) Quản lý tài sản</label>
+                    <label><input type="radio" name="q13" value="B"> b) Quản lý thời gian</label>
+                    <label><input type="radio" name="q13" value="C"> c) Quản lý tài năng</label>
+                    <label><input type="radio" name="q13" value="D"> d) Làm chứng cho những người chưa tin Chúa</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trong bối cảnh quản lý đời sống (life stewardship), trách nhiệm làm chứng (witnessing) là tối quan trọng, đó là sứ mạng lớn mà Chúa giao phó cho mỗi Cơ Đốc nhân.
+                        <p class="scripture-box">Công vụ 1:8: "Nhưng khi Đức Thánh Linh giáng trên các ngươi, thì các ngươi sẽ nhận lấy quyền phép, và làm chứng về ta tại thành Giê-ru-sa-lem, cả xứ Giu-đê, xứ Sa-ma-ri, cho đến cùng trái đất."</p>
+                        <span class="page-cite">Tham khảo: Bài 3, Trang 63 (Mục II.A)</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">14. Để quản lý đời sống thành công, điều mà Chúa bảo chúng ta "tìm kiếm trước hết" là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q14" value="A"> a) Nước Đức Chúa Trời và sự công bình của Ngài</label>
+                    <label><input type="radio" name="q14" value="B"> b) Sự khôn ngoan</label>
+                    <label><input type="radio" name="q14" value="C"> c) Sự giàu có</label>
+                    <label><input type="radio" name="q14" value="D"> d) Sức khỏe</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Đây là sự nhắc lại nguyên tắc ưu tiên. Khi chúng ta tìm kiếm Nước Đức Chúa Trời và sự công bình của Ngài trước hết, Chúa sẽ ban thêm mọi điều khác.
+                        <p class="scripture-box">Ma-thi-ơ 6:33: "Nhưng trước hết, hãy tìm kiếm nước Đức Chúa Trời và sự công bình của Ngài, thì Ngài sẽ cho thêm các ngươi mọi điều ấy nữa."</p>
+                        <span class="page-cite">Tham khảo: Bài 3, Trang 62</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">15. Lời Chúa có vai trò gì trong việc quản lý đời sống?</div>
+                <div class="options">
+                    <label><input type="radio" name="q15" value="A"> a) Là cuốn sách lịch sử</label>
+                    <label><input type="radio" name="q15" value="B"> b) Là nguồn giải trí</label>
+                    <label><input type="radio" name="q15" value="C"> c) Là nguồn năng lực và hướng dẫn cho đời sống</label>
+                    <label><input type="radio" name="q15" value="D"> d) Là một bộ luật nghiêm khắc</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Lời Chúa (Kinh Thánh) là nguồn năng lực sống, sự dạy dỗ, sửa trị và hướng dẫn cho Cơ Đốc nhân. Nó là thanh gươm của Đức Thánh Linh.
+                        <p class="scripture-box">Hê-bơ-rơ 4:12: "Vì lời của Đức Chúa Trời là lời sống và linh nghiệm, sắc hơn gươm hai lưỡi, thấu vào đến đỗi chia hồn, linh, cốt, tủy, xem xét tư tưởng và ý định trong lòng."</p>
+                        <span class="page-cite">Tham khảo: Bài 3, Trang 63</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 4: Phát triển nhân cách của chúng ta (Trang 83)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">16. Nền tảng của nhân cách Cơ Đốc (Christlike character) là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q16" value="A"> a) Tình yêu thương (Love)</label>
+                    <label><input type="radio" name="q16" value="B"> b) Lòng kiên nhẫn</label>
+                    <label><input type="radio" name="q16" value="C"> c) Sự vui mừng</label>
+                    <label><input type="radio" name="q16" value="D"> d) Sự hòa thuận</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Tình yêu thương (Agape love) là nền tảng của nhân cách và là phẩm chất đầu tiên của Trái Thánh Linh. Nếu không có tình yêu thương, mọi hành động khác đều vô ích.
+                        <p class="scripture-box">I Cô-rinh-tô 13:4-7: "(Tình yêu thương) hay nhịn nhục, đầy nhân từ; tình yêu thương chẳng ghen tị, chẳng khoe khoang, chẳng lên mình kiêu ngạo..."</p>
+                        <span class="page-cite">Tham khảo: Bài 4, Trang 85</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">17. Nhân cách Cơ Đốc được hình thành qua việc chúng ta mặc lấy ai?</div>
+                <div class="options">
+                    <label><input type="radio" name="q17" value="A"> a) Ma-thi-ơ</label>
+                    <label><input type="radio" name="q17" value="B"> b) Phi-e-rơ</label>
+                    <label><input type="radio" name="q17" value="C"> c) Chúa Cứu Thế Giê-su</label>
+                    <label><input type="radio" name="q17" value="D"> d) Các sứ đồ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Việc phát triển nhân cách Cơ Đốc là quá trình mặc lấy con người mới, được đổi mới theo hình ảnh của Đấng Tạo Hóa (Chúa Giê-su Christ).
+                        <p class="scripture-box">Cô-lô-se 3:10: "và mặc lấy người mới, là người đang được đổi mới theo hình tượng của Đấng tạo dựng nên mình, để đạt đến sự hiểu biết đầy trọn."</p>
+                        <span class="page-cite">Tham khảo: Bài 4, Trang 86</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">18. Yếu tố quan trọng nhất giúp Cơ Đốc nhân phát triển những phẩm chất tốt lành là:</div>
+                <div class="options">
+                    <label><input type="radio" name="q18" value="A"> a) Quyền năng của Đức Thánh Linh</label>
+                    <label><input type="radio" name="q18" value="B"> b) Sự nỗ lực cá nhân</label>
+                    <label><input type="radio" name="q18" value="C"> c) Học hỏi từ người khác</label>
+                    <label><input type="radio" name="q18" value="D"> d) Tự kiểm điểm hằng ngày</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trái của Thánh Linh (Trái thần) là bằng chứng của quyền năng Đức Thánh Linh làm việc trong đời sống tín đồ. Phát triển nhân cách là công việc của Đức Chúa Trời, không phải do sức riêng của chúng ta.
+                        <p class="scripture-box">Ga-la-ti 5:22-23: "Nhưng trái của Thánh Linh, ấy là lòng yêu thương, sự vui mừng, bình an, nhịn nhục, nhân từ, hiền lành, trung tín, mềm mại, tiết độ."</p>
+                        <span class="page-cite">Tham khảo: Bài 4, Trang 88</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">19. Phẩm chất nào được đề cập là cần thiết để Cơ Đốc nhân vượt qua sự cám dỗ?</div>
+                <div class="options">
+                    <label><input type="radio" name="q19" value="A"> a) Sự hiểu biết</label>
+                    <label><input type="radio" name="q19" value="B"> b) Sự tiết độ (Tự chủ)</label>
+                    <label><input type="radio" name="q19" value="C"> c) Lòng nhịn nhục</label>
+                    <label><input type="radio" name="q19" value="D"> d) Sự mềm mại</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Sự tiết độ (hay tự chủ - self-control) là phẩm chất giúp chúng ta kiểm soát các ham muốn xác thịt và vượt qua sự cám dỗ, là một trong những bước quan trọng trong quá trình tăng trưởng thuộc linh.
+                        <p class="scripture-box">II Phi-e-rơ 1:5-6: "...phải thêm cho đức tin mình sự nhân đức, thêm cho nhân đức sự học thức, thêm cho học thức sự tiết độ..."</p>
+                        <span class="page-cite">Tham khảo: Bài 4, Trang 90</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">20. Chúa Giê-su được xem là gì trong việc phát triển nhân cách của chúng ta?</div>
+                <div class="options">
+                    <label><input type="radio" name="q20" value="A"> a) Người thầy giáo</label>
+                    <label><input type="radio" name="q20" value="B"> b) Người bạn</label>
+                    <label><input type="radio" name="q20" value="C"> c) Người cứu chuộc</label>
+                    <label><input type="radio" name="q20" value="D"> d) Gương mẫu hoàn hảo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Chúa Giê-su không chỉ là Đấng Cứu Chuộc mà còn là Gương mẫu hoàn hảo (perfect example) về nhân cách, để chúng ta noi theo.
+                        <p class="scripture-box">I Phi-e-rơ 2:21: "Vả lại, anh em đã được kêu gọi đến sự đó, vì Đấng Christ cũng đã chịu khổ cho anh em, để lại cho anh em một gương, hầu cho anh em noi dấu chân Ngài."</p>
+                        <span class="page-cite">Tham khảo: Bài 4, Trang 84</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 5: Sức khỏe và thân thể (Trang 103)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">21. Kinh Thánh nói thân thể của Cơ Đốc nhân là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q21" value="A"> a) Đền thờ của Đức Thánh Linh</label>
+                    <label><input type="radio" name="q21" value="B"> b) Tài sản cá nhân</label>
+                    <label><input type="radio" name="q21" value="C"> c) Phương tiện kiếm tiền</label>
+                    <label><input type="radio" name="q21" value="D"> d) Ngôi nhà tạm bợ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Đây là nguyên tắc quản lý thân thể Cơ Đốc: Thân thể chúng ta là Đền thờ của Đức Thánh Linh (Temple of the Holy Spirit) và đã được chuộc bằng giá cao (bought with a price).
+                        <p class="scripture-box">I Cô-rinh-tô 6:19-20: "Anh em há chẳng biết rằng thân thể mình là đền thờ của Đức Thánh Linh đang ngự trong anh em, là Đấng mà anh em đã nhận từ Đức Chúa Trời, và anh em chẳng phải thuộc về chính mình sao? Vì chưng đã được chuộc bằng giá cao rồi. Vậy, hãy lấy thân thể mình làm vinh hiển Đức Chúa Trời."</p>
+                        <span class="page-cite">Tham khảo: Bài 5, Trang 105</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">22. Mục đích Cơ Đốc nhân phải giữ gìn thân thể khỏe mạnh là để:</div>
+                <div class="options">
+                    <label><input type="radio" name="q22" value="A"> a) Sống lâu</label>
+                    <label><input type="radio" name="q22" value="B"> b) Làm việc hiệu quả</label>
+                    <label><input type="radio" name="q22" value="C"> c) Trông đẹp hơn</label>
+                    <label><input type="radio" name="q22" value="D"> d) Làm vinh hiển Đức Chúa Trời</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mục đích cuối cùng của mọi chức vụ quản gia, bao gồm cả thân thể, là Làm vinh hiển Đức Chúa Trời. Chúng ta giữ gìn sức khỏe để có thể phục vụ Ngài cách tốt nhất.
+                        <p class="scripture-box">I Cô-rinh-tô 6:20: "Vậy, hãy lấy thân thể mình làm vinh hiển Đức Chúa Trời."</p>
+                        <span class="page-cite">Tham khảo: Bài 5, Trang 107</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">23. Nguyên tắc nghỉ ngơi (Rest) của Chúa được thiết lập dựa trên:</div>
+                <div class="options">
+                    <label><input type="radio" name="q23" value="A"> a) Luật pháp La Mã</label>
+                    <label><input type="radio" name="q23" value="B"> b) Sự kiện sáng tạo của Đức Chúa Trời</label>
+                    <label><input type="radio" name="q23" value="C"> c) Nhu cầu y tế</label>
+                    <label><input type="radio" name="q23" value="D"> d) Truyền thống Do Thái</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Nguyên tắc về ngày Sa-bát (Sabbath) có nguồn gốc từ việc Đức Chúa Trời đã nghỉ ngơi ngày thứ bảy sau sáu ngày sáng tạo (Creation), là một nguyên tắc vĩnh cửu về sự nghỉ dưỡng.
+                        <p class="scripture-box">Xuất Ê-díp-tô Ký 20:11: "Vì trong sáu ngày Đức Giê-hô-va đã dựng nên trời, đất, biển, và muôn vật ở trong đó, qua ngày thứ bảy thì Ngài nghỉ; cho nên Đức Giê-hô-va đã ban phước cho ngày nghỉ và làm nên ngày thánh."</p>
+                        <span class="page-cite">Tham khảo: Bài 5, Trang 109</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">24. Tránh lạm dụng rượu, ma túy, hoặc các chất gây nghiện là hành động thể hiện:</div>
+                <div class="options">
+                    <label><input type="radio" name="q24" value="A"> a) Sự vâng lời chính quyền</label>
+                    <label><input type="radio" name="q24" value="B"> b) Việc quản lý tiền bạc</label>
+                    <label><input type="radio" name="q24" value="C"> c) Quản lý thân thể và sự tự chủ</label>
+                    <label><input type="radio" name="q24" value="D"> d) Việc giữ sự bình an</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Việc quản lý thân thể liên quan đến sự tự chủ (tiết độ) và tránh để mình bị say sưa hoặc bị kiểm soát bởi bất cứ điều gì ngoài Đức Thánh Linh.
+                        <p class="scripture-box">Ê-phê-sô 5:18: "Đừng say rượu, vì rượu xui cho luông tuồng, nhưng phải đầy dẫy Đức Thánh Linh."</p>
+                        <span class="page-cite">Tham khảo: Bài 5, Trang 110</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">25. Trong việc ăn uống, Cơ Đốc nhân cần quản lý theo nguyên tắc nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q25" value="A"> a) Ăn uống điều độ, tránh tham ăn</label>
+                    <label><input type="radio" name="q25" value="B"> b) Chỉ ăn rau củ quả</label>
+                    <label><input type="radio" name="q25" value="C"> c) Ăn uống theo sở thích cá nhân</label>
+                    <label><input type="radio" name="q25" value="D"> d) Ăn uống để tăng cân</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh khuyến khích sự điều độ (moderation) trong mọi sự, bao gồm cả ăn uống, và cảnh báo về thói quen tham ăn (gluttony).
+                        <p class="scripture-box">Châm Ngôn 23:2: "Nếu con ngồi đồng bàn với kẻ tham ăn, Hãy giữ gìn kỹ lưỡng điều ở trước mặt con."</p>
+                        <span class="page-cite">Tham khảo: Bài 5, Trang 112</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 6: Quản lý tiền bạc (Trang 125)</div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">26. Nguyên tắc cốt lõi trong việc quản lý tiền bạc của Cơ Đốc nhân là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q26" value="A"> a) Phải giàu có</label>
+                    <label><input type="radio" name="q26" value="B"> b) Phải nộp thuế</label>
+                    <label><input type="radio" name="q26" value="C"> c) Phải tiết kiệm</label>
+                    <label><input type="radio" name="q26" value="D"> d) Không thể vừa làm tôi Đức Chúa Trời vừa làm tôi tiền bạc</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Đây là sự cảnh báo trực tiếp của Chúa Giê-su. Tiền bạc (Mammon) là một thế lực cạnh tranh với quyền làm chủ của Đức Chúa Trời. Chúng ta không thể phục vụ cả hai.
+                        <p class="scripture-box">Ma-thi-ơ 6:24: "Không ai làm tôi hai chủ được; vì sẽ ghét chủ này mà yêu chủ kia, hay là trọng chủ này mà khinh chủ kia. Các ngươi không thể làm tôi Đức Chúa Trời lại làm tôi tiền bạc nữa."</p>
+                        <span class="page-cite">Tham khảo: Bài 6, Trang 127</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">27. Dâng 1/10 (tenth) là sự thể hiện nào sau đây?</div>
+                <div class="options">
+                    <label><input type="radio" name="q27" value="A"> a) Trả nợ cho Chúa</label>
+                    <label><input type="radio" name="q27" value="B"> b) Công nhận quyền làm chủ và lòng biết ơn của Chúa</label>
+                    <label><input type="radio" name="q27" value="C"> c) Bắt buộc theo luật pháp Môi-se</label>
+                    <label><input type="radio" name="q27" value="D"> d) Đóng thuế cho Hội thánh</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Dâng 1/10 là một hành động đức tin và sự thờ phượng, công nhận rằng mọi của cải đều thuộc về Ngài và chúng ta chỉ dâng lại một phần nhỏ để hỗ trợ công việc Chúa.
+                        <p class="scripture-box">Lê-vi Ký 27:30: "Mọi phần mười thổ sản, bất kỳ ngũ cốc ở ruộng hay trái cây ở vườn, đều thuộc về Đức Giê-hô-va; ấy là vật thánh cho Đức Giê-hô-va."</p>
+                        <span class="page-cite">Tham khảo: Bài 6, Trang 129</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">28. Cơ Đốc nhân nên giữ nguyên tắc nào về nợ nần?</div>
+                <div class="options">
+                    <label><input type="radio" name="q28" value="A"> a) Không mắc nợ ai chi hết, ngoài tình yêu thương</label>
+                    <label><input type="radio" name="q28" value="B"> b) Mắc nợ để đầu tư lớn</label>
+                    <label><input type="radio" name="q28" value="C"> c) Trả nợ khi có tiền</label>
+                    <label><input type="radio" name="q28" value="D"> d) Mắc nợ là điều bình thường</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh khuyên nên tránh mắc nợ (debt) vì người mắc nợ là tôi tớ của người cho vay. Trách nhiệm duy nhất mà chúng ta không thể trả hết là món nợ tình yêu thương.
+                        <p class="scripture-box">Rô-ma 13:8: "Đừng mắc nợ ai chi hết, chỉ trừ ra mắc nợ về sự yêu thương nhau; vì ai yêu người lân cận, là làm trọn luật pháp."</p>
+                        <span class="page-cite">Tham khảo: Bài 6, Trang 131</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">29. Trong việc quản lý tiền bạc, sự tiết kiệm (saving) được dạy theo gương của loài vật nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q29" value="A"> a) Sư tử</label>
+                    <label><input type="radio" name="q29" value="B"> b) Cú</label>
+                    <label><input type="radio" name="q29" value="C"> c) Con kiến</label>
+                    <label><input type="radio" name="q29" value="D"> d) Con cáo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh khuyến khích chúng ta học theo sự siêng năng và tiết kiệm của con kiến, biết trữ lương thực cho tương lai.
+                        <p class="scripture-box">Châm Ngôn 6:6-8: "Hỡi kẻ biếng nhác, hãy đi đến cùng con kiến; Khá xem xét cách ở của nó mà làm cho khôn ngoan. Dầu nó không có tướng sư, quan cai, hay kẻ cai trị, Song nó sắm sửa lương thực mình trong mùa hạ, Và thâu góp đồ ăn mình trong mùa gặt."</p>
+                        <span class="page-cite">Tham khảo: Bài 6, Trang 133</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">30. Mục đích Cơ Đốc nhân nên phấn đấu có một đời sống dư dật là để:</div>
+                <div class="options">
+                    <label><input type="radio" name="q30" value="A"> a) Tự mình hưởng thụ</label>
+                    <label><input type="radio" name="q30" value="B"> c) Đầu tư kinh doanh</label>
+                    <label><input type="radio" name="q30" value="C"> c) Mua nhà lớn</label>
+                    <label><input type="radio" name="q30" value="D"> d) Có khả năng làm việc lành và giúp đỡ người khác</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Sự giàu có được Chúa ban cho không nhằm mục đích tích trữ cá nhân, mà là để giúp đỡ người nghèo và hỗ trợ công việc Chúa (làm việc lành).
+                        <p class="scripture-box">I Ti-mô-thê 6:18: "dặn dò họ làm điều lành, làm giàu về việc lành, sẵn lòng bố thí và chia sẻ."</p>
+                        <span class="page-cite">Tham khảo: Bài 6, Trang 135</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 7: Chức vụ quản gia và gia đình (Trang 149)</div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">31. Vai trò quản gia của người chồng đối với vợ được mô tả như thế nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q31" value="A"> a) Là người làm chủ tuyệt đối</label>
+                    <label><input type="radio" name="q31" value="B"> b) Yêu vợ như Đấng Christ yêu Hội thánh</label>
+                    <label><input type="radio" name="q31" value="C"> c) Là người kiểm soát tài chính</label>
+                    <label><input type="radio" name="q31" value="D"> d) Người luôn luôn đúng</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Vai trò của người chồng là yêu vợ bằng tình yêu hy sinh (selfless love) như cách Đấng Christ đã hy sinh cho Hội thánh.
+                        <p class="scripture-box">Ê-phê-sô 5:25: "Hỡi người làm chồng, hãy yêu vợ mình, như Đấng Christ đã yêu Hội thánh, phó chính mình Ngài vì Hội thánh."</p>
+                        <span class="page-cite">Tham khảo: Bài 7, Trang 151</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">32. Kinh Thánh dạy người vợ nên có thái độ nào đối với chồng?</div>
+                <div class="options">
+                    <label><input type="radio" name="q32" value="A"> a) Thuận phục chồng</label>
+                    <label><input type="radio" name="q32" value="B"> b) Kiểm soát mọi quyết định</label>
+                    <label><input type="radio" name="q32" value="C"> c) Luôn phải có ý kiến riêng</label>
+                    <label><input type="radio" name="q32" value="D"> d) Chỉ vâng lời chồng khi anh ấy đúng</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Người vợ được dạy phải thuận phục (submit) chồng mình "như thuận phục Chúa", công nhận vai trò lãnh đạo (leadership role) của chồng trong gia đình.
+                        <p class="scripture-box">Ê-phê-sô 5:22: "Hỡi kẻ làm vợ, hãy vâng phục chồng mình như vâng phục Chúa."</p>
+                        <span class="page-cite">Tham khảo: Bài 7, Trang 153</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">33. Trách nhiệm quản gia quan trọng nhất của cha mẹ đối với con cái là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q33" value="A"> a) Cung cấp giáo dục tốt nhất</label>
+                    <label><input type="radio" name="q33" value="B"> b) Để con cái tự phát triển</label>
+                    <label><input type="radio" name="q33" value="C"> c) Dạy dỗ con cái theo đường lối của Chúa</label>
+                    <label><input type="radio" name="q33" value="D"> d) Cho chúng tự do lựa chọn tôn giáo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trách nhiệm quan trọng nhất là dạy dỗ con cái (training and instruction) về Lời Chúa và đường lối Ngài ngay từ khi còn nhỏ.
+                        <p class="scripture-box">Châm Ngôn 22:6: "Hãy dạy cho trẻ thơ con đường nó phải theo; Dầu khi nó già cũng không lìa khỏi đó."</p>
+                        <span class="page-cite">Tham khảo: Bài 7, Trang 155</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">34. Điều gì xảy ra nếu Cơ Đốc nhân không quan tâm đến gia đình mình?</div>
+                <div class="options">
+                    <label><input type="radio" name="q34" value="A"> a) Bị khiển trách</label>
+                    <label><input type="radio" name="q34" value="B"> b) Bị phạt tiền</label>
+                    <label><input type="radio" name="q34" value="C"> c) Mất chức vụ</label>
+                    <label><input type="radio" name="q34" value="D"> d) Chối bỏ đức tin và tệ hơn người không tin</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh nhấn mạnh rằng việc cung cấp cho gia đình (cả về vật chất và thuộc linh) là một phần của đức tin Cơ Đốc, và người bỏ bê trách nhiệm này còn tệ hơn người không tin.
+                        <p class="scripture-box">I Ti-mô-thê 5:8: "Ví bằng có ai không săn sóc đến bà con mình, nhất là người nhà mình, ấy là người chối bỏ đức tin, lại tệ hơn người không tin nữa."</p>
+                        <span class="page-cite">Tham khảo: Bài 7, Trang 157</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">35. Hôn nhân Cơ Đốc phải được tôn trọng như thế nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q35" value="A"> a) Phải giàu có</label>
+                    <label><input type="radio" name="q35" value="B"> b) Phải có con</label>
+                    <label><input type="radio" name="q35" value="C"> c) Phải có tiệc cưới lớn</label>
+                    <label><input type="radio" name="q35" value="D"> d) Hôn nhân phải được tôn trọng, giữ gìn sự chung thủy</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Hôn nhân là một sự giao ước thánh (holy covenant) cần được tôn trọng và giữ gìn sự chung thủy (fidelity) giữa vợ và chồng.
+                        <p class="scripture-box">Hê-bơ-rơ 13:4: "Mọi người phải tôn trọng hôn nhân, chốn khuê phòng phải giữ được thanh sạch; vì Đức Chúa Trời sẽ đoán phạt kẻ dâm dục và ngoại tình."</p>
+                        <span class="page-cite">Tham khảo: Bài 7, Trang 159</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 8: Chức vụ quản gia và Hội thánh (Trang 171)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">36. Mục đích chính của việc Hội thánh nhóm lại là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q36" value="A"> a) Xây dựng thân thể Đấng Christ</label>
+                    <label><input type="radio" name="q36" value="B"> b) Giải quyết các vấn đề xã hội</label>
+                    <label><input type="radio" name="q36" value="C"> c) Thảo luận chính trị</label>
+                    <label><input type="radio" name="q36" value="D"> d) Gây quỹ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mục đích chính của Hội thánh là xây dựng thân thể Đấng Christ (edification of the body of Christ) thông qua các chức vụ được Chúa ban.
+                        <p class="scripture-box">Ê-phê-sô 4:12: "để trang bị các thánh đồ cho công tác phục vụ và xây dựng thân thể Đấng Christ."</p>
+                        <span class="page-cite">Tham khảo: Bài 8, Trang 173</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">37. Trách nhiệm của mỗi thành viên trong Hội thánh là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q37" value="A"> a) Chỉ cần tham dự nhóm</label>
+                    <label><input type="radio" name="q37" value="B"> b) Dùng ân tứ Chúa ban để phục vụ lẫn nhau</label>
+                    <label><input type="radio" name="q37" value="C"> c) Chỉ dâng tiền</label>
+                    <label><input type="radio" name="q37" value="D"> d) Chỉ cầu nguyện</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mỗi Cơ Đốc nhân đều nhận được ân tứ (spiritual gifts) khác nhau từ Chúa. Trách nhiệm quản gia là phải sử dụng những ân tứ này để phục vụ và xây dựng các tín hữu khác.
+                        <p class="scripture-box">I Phi-e-rơ 4:10: "Mỗi người trong anh em hãy lấy ơn mình đã được mà giúp lẫn nhau, như người quản lý trung tín giữ các thứ ơn khác nhau của Đức Chúa Trời."</p>
+                        <span class="page-cite">Tham khảo: Bài 8, Trang 175</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">38. Nguyên tắc nào áp dụng cho sự dâng hiến trong Hội thánh?</div>
+                <div class="options">
+                    <label><input type="radio" name="q38" value="A"> a) Dâng theo sự ép buộc</label>
+                    <label><input type="radio" name="q38" value="B"> b) Dâng theo cảm xúc</label>
+                    <label><input type="radio" name="q38" value="C"> c) Dâng để được đền đáp</label>
+                    <label><input type="radio" name="q38" value="D"> d) Dâng cách vui lòng và theo sự định liệu trong lòng</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh dạy rõ rằng sự dâng hiến (giving) phải là tự nguyện và đến từ lòng vui vẻ (cheerful giver), chứ không phải do bị ép buộc.
+                        <p class="scripture-box">II Cô-rinh-tô 9:7: "Mỗi người nên tùy theo lòng mình đã định mà dâng hiến, không phải miễn cưỡng hay vì bị ép buộc, vì Đức Chúa Trời yêu thương người dâng cách vui lòng."</p>
+                        <span class="page-cite">Tham khảo: Bài 8, Trang 177</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">39. Trong Hội thánh, các tín hữu được ví như gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q39" value="A"> a) Các chi thể trong một thân</label>
+                    <label><input type="radio" name="q39" value="B"> b) Những người đồng sở hữu</label>
+                    <label><input type="radio" name="q39" value="C"> c) Khách mời</label>
+                    <label><input type="radio" name="q39" value="D"> d) Những nhân viên</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mô hình Kinh Thánh cho Hội thánh là Thân thể của Đấng Christ (Body of Christ), với mỗi người là một chi thể (member) có chức năng và tầm quan trọng riêng.
+                        <p class="scripture-box">Rô-ma 12:4-5: "Vì như trong một thân chúng ta có nhiều chi thể, nhưng không phải chi thể nào cũng có một chức phận, thì cũng vậy, chúng ta là nhiều người, chỉ làm nên một thân trong Đấng Christ, và ai nấy là chi thể của nhau."</p>
+                        <span class="page-cite">Tham khảo: Bài 8, Trang 179</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">40. Chức vụ quản gia trong Hội thánh đòi hỏi tín hữu phải làm gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q40" value="A"> a) Tranh luận</label>
+                    <label><input type="radio" name="q40" value="B"> b) Giữ sự hiệp một</label>
+                    <label><input type="radio" name="q40" value="C"> c) Tách nhóm</label>
+                    <label><input type="radio" name="q40" value="D"> d) Chỉ trích lãnh đạo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Sự hiệp một (unity) là điều cần thiết để thân thể Đấng Christ hoạt động hiệu quả và làm vinh hiển Chúa. Tín hữu cần bảo vệ sự bình an và hiệp nhất trong tinh thần.
+                        <p class="scripture-box">Ê-phê-sô 4:3: "Hãy cố gắng duy trì sự hiệp nhất của Thánh Linh bằng dây hòa bình."</p>
+                        <span class="page-cite">Tham khảo: Bài 8, Trang 181</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 9: Chức vụ quản gia và cộng đồng (Trang 193)</div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">41. Trách nhiệm của Cơ Đốc nhân đối với cộng đồng được ví như gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q41" value="A"> a) Nước</label>
+                    <label><input type="radio" name="q41" value="B"> b) Ánh sáng</label>
+                    <label><input type="radio" name="q41" value="C"> c) Muối và Ánh sáng</label>
+                    <label><input type="radio" name="q41" value="D"> d) Gió</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Chúa Giê-su gọi các môn đồ là muối (bảo quản, tạo hương vị) và ánh sáng (chỉ đường, xua tan bóng tối) của thế gian. Đây là trách nhiệm biến đổi cộng đồng.
+                        <p class="scripture-box">Ma-thi-ơ 5:13-16: "Chính các ngươi là muối của đất... Các ngươi là sự sáng của thế gian..."</p>
+                        <span class="page-cite">Tham khảo: Bài 9, Trang 195</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">42. Lời Chúa dạy chúng ta phải đối xử với người nghèo trong cộng đồng như thế nào?</div>
+                <div class="options">
+                    <label><input type="radio" name="q42" value="A"> a) Phớt lờ họ</label>
+                    <label><input type="radio" name="q42" value="B"> b) Giúp đỡ họ</label>
+                    <label><input type="radio" name="q42" value="C"> c) Chỉ trích họ</label>
+                    <label><input type="radio" name="q42" value="D"> d) Để họ tự vươn lên</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Chức vụ quản gia bao gồm việc thực hiện công bằng và lòng thương xót. Giúp đỡ người nghèo, người kém may mắn là thể hiện lòng nhân ái của Đức Chúa Trời.
+                        <p class="scripture-box">Châm Ngôn 14:31: "Kẻ nào hà hiếp người nghèo, làm nhục Đấng Tạo Hóa mình; Song ai thương xót người thiếu thốn, tôn kính Ngài."</p>
+                        <span class="page-cite">Tham khảo: Bài 9, Trang 197</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">43. Để làm chứng cho Chúa trong cộng đồng, Cơ Đốc nhân cần phải:</div>
+                <div class="options">
+                    <label><input type="radio" name="q43" value="A"> a) Sống một đời sống không chỗ trách được</label>
+                    <label><input type="radio" name="q43" value="B"> b) Luôn đi rao giảng</label>
+                    <label><input type="radio" name="q43" value="C"> c) Chỉ làm các việc thiện</label>
+                    <label><input type="radio" name="q43" value="D"> d) Tránh tiếp xúc với người ngoại đạo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Việc làm chứng hiệu quả nhất là thông qua đời sống mẫu mực (blameless life), giúp người khác thấy được ánh sáng của Đấng Christ trong hành động của chúng ta.
+                        <p class="scripture-box">Phi-líp 2:15: "để anh em trở nên con cái không chỗ trách được của Đức Chúa Trời, giữa một thế hệ gian tà và bại hoại, giữa thế hệ đó, anh em chiếu sáng như những vì sao trên bầu trời."</p>
+                        <span class="page-cite">Tham khảo: Bài 9, Trang 199</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">44. Thái độ đúng đắn của Cơ Đốc nhân đối với chính quyền là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q44" value="A"> a) Chống đối mọi luật lệ</label>
+                    <label><input type="radio" name="q44" value="B"> b) Chỉ vâng lời khi thấy hợp lý</label>
+                    <label><input type="radio" name="q44" value="C"> c) Tuân thủ luật pháp và cầu nguyện cho chính quyền</label>
+                    <label><input type="radio" name="q44" value="D"> d) Tham gia chính trị để thay đổi mọi thứ</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Kinh Thánh dạy chúng ta phải tuân theo chính quyền (submit to governing authorities) vì họ được Đức Chúa Trời lập nên, đồng thời phải cầu thay cho họ.
+                        <p class="scripture-box">Rô-ma 13:1: "Mọi người phải vâng phục các nhà cầm quyền, vì không có quyền nào mà không đến từ Đức Chúa Trời, các nhà cầm quyền hiện tại đều được Đức Chúa Trời lập nên."</p>
+                        <span class="page-cite">Tham khảo: Bài 9, Trang 201</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">45. Điều nào sau đây là trách nhiệm công dân quan trọng của Cơ Đốc nhân?</div>
+                <div class="options">
+                    <label><input type="radio" name="q45" value="A"> a) Tổ chức biểu tình</label>
+                    <label><input type="radio" name="q45" value="B"> b) Cầu thay cho những người có thẩm quyền</label>
+                    <label><input type="radio" name="q45" value="C"> c) Tránh xa mọi hoạt động xã hội</label>
+                    <label><input type="radio" name="q45" value="D"> d) Luôn chỉ trích các nhà lãnh đạo</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trách nhiệm công dân đầu tiên và quan trọng nhất được sứ đồ Phao-lô nhắc đến là cầu thay (praying) cho các nhà cầm quyền để chúng ta có thể sống một đời sống bình an.
+                        <p class="scripture-box">I Ti-mô-thê 2:1-2: "Vậy, trước hết ta khuyên dặn con, hãy nài xin, cầu nguyện, khẩn nguyện, cảm tạ cho mọi người, cho các vua, và hết thảy các người ở địa vị cao, để chúng ta được sống một đời yên ổn, tin kính và đứng đắn trọn vẹn."</p>
+                        <span class="page-cite">Tham khảo: Bài 9, Trang 203</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="lesson-unit-title">Bài 10: Chức vụ quản gia và xã hội (Trang 215)</div>
+
+            <div class="question-block" data-correct-answer="A">
+                <div class="question-title">46. Đối với môi trường và thiên nhiên, Cơ Đốc nhân có trách nhiệm gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q46" value="A"> a) Bảo vệ và giữ gìn các tạo vật của Chúa</label>
+                    <label><input type="radio" name="q46" value="B"> b) Chỉ khai thác tài nguyên</label>
+                    <label><input type="radio" name="q46" value="C"> c) Thờ phượng thiên nhiên</label>
+                    <label><input type="radio" name="q46" value="D"> d) Không liên quan đến trách nhiệm Cơ Đốc</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trong sự Sáng Tạo, Đức Chúa Trời giao cho con người trách nhiệm cai quản và giữ gìn (tend and keep) khu vườn. Đây là trách nhiệm quản gia đối với môi trường.
+                        <p class="scripture-box">Sáng Thế Ký 2:15: "Giê-hô-va Đức Chúa Trời đem người đặt vào vườn Ê-đen, để trông nom và giữ gìn nó."</p>
+                        <span class="page-cite">Tham khảo: Bài 10, Trang 217</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">47. Chức vụ quản gia xã hội đòi hỏi chúng ta phải làm gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q47" value="A"> a) Tìm kiếm lợi ích cá nhân</label>
+                    <label><input type="radio" name="q47" value="B"> b) Giữ im lặng</label>
+                    <label><input type="radio" name="q47" value="C"> c) Tập trung vào hội thánh</label>
+                    <label><input type="radio" name="q47" value="D"> d) Thực thi sự công bình và lòng thương xót</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Trách nhiệm xã hội của Cơ Đốc nhân được tổng kết là: Hành động công bằng (do justly), yêu sự nhân từ (love mercy) và bước đi khiêm nhường (walk humbly) với Chúa.
+                        <p class="scripture-box">Mi-chê 6:8: "Hỡi người! Điều mà Đức Giê-hô-va đòi ngươi há chẳng phải là làm sự công bình, ưa sự nhân từ, và bước đi cách khiêm nhường với Đức Chúa Trời ngươi sao?"</p>
+                        <span class="page-cite">Tham khảo: Bài 10, Trang 219</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="C">
+                <div class="question-title">48. Thái độ đúng đắn của Cơ Đốc nhân đối với công việc và lao động là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q48" value="A"> a) Làm việc khi có hứng</label>
+                    <label><input type="radio" name="q48" value="B"> b) Lao động để kiếm tiền</label>
+                    <label><input type="radio" name="q48" value="C"> c) Làm việc siêng năng như làm cho Chúa</label>
+                    <label><input type="radio" name="q48" value="D"> d) Tùy thuộc vào thái độ của sếp</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Nguyên tắc quản gia trong công việc là phải làm việc siêng năng (diligently) và coi đó như là phục vụ Chúa (serving the Lord), chứ không chỉ phục vụ con người.
+                        <p class="scripture-box">Cô-lô-se 3:23: "Bất cứ việc gì anh em làm, hãy hết lòng mà làm, như làm cho Chúa, không phải làm cho người ta."</p>
+                        <span class="page-cite">Tham khảo: Bài 10, Trang 221</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="B">
+                <div class="question-title">49. Việc giáo dục Cơ Đốc có vai trò nào sau đây?</div>
+                <div class="options">
+                    <label><input type="radio" name="q49" value="A"> a) Dạy kinh tế</label>
+                    <label><input type="radio" name="q49" value="B"> b) Truyền lại Lời Chúa cho thế hệ sau</label>
+                    <label><input type="radio" name="q49" value="C"> c) Phát triển khoa học</label>
+                    <label><input type="radio" name="q49" value="D"> d) Mở trường học</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Giáo dục Cơ Đốc là một phần của chức vụ quản gia, nhằm truyền lại các việc làm vĩ đại của Chúa và các nguyên tắc Lời Ngài cho thế hệ kế tiếp.
+                        <p class="scripture-box">Thi Thiên 78:4: "Chúng tôi chẳng giấu giếm chi cùng con cháu họ, bèn thuật lại cho dòng dõi hậu lai sự ca ngợi Đức Giê-hô-va, sức lực Ngài, và các việc lạ lùng Ngài đã làm."</p>
+                        <span class="page-cite">Tham khảo: Bài 10, Trang 223</span> 
+                    </p>
+                </div>
+            </div>
+
+            <div class="question-block" data-correct-answer="D">
+                <div class="question-title">50. Mục đích tổng thể của chức vụ quản gia Cơ Đốc là gì?</div>
+                <div class="options">
+                    <label><input type="radio" name="q50" value="A"> a) Sống dư dật</label>
+                    <label><input type="radio" name="q50" value="B"> b) Phục vụ Hội thánh</label>
+                    <label><input type="radio" name="q50" value="C"> c) Làm việc thiện</label>
+                    <label><input type="radio" name="q50" value="D"> d) Trở nên giống hình ảnh của Chúa Giê-su</label>
+                </div>
+                <button class="check-button">Kiểm tra đáp án</button>
+                <button class="reset-button" disabled>Thiết lập lại</button>
+                <div class="feedback-message"></div>
+                <div class="answer-details">
+                    <p class="explanation">
+                        Mục đích tối hậu của mọi điều Đức Chúa Trời làm trong đời sống Cơ Đốc nhân là để chúng ta trở nên giống hình ảnh của Con Ngài (Chúa Giê-su).
+                        <p class="scripture-box">Rô-ma 8:29: "Vì những kẻ Ngài đã biết trước, thì Ngài cũng đã định trước cho nên giống như hình ảnh Con Ngài, hầu cho Con nầy làm Con cả ở giữa nhiều anh em."</p>
+                        <span class="page-cite">Tham khảo: Bài 10, Trang 225 (Tổng kết)</span> 
+                    </p>
+                </div>
+            </div>
+
+        </form>
+
+        <button class="check-all-btn" id="check-all-btn-bottom">Kiểm tra TOÀN BỘ đáp án</button>
+        <button class="reset-all-btn" id="reset-all-btn-bottom">Thiết lập lại TOÀN BỘ bài kiểm tra</button>
+
+    </div>
+
+    <footer class="main-footer">
+        <p style="color: var(--text-dark); font-size: 1.1em; font-weight: 600; margin-bottom: 10px;">Liên hệ hỗ trợ kỹ thuật và học liệu:</p>
+        <div class="contact-info">
+        </div>
+        <footer>© 2025 – Môn Đồ Hóa</footer>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quizForm = document.getElementById('quiz-form');
+        const questionBlocks = document.querySelectorAll('.question-block');
+        const scoreDisplay = document.getElementById('score-display');
+        const checkAllBtnTop = document.getElementById('check-all-btn-top');
+        const resetAllBtnTop = document.getElementById('reset-all-btn-top');
+        const checkAllBtnBottom = document.getElementById('check-all-btn-bottom');
+        const resetAllBtnBottom = document.getElementById('reset-all-btn-bottom');
+        const totalQuestions = questionBlocks.length;
+
+        function updateDisplay() {
+            let correctAnswers = 0;
+            questionBlocks.forEach(block => {
+                if (block.classList.contains('correct')) {
+                    correctAnswers++;
+                }
+            });
+            scoreDisplay.textContent = `Điểm số: ${correctAnswers}/${totalQuestions}`;
+        }
+
+        function checkAnswer(block) {
+            const correctAnswer = block.getAttribute('data-correct-answer');
+            const selectedInput = block.querySelector(`input[name="${block.querySelector('input').name}"]:checked`);
+            const feedbackDiv = block.querySelector('.feedback-message');
+            const detailsDiv = block.querySelector('.answer-details');
+            const checkButton = block.querySelector('.check-button');
+            const resetButton = block.querySelector('.reset-button');
+            
+            // Ẩn các trạng thái cũ
+            block.classList.remove('correct', 'incorrect');
+            feedbackDiv.style.display = 'none';
+            detailsDiv.style.display = 'none';
+
+            if (!selectedInput) {
+                feedbackDiv.textContent = '🚫 Bạn chưa chọn đáp án nào.';
+                feedbackDiv.style.backgroundColor = '#fff3cd'; // Màu vàng nhạt
+                feedbackDiv.style.color = '#856404';
+                feedbackDiv.style.display = 'block';
+                return;
+            }
+
+            const selectedAnswer = selectedInput.value;
+            block.setAttribute('data-completed', 'true'); // Đánh dấu đã làm
+
+            if (selectedAnswer === correctAnswer) {
+                block.classList.add('correct');
+                feedbackDiv.textContent = '✅ Chính xác!';
+                feedbackDiv.style.display = 'block';
+                detailsDiv.style.display = 'block';
+            } else {
+                block.classList.add('incorrect');
+                feedbackDiv.textContent = '❌ Sai rồi. Xem giải thích bên dưới.';
+                feedbackDiv.style.display = 'block';
+                detailsDiv.style.display = 'block';
+            }
+            
+            checkButton.textContent = 'Đã kiểm tra';
+            checkButton.disabled = true;
+            resetButton.disabled = false;
+            updateDisplay();
+        }
+
+        function resetQuestion(block) {
+            block.classList.remove('correct', 'incorrect');
+            block.removeAttribute('data-completed');
+            
+            const inputs = block.querySelectorAll('input');
+            inputs.forEach(input => input.checked = false);
+            
+            const feedbackDiv = block.querySelector('.feedback-message');
+            if (feedbackDiv) feedbackDiv.style.display = 'none';
+            
+            const detailsDiv = block.querySelector('.answer-details');
+            if (detailsDiv) detailsDiv.style.display = 'none';
+
+            const checkButton = block.querySelector('.check-button');
+            if (checkButton) checkButton.textContent = 'Kiểm tra đáp án';
+            if (checkButton) checkButton.disabled = false;
+            
+            const resetButton = block.querySelector('.reset-button');
+            if (resetButton) resetButton.disabled = true;
+
+            updateDisplay();
+        }
+
+        function checkAllAnswers() {
+            let allCorrect = true;
+            questionBlocks.forEach(block => {
+                // Chỉ kiểm tra các câu đã được chọn
+                if (block.querySelector('input:checked')) {
+                    checkAnswer(block);
+                } else {
+                    // Hiển thị thông báo nếu chưa chọn
+                    const feedbackDiv = block.querySelector('.feedback-message');
+                    if (feedbackDiv) {
+                        feedbackDiv.textContent = '🚫 Bạn chưa chọn đáp án nào.';
+                        feedbackDiv.style.backgroundColor = '#fff3cd'; 
+                        feedbackDiv.style.color = '#856404';
+                        feedbackDiv.style.display = 'block';
+                    }
+                    block.classList.remove('correct', 'incorrect');
+                }
+                
+                // Lọc ra các câu hỏi đã được chấm và không đúng
+                if (block.getAttribute('data-completed') && !block.classList.contains('correct')) {
+                    allCorrect = false;
+                }
+            });
+            updateDisplay(); 
+
+            // Cập nhật trạng thái nút "Kiểm tra TOÀN BỘ"
+            const checkAllBtns = document.querySelectorAll('.check-all-btn');
+            checkAllBtns.forEach(btn => {
+                if(allCorrect) {
+                     btn.textContent = '✅ TẤT CẢ ĐÚNG!';
+                     btn.style.backgroundColor = 'var(--success-color)';
+                } else {
+                     btn.textContent = '❌ Kiểm tra lại đáp án SAI';
+                     btn.style.backgroundColor = 'var(--error-color)';
+                }
+            });
+        }
+
+        function resetAllAnswers() {
+            questionBlocks.forEach(resetQuestion);
+            
+            // Đặt lại nút Check All
+            const checkAllBtns = document.querySelectorAll('.check-all-btn');
+            checkAllBtns.forEach(btn => {
+                btn.textContent = 'Kiểm tra TOÀN BỘ đáp án';
+                btn.style.backgroundColor = 'var(--check-all-color)';
+            });
+        }
+
+
+        //  GẮN SỰ KIỆN CHO TỪNG CÂU HỎI 
+        questionBlocks.forEach(block => {
+            const checkButton = block.querySelector('.check-button');
+            const resetButton = block.querySelector('.reset-button');
+
+            if (checkButton) {
+                checkButton.addEventListener('click', () => {
+                    checkAnswer(block);
+                });
+            }
+            
+            if (resetButton) {
+                resetButton.addEventListener('click', () => {
+                    resetQuestion(block);
+                });
+                resetButton.disabled = true; // Mặc định vô hiệu hóa nút reset
+            }
+
+            // Logic: Kích hoạt nút Reset khi người dùng chọn/bỏ chọn đáp án
+            block.addEventListener('change', () => {
+                 const selectedInputs = block.querySelectorAll(`input:checked`);
+                 // Kích hoạt nút reset nếu có đáp án được chọn HOẶC câu hỏi đã được kiểm tra (hoàn thành)
+                 const isCompleted = block.hasAttribute('data-completed');
+                 if (resetButton) {
+                     resetButton.disabled = (selectedInputs.length === 0 && !isCompleted); 
+                 }
+            });
+        });
+
+        //  GẮN SỰ KIỆN CHO CÁC NÚT TOÀN BỘ \
+        if(checkAllBtnTop) checkAllBtnTop.addEventListener('click', checkAllAnswers);
+        if(resetAllBtnTop) resetAllBtnTop.addEventListener('click', resetAllAnswers);
+        if(checkAllBtnBottom) checkAllBtnBottom.addEventListener('click', checkAllAnswers);
+        if(resetAllBtnBottom) resetAllBtnBottom.addEventListener('click', resetAllAnswers);
+
+        updateDisplay(); // Khởi tạo điểm ban đầu
+    });
+
+</script>
+</body>
+</html>
